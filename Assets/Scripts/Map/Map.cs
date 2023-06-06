@@ -27,10 +27,6 @@ namespace PathfindMap
         }
         public List<(int,int)> Astar((int,int) start, (int,int) end)
         {
-            if (!mapTiles[end.Item1, end.Item2].passable || mapTiles[end.Item1, end.Item2].occupiedStatic)
-            {
-                return null;
-            }
             bool[,] visited = new bool[sizeX, sizeY];
             List<PathfindNode> open = new List<PathfindNode>();
             List<PathfindNode> closed = new List<PathfindNode>();
@@ -39,13 +35,25 @@ namespace PathfindMap
 
             open.Add(new PathfindNode(start));
             visited[start.Item1, start.Item2] = true;
-            while(open.Count > 0 && !targetFound)
+
+            PathfindNode closest = open[0];
+            int increaseCounter = 0;
+            while (open.Count > 0 && !targetFound)
             {
                 open.Sort(new CompareByScore());
                 PathfindNode q = open[0];
-                if (q.gscore > sizeX/3 + sizeY/3)
+                if (q.fscore<closest.fscore)
                 {
-                    return CreatePath(q);
+                    closest = q;
+                    increaseCounter = 0;
+                }
+                else
+                {
+                    increaseCounter++;
+                }
+                if (increaseCounter>=50)
+                {
+                    return CreatePath(closest);
                 }
                 open.Remove(q);
                 List<PathfindNode> descendants = new List<PathfindNode>();
@@ -76,7 +84,7 @@ namespace PathfindMap
                     }
                     else
                     {
-                        descendants[i].CalculateFscoreEuclidApprox((descendants[i].x, descendants[i].y), end);
+                        descendants[i].CalculateFscoreEuclid((descendants[i].x, descendants[i].y), end);
                         open.Add(descendants[i]);
                     }
                 }
@@ -84,7 +92,7 @@ namespace PathfindMap
             }
             Debug.Log("Couldn't find path from" + start.Item1 + ", " + start.Item2 + " to " + end.Item1 + ", " + end.Item2);
             //Path not found
-            return null;
+            return CreatePath(closest);
 
         }
         public List<(int,int)> CreatePath(PathfindNode p)
@@ -141,7 +149,7 @@ namespace PathfindMap
             public int x;
             public int y;
             public float gscore;
-            public float fscore = 0;
+            public float fscore = float.PositiveInfinity;
             public PathfindNode parent = null;
             public PathfindNode((int,int) position,float gscore = 0,PathfindNode parent = null)
             {
@@ -150,9 +158,9 @@ namespace PathfindMap
                 this.gscore = gscore;
                 this.parent = parent;
             }
-            public void CalculateFscoreEuclidApprox((int,int) start,(int,int) end)
+            public void CalculateFscoreEuclid((int,int) start,(int,int) end)
             {
-                fscore = gscore + Mathf.Abs(end.Item1 - start.Item1) + Mathf.Abs(end.Item2 - start.Item2);
+                fscore = gscore +Mathf.Sqrt(Mathf.Pow(end.Item1 - start.Item1,2) + Mathf.Pow(end.Item2 - start.Item2,2));
             }
             public int CompareTo(object obj)
             {
@@ -189,7 +197,7 @@ namespace PathfindMap
         public bool occupied;
         public bool occupiedStatic;
         public float cost;
-        public MapTile(bool passable = true,float cost = 1)
+        public MapTile(bool passable = true,float cost = 0.5f)
         {
             this.cost = cost;
             reserved = null;

@@ -28,20 +28,15 @@ public class UnitMovement : MonoBehaviour
         {
             if (pathfindPath==null)
             {
-                Pathfind(pathfindTarget);
+                pathfindTargetReached = true;
+                //Pathfind(pathfindTarget);
             }
             if (!tileReserved)
             {
                 tileReserved = TryReservingTile(pathfindPath[pathEnumerator]);
                 if (!tileReserved)
                 {
-                    if (unit.controller.map.CheckIfReservedOrOccupied(pathfindTarget))
-                    {
-                    }
-                    else
-                    {
-                        PartialPathfind();
-                    }
+                     PartialPathfind();
                 }
             }
             else
@@ -61,6 +56,7 @@ public class UnitMovement : MonoBehaviour
                     (int, int) prevTile = currentTile;
                     currentTile = pathfindPath[pathEnumerator - 1];
                     unit.controller.map.UpdateOccupation(currentTile, prevTile);
+                    transform.parent.position = V3PathfindStep;
                     moving = false;
                     tileReserved = false;
                 }
