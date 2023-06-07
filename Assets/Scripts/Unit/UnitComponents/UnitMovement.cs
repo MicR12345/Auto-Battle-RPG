@@ -17,19 +17,23 @@ public class UnitMovement : MonoBehaviour
 
     Vector3 V3PathfindStep;
 
-    const float pathfindCooldown = 1f;
-    float timer = 0;
-
     bool tileReserved = false;
     bool moving = false;
     private void FixedUpdate()
     {
+        if (pathfindPath == null)
+        {
+            pathfindTargetReached = true;
+            //Pathfind(pathfindTarget);
+        }
         if (!pathfindTargetReached)
         {
-            if (pathfindPath==null)
+            if(pathEnumerator>0 &&
+                (Mathf.Abs(pathfindPath[pathEnumerator].Item1 - pathfindPath[pathEnumerator-1].Item1)>=2 || 
+                Mathf.Abs(pathfindPath[pathEnumerator].Item2 - pathfindPath[pathEnumerator - 1].Item2) >= 2
+                ))
             {
-                pathfindTargetReached = true;
-                //Pathfind(pathfindTarget);
+                Pathfind(pathfindTarget);
             }
             if (!tileReserved)
             {
@@ -78,7 +82,14 @@ public class UnitMovement : MonoBehaviour
         }
         if (pathfindPath.Count>0)
         {
-            pathfindTarget = destination;
+            if (pathfindTarget != pathfindPath[pathfindPath.Count-1])
+            {
+                pathfindTarget = pathfindPath[pathfindPath.Count-1];
+            }
+            else
+            {
+                pathfindTarget = destination;
+            }
             pathEnumerator = 0;
             pathfindTargetReached = false;
         }
@@ -102,6 +113,10 @@ public class UnitMovement : MonoBehaviour
             {
                 Debug.Log("Path not found");
                 return;
+            }
+            if (partialPath[partialPath.Count-1] != pathfindPath[newEnumerator])
+            {
+                pathfindTarget = partialPath[partialPath.Count - 1];
             }
             pathfindPath.RemoveRange(pathEnumerator, newEnumerator - pathEnumerator);
             pathfindPath.InsertRange(pathEnumerator, partialPath);

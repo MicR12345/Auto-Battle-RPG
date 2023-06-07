@@ -38,6 +38,7 @@ namespace PathfindMap
 
             PathfindNode closest = open[0];
             int increaseCounter = 0;
+            closest.CalculateFscoreEuclid(start, end);
             while (open.Count > 0 && !targetFound)
             {
                 open.Sort(new CompareByScore());
@@ -64,13 +65,22 @@ namespace PathfindMap
                         if (i == 0 && j == 0) continue;
                         if (q.x + i >= sizeX || q.x + i < 0 || q.y + j >= sizeY || q.y + j < 0) 
                             continue;
-                        if (mapTiles[q.x + i, q.y + j].passable && !mapTiles[q.x + i, q.y + j].occupiedStatic && (!mapTiles[q.x + i, q.y + j].occupied || q.gscore > 5)
-                            && (mapTiles[q.x + i, q.y + j].reserved==null || q.gscore>5) 
+                        if (mapTiles[q.x + i, q.y + j].passable && !mapTiles[q.x + i, q.y + j].occupiedStatic && (!mapTiles[q.x + i, q.y + j].occupied || q.gscore > 10)
+                            && (mapTiles[q.x + i, q.y + j].reserved==null || q.gscore>10) 
                             && !visited[q.x + i, q.y + j])
                         {
-                            descendants.Add(new PathfindNode((q.x + i, q.y + j),
+                            if (Mathf.Abs(i)==Mathf.Abs(j))
+                            {
+                                descendants.Add(new PathfindNode((q.x + i, q.y + j),
+                                    q.gscore + mapTiles[q.x + i, q.y + j].cost * 1.5f,
+                                    q));
+                            }
+                            else
+                            {
+                                descendants.Add(new PathfindNode((q.x + i, q.y + j),
                                     q.gscore + mapTiles[q.x + i, q.y + j].cost,
                                     q));
+                            }
                             visited[q.x + i, q.y + j] = true;
                         }
  
