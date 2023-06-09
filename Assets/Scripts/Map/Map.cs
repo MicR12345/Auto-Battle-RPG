@@ -100,7 +100,7 @@ namespace PathfindMap
                 }
                 closed.Add(q);
             }
-            Debug.Log("Couldn't find path from" + start.Item1 + ", " + start.Item2 + " to " + end.Item1 + ", " + end.Item2);
+            //Debug.Log("Couldn't find path from" + start.Item1 + ", " + start.Item2 + " to " + end.Item1 + ", " + end.Item2);
             //Path not found
             return CreatePath(closest);
 

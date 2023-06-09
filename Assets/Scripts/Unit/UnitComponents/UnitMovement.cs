@@ -118,7 +118,7 @@ public class UnitMovement : MonoBehaviour
             List<(int, int)> partialPath = unit.controller.map.Astar(currentTile, pathfindPath[newEnumerator]);
             if (partialPath == null || partialPath.Count == 0)
             {
-                Debug.Log("Path not found");
+                pathfindTargetReached = true;
                 return;
             }
             if (partialPath[partialPath.Count-1] != pathfindPath[newEnumerator])
