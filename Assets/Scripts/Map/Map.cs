@@ -145,6 +145,10 @@ namespace PathfindMap
             mapTiles[previousTile.Item1, previousTile.Item2].reserved = null;
             mapTiles[tile.Item1, tile.Item2].occupied = true;
         }
+        public void Occupy((int, int) tile)
+        {
+            mapTiles[tile.Item1, tile.Item2].occupied = true;
+        }
         public bool ReserveTile((int,int) tile,UnitMovement unitMovement)
         {
             if (mapTiles[tile.Item1, tile.Item2].reserved==null && !mapTiles[tile.Item1, tile.Item2].occupied && !mapTiles[tile.Item1, tile.Item2].occupiedStatic)

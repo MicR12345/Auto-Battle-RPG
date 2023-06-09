@@ -9,6 +9,7 @@ public class ObjectiveFactory : MonoBehaviour
     public GameObject ObjectivePrefab;
 
     public List<ObjectiveType> objectiveTypes = new List<ObjectiveType>();
+
     public Objective CreateObjective(string type, Vector3 position,string faction)
     {
         GameObject objectiveObject = GameObject.Instantiate(ObjectivePrefab);

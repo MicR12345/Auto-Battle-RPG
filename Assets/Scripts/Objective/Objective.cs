@@ -6,6 +6,9 @@ public class Objective : MonoBehaviour,Selectable,Placeable
     public TileMap.MapController controller;
 
     public ObjectiveType objectiveType;
+    public GameObject selectorObject;
+
+    public (int, int) gatherSpot = (-1, -1);
     private int maxHP;
     public int MaxHP
     {
@@ -26,17 +29,18 @@ public class Objective : MonoBehaviour,Selectable,Placeable
 
     void Selectable.OnSelect()
     {
-        throw new System.NotImplementedException();
+        selectorObject.SetActive(true);
     }
 
-    void Selectable.OnAction(Vector3 screenPostion)
+    void Selectable.OnAction(Vector3 screenPosition)
     {
-        throw new System.NotImplementedException();
+        Vector3 pos = Camera.main.ScreenToWorldPoint(screenPosition);
+        gatherSpot = controller.GetMapTileFromWorldPosition(pos);
     }
 
     void Selectable.Unselect()
     {
-        throw new System.NotImplementedException();
+        selectorObject.SetActive(false);
     }
 
     void Placeable.Place(Vector3 screenPostion)

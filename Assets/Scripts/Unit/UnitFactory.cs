@@ -8,7 +8,7 @@ public class UnitFactory : MonoBehaviour
 
     public GameObject UnitPrefab;
     public List<UnitType> unitTypes = new List<UnitType>();
-    public Unit CreateUnit(string type, Vector3 position, string faction)
+    public Unit CreateUnit(string type, Vector3 position, string faction,(int,int) gatheringSpot)
     {
         GameObject unitObject = GameObject.Instantiate(UnitPrefab);
         unitObject.transform.position = position;
@@ -31,7 +31,8 @@ public class UnitFactory : MonoBehaviour
             unitObject.transform.Find(comp.name).gameObject.SetActive(true);
         }
         unit.controller = controller;
-        unit.unitMovement.Pathfind((30, 70));
+        unit.unitMovement.BeginPathfind(gatheringSpot);
+        controller.map.Occupy(controller.GetMapTileFromWorldPosition(position));
         return unit;
     }
     public UnitType FindUnitData(string type)

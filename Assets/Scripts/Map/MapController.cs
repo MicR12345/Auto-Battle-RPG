@@ -79,6 +79,11 @@ namespace TileMap
             float endX = Mathf.Max(start.x, endPoint.x);
             float endY = Mathf.Max(start.y, endPoint.y);
 
+            startX = Mathf.FloorToInt(startX);
+            startY = Mathf.FloorToInt(startY);
+            endX = Mathf.CeilToInt(endX);
+            endY = Mathf.CeilToInt(endY);
+
             for (int i = 0; i < units.Count; i++)
             {
                 Vector3 position = units[i].gameObject.transform.position;

@@ -22,20 +22,20 @@ public class UnitMovement : MonoBehaviour
     bool moving = false;
     private void FixedUpdate()
     {
-        if (pathfindPath == null)
+        if (pathfindPath == null && !pathfindTargetChanged)
         {
             pathfindTargetReached = true;
             //TODO Reattempt to pathfind when locked inside units
         }
         if (!pathfindTargetReached)
         {
-            if (pathEnumerator > pathfindPath.Count)
+            if (!pathfindTargetChanged && pathEnumerator > pathfindPath.Count)
             {
                 Pathfind(pathfindTarget);
             }
             if (!tileReserved)
             {
-                if (pathfindTargetChanged == true)
+                if (pathfindTargetChanged)
                 {
                     pathfindTargetChanged = false;
                     Pathfind(pathfindTarget);

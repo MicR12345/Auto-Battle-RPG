@@ -31,6 +31,7 @@ public class Cursor : MonoBehaviour
             case CursorMode.None:
                 if (Input.GetMouseButtonDown(0))
                 {
+                    ClearSelected();
                     startedSelection = true;
                     startingPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     mode = CursorMode.Selector;
@@ -63,7 +64,7 @@ public class Cursor : MonoBehaviour
                     endPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     //Units take priority in selection
                     List<Unit> units = controller.GetUnitsInAreaOfFaction(startingPoint, endPoint, "Player");
-                    if (units != null)
+                    if (units.Count>0)
                     {
                         ClearSelected();
                         selected.AddRange(units);

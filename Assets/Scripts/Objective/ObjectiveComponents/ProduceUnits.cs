@@ -55,7 +55,25 @@ public class ProduceUnits : MonoBehaviour
     }
     void Produce(int i)
     {
-        objective.controller.RegisterUnit(objective.controller.unitFactory.CreateUnit(slots[i].currentType,transform.position + productionOffset,objective.faction));
+        if (objective.gatherSpot!=(-1,-1))
+        {
+            objective.controller.RegisterUnit(objective.controller.unitFactory.CreateUnit(
+                slots[i].currentType,
+                transform.position + productionOffset,
+                objective.faction,
+                objective.gatherSpot
+             ));
+        }
+        else
+        {
+            objective.controller.RegisterUnit(objective.controller.unitFactory.CreateUnit(
+                slots[i].currentType,
+                transform.position + productionOffset,
+                objective.faction,
+                objective.controller.GetMapTileFromWorldPosition(transform.position + productionOffset)
+                ));
+        }
+
     }
     [System.Serializable]
     class ProductionSlot
