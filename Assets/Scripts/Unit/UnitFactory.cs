@@ -25,6 +25,7 @@ public class UnitFactory : MonoBehaviour
         }
         unit.MaxHP = unitType.maxHP;
         unit.speed = unitType.speed;
+        unit.Faction = faction;
         foreach (ComponentWithParams comp in unitType.components)
         {
             unitObject.transform.Find(comp.name).gameObject.SetActive(true);

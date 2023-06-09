@@ -24,6 +24,7 @@ public class ObjectiveFactory : MonoBehaviour
             return null;
         }
         objective.MaxHP = objectiveType.maxHP;
+        objective.faction = faction;
         foreach (ComponentWithParams comp in objectiveType.components)
         {
             objectiveObject.transform.Find(comp.name).gameObject.SetActive(true);

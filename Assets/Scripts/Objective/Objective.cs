@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Objective : MonoBehaviour
+public class Objective : MonoBehaviour,Selectable,Placeable
 {
     public TileMap.MapController controller;
 
@@ -23,4 +23,24 @@ public class Objective : MonoBehaviour
         set { hp = value; }
     }
     public string faction;
+
+    void Selectable.OnSelect()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void Selectable.OnAction(Vector3 screenPostion)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void Selectable.Unselect()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void Placeable.Place(Vector3 screenPostion)
+    {
+        throw new System.NotImplementedException();
+    }
 }

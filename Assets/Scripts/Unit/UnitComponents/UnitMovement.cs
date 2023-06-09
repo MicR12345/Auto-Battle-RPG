@@ -18,30 +18,37 @@ public class UnitMovement : MonoBehaviour
     Vector3 V3PathfindStep;
 
     bool tileReserved = false;
+    bool pathfindTargetChanged = false;
     bool moving = false;
     private void FixedUpdate()
     {
         if (pathfindPath == null)
         {
             pathfindTargetReached = true;
-            //Pathfind(pathfindTarget);
+            //TODO Reattempt to pathfind when locked inside units
         }
         if (!pathfindTargetReached)
         {
-            if(pathEnumerator>0 &&
-                (Mathf.Abs(pathfindPath[pathEnumerator].Item1 - pathfindPath[pathEnumerator-1].Item1)>=2 || 
-                Mathf.Abs(pathfindPath[pathEnumerator].Item2 - pathfindPath[pathEnumerator - 1].Item2) >= 2
-                ))
+            if (pathEnumerator > pathfindPath.Count)
             {
                 Pathfind(pathfindTarget);
             }
             if (!tileReserved)
             {
-                tileReserved = TryReservingTile(pathfindPath[pathEnumerator]);
-                if (!tileReserved)
+                if (pathfindTargetChanged == true)
                 {
-                     PartialPathfind();
+                    pathfindTargetChanged = false;
+                    Pathfind(pathfindTarget);
                 }
+                else
+                {
+                    tileReserved = TryReservingTile(pathfindPath[pathEnumerator]);
+                    if (!tileReserved)
+                    {
+                        PartialPathfind();
+                    }
+                }
+
             }
             else
             {
@@ -77,7 +84,7 @@ public class UnitMovement : MonoBehaviour
         pathfindPath = unit.controller.map.Astar(currentTile, destination);
         if (pathfindPath==null)
         {
-            Debug.Log("Path not found");
+            pathfindTargetReached = true;
             return;
         }
         if (pathfindPath.Count>0)
@@ -152,5 +159,11 @@ public class UnitMovement : MonoBehaviour
             }
         }
 
+    }
+    public void BeginPathfind((int,int) tile)
+    {
+        pathfindTargetReached = false;
+        pathfindTarget = tile;
+        pathfindTargetChanged = true;
     }
 }

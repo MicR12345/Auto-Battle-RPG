@@ -38,8 +38,14 @@ public class ProduceUnits : MonoBehaviour
         {
             if (timers[i]<=0)
             {
-                Produce(i);
-                timers[i] += slots[i].time; 
+                bool canProduce = !objective.controller.map.CheckIfReservedOrOccupied(
+                    objective.controller.GetMapTileFromWorldPosition(transform.position + productionOffset)
+                    );
+                if (canProduce)
+                {
+                    Produce(i);
+                    timers[i] += slots[i].time;
+                }
             }
             else
             {
@@ -49,7 +55,7 @@ public class ProduceUnits : MonoBehaviour
     }
     void Produce(int i)
     {
-        objective.controller.unitFactory.CreateUnit(slots[i].currentType,transform.position + productionOffset,objective.faction);
+        objective.controller.RegisterUnit(objective.controller.unitFactory.CreateUnit(slots[i].currentType,transform.position + productionOffset,objective.faction));
     }
     [System.Serializable]
     class ProductionSlot
