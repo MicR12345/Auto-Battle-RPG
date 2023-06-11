@@ -13,6 +13,8 @@ namespace PathfindMap
         public int sizeX;
         public int sizeY;
 
+        const int closestProximityReattempts = 500;
+
         MapTile[,] mapTiles;
 
         public Map(int sizeX, int sizeY)
@@ -52,7 +54,7 @@ namespace PathfindMap
                 {
                     increaseCounter++;
                 }
-                if (increaseCounter>=50)
+                if (increaseCounter>= closestProximityReattempts)
                 {
                     return CreatePath(closest);
                 }
@@ -211,7 +213,7 @@ namespace PathfindMap
         public bool occupied;
         public bool occupiedStatic;
         public float cost;
-        public MapTile(bool passable = true,float cost = 0.5f)
+        public MapTile(bool passable = true,float cost = 0.01f)
         {
             this.cost = cost;
             reserved = null;

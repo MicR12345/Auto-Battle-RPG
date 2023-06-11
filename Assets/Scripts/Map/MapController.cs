@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
+using TMPro;
 namespace TileMap
 {
     public class MapController : MonoBehaviour
@@ -20,30 +20,56 @@ namespace TileMap
 
         public GameObject MapBound;
         public GameObject MapBound2;
+
+        public TMP_Dropdown tileDropdown;
         private void Start()
         {
-            map = new PathfindMap.Map(300,300);
-            for (int x = 0; x < 300; x++)
+            CreateTilesPrefabs();
+            CreateEmptyMapWithSize(300, 300);
+            FillMapEditorOptions();
+            
+            objectives.Add(objectiveFactory.CreateObjective("Base", new Vector3(10.5f, 10.5f),"Player"));
+        }
+        void CreateEmptyMapWithSize(int x,int y)
+        {
+            map = new PathfindMap.Map(x, y);
+            MapTile mapTile = FindTile("grass");
+            for (int i = 0; i < x; i++)
             {
-                for (int y = 0; y < 300; y++)
+                for (int j = 0; j < y; j++)
                 {
-                    if (Random.Range(0,12)==11)
-                    {
-                        MapTile tile = FindTile("impass");
-                        tilemap.SetTile(new Vector3Int(x, y), tile.tile);
-                        map.SetTile(x, y, tile.passable);
-                    }
-                    else
-                    {
-                        MapTile tile = FindTile("grass");
-                        tilemap.SetTile(new Vector3Int(x, y), tile.tile);
-                        map.SetTile(x, y, tile.passable);
-                    }
-
+                    PlaceTile(mapTile, i, j);
                 }
             }
-            MapBound2.transform.position = new Vector3(300, 300);
-            objectives.Add(objectiveFactory.CreateObjective("Base", new Vector3(10.5f, 10.5f),"Player"));
+            MapBound2.transform.position = new Vector3(x, y);
+        }
+        void FillMapEditorOptions()
+        {
+            FillMapEditorTileOptions();
+        }
+        void FillMapEditorTileOptions()
+        {
+            List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
+            foreach (MapTile tile in placeableTiles)
+            {
+                TMP_Dropdown.OptionData optionData = new TMP_Dropdown.OptionData();
+                optionData.text = tile.tileName;
+                optionData.image = tile.sprite;
+                options.Add(optionData);
+            }
+            tileDropdown.AddOptions(options);
+        }
+        void CreateTilesPrefabs()
+        {
+            foreach (MapTile item in placeableTiles)
+            {
+                item.tileObject = CreateTile(item);
+            }
+        }
+        public void PlaceTile(MapTile tile,int x,int y)
+        {
+            tilemap.SetTile(new Vector3Int(x, y), tile.tileObject);
+            map.SetTile(x, y, tile.passable);
         }
         public MapTile FindTile(string name)
         {
@@ -55,6 +81,13 @@ namespace TileMap
                 }
             }
             return null;
+        }
+        public Tile CreateTile(MapTile mapTile)
+        {
+            Tile tile = ScriptableObject.CreateInstance<Tile>();
+            tile.name = mapTile.tileName;
+            tile.sprite = mapTile.sprite;
+            return tile;
         }
         public (int,int) GetMapTileFromWorldPosition(Vector3 vector3)
         {
@@ -105,6 +138,8 @@ namespace TileMap
     {
         public string tileName;
         public bool passable;
-        public TileBase tile;
+        [HideInInspector]
+        public Tile tileObject;
+        public Sprite sprite;
     }
 }

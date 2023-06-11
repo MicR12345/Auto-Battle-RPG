@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Cursor : MonoBehaviour
 {
@@ -12,18 +13,16 @@ public class Cursor : MonoBehaviour
     public CursorMode mode;
     public List<Selectable> selected = new List<Selectable>();
     public Placeable placeable;
+    public TMPro.TMP_Dropdown tileDropdown;
+    public TileMap.MapTile tileHandle;
 
     [SerializeField]
     private TileMap.MapController controller;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    bool startedSelection = false;
     Vector3 startingPoint = Vector3.zero;
     Vector3 endPoint = Vector3.zero;
+
+    bool startPainting = false;
     void Update()
     {
         switch (mode)
@@ -32,7 +31,6 @@ public class Cursor : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     ClearSelected();
-                    startedSelection = true;
                     startingPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     mode = CursorMode.Selector;
                     RaycastHit2D raycastHit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
@@ -74,7 +72,6 @@ public class Cursor : MonoBehaviour
                             item.OnSelect();
                         }
                     }
-                    startedSelection = false;
                     mode = CursorMode.None;
                 }
                 else
@@ -83,6 +80,24 @@ public class Cursor : MonoBehaviour
                 }
                 break;
             case CursorMode.PlacementMode:
+                if (Input.GetMouseButtonDown(0))
+                {
+                    startPainting = true;
+                }
+                if (Input.GetMouseButtonUp(0))
+                {
+                    startPainting = false;
+                }
+                if (Input.GetMouseButtonDown(1))
+                {
+                    mode = CursorMode.None;
+                }
+                if (startPainting)
+                {
+                    Vector3 point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    (int, int) coords = controller.GetMapTileFromWorldPosition(point);
+                    controller.PlaceTile(tileHandle, coords.Item1, coords.Item2);
+                }
                 break;
         }
     }
@@ -93,6 +108,12 @@ public class Cursor : MonoBehaviour
             item.Unselect();
         }
         selected.Clear();
+    }
+    public void BeginTilePlacementMode()
+    {
+        tileHandle = controller.FindTile(tileDropdown.options[tileDropdown.value].text);
+        mode = CursorMode.PlacementMode;
+
     }
 }
 public interface Selectable
