@@ -60,9 +60,9 @@ namespace PathfindMap
                 }
                 open.Remove(q);
                 List<PathfindNode> descendants = new List<PathfindNode>();
-                for (int i = -1; i < 2; i++)
+                for (int i = -1; i <= 1; i++)
                 {
-                    for (int j = -1; j < 2; j++)
+                    for (int j = -1; j <= 1; j++)
                     {
                         if (i == 0 && j == 0) continue;
                         if (q.x + i >= sizeX || q.x + i < 0 || q.y + j >= sizeY || q.y + j < 0) 
@@ -151,6 +151,10 @@ namespace PathfindMap
         {
             mapTiles[tile.Item1, tile.Item2].occupied = true;
         }
+        public void OccupyStatic((int, int) tile)
+        {
+            mapTiles[tile.Item1, tile.Item2].occupiedStatic = true;
+        }
         public bool ReserveTile((int,int) tile,UnitMovement unitMovement)
         {
             if (mapTiles[tile.Item1, tile.Item2].reserved==null && !mapTiles[tile.Item1, tile.Item2].occupied && !mapTiles[tile.Item1, tile.Item2].occupiedStatic)
@@ -213,7 +217,7 @@ namespace PathfindMap
         public bool occupied;
         public bool occupiedStatic;
         public float cost;
-        public MapTile(bool passable = true,float cost = 0.5f)
+        public MapTile(bool passable = true,float cost = 0.75f)
         {
             this.cost = cost;
             reserved = null;

@@ -7,9 +7,11 @@ public class Objective : MonoBehaviour,Selectable,Placeable
 
     public ObjectiveType objectiveType;
     public GameObject selectorObject;
-
+    public List<Saveable> saveableComps = new List<Saveable>();
     public (int, int) gatherSpot = (-1, -1);
     private int maxHP;
+
+    public bool freezeLogic = false;
     public int MaxHP
     {
         get { return maxHP; }
@@ -43,8 +45,16 @@ public class Objective : MonoBehaviour,Selectable,Placeable
         selectorObject.SetActive(false);
     }
 
-    void Placeable.Place(Vector3 screenPostion)
+    void Placeable.Place(Vector3 position)
     {
-        throw new System.NotImplementedException();
+        transform.position = position;
+        controller.objectiveFactory.OccupySpaceUnderObjective(controller.GetMapTileFromWorldPosition(position));
+        controller.RegisterObjective(this);
+        freezeLogic = false;
+    }
+
+    void Placeable.Discard()
+    {
+        GameObject.Destroy(this);
     }
 }

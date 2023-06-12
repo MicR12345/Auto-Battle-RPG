@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Xml.Serialization;
 public class Unit : MonoBehaviour,Selectable,Placeable
 {
     public TileMap.MapController controller;
 
     public UnitMovement unitMovement;
     public GameObject selectorObject;
+
+    public List<Saveable> saveableComps = new List<Saveable>();
     [SerializeField]
     private int maxHP;
     public int MaxHP
@@ -39,6 +41,8 @@ public class Unit : MonoBehaviour,Selectable,Placeable
     int range;
     public UnitType unitType;
 
+    public bool freezeLogic = false;
+
     void Selectable.OnSelect()
     {
         selectorObject.SetActive(true);
@@ -54,10 +58,28 @@ public class Unit : MonoBehaviour,Selectable,Placeable
         selectorObject.SetActive(false);
     }
 
-    void Placeable.Place(Vector3 screenPosition)
+    void Placeable.Place(Vector3 position)
     {
-        throw new System.NotImplementedException();
+
+        (int,int) tile = controller.GetMapTileFromWorldPosition(position);
+        unitMovement.currentTile = tile;
+        transform.position = position;
+        controller.RegisterUnit(this);
+        controller.map.Occupy(tile);
+        freezeLogic = false;
     }
 
-
+    void Placeable.Discard()
+    {
+        GameObject.Destroy(this);
+    }
+    [XmlRoot("Unit")]
+    public record UnitSaveData
+    {
+        public string type;
+        public float positionX;
+        public float positionY;
+        public int hp;
+        public bool freezeLogic;
+    }
 }

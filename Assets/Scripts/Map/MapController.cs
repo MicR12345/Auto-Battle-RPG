@@ -22,13 +22,14 @@ namespace TileMap
         public GameObject MapBound2;
 
         public TMP_Dropdown tileDropdown;
+        public TMP_Dropdown objectiveDropdown;
+
+        public bool freezeMap = false;
         private void Start()
         {
             CreateTilesPrefabs();
             CreateEmptyMapWithSize(300, 300);
             FillMapEditorOptions();
-            
-            objectives.Add(objectiveFactory.CreateObjective("Base", new Vector3(10.5f, 10.5f),"Player"));
         }
         void CreateEmptyMapWithSize(int x,int y)
         {
@@ -46,6 +47,7 @@ namespace TileMap
         void FillMapEditorOptions()
         {
             FillMapEditorTileOptions();
+            FillMapEditorObjectiveOptions();
         }
         void FillMapEditorTileOptions()
         {
@@ -58,6 +60,17 @@ namespace TileMap
                 options.Add(optionData);
             }
             tileDropdown.AddOptions(options);
+        }
+        void FillMapEditorObjectiveOptions()
+        {
+            List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
+            foreach (ObjectiveType objectiveType in objectiveFactory.objectiveTypes)
+            {
+                TMP_Dropdown.OptionData optionData = new TMP_Dropdown.OptionData();
+                optionData.text = objectiveType.type;
+                options.Add(optionData );
+            }
+            objectiveDropdown.AddOptions(options);
         }
         void CreateTilesPrefabs()
         {
@@ -99,9 +112,17 @@ namespace TileMap
         {
             objectives.Add(objective);
         }
+        public void UnregisterObjective(Objective objective)
+        {
+            objectives.Remove(objective);
+        }
         public void RegisterUnit(Unit unit)
         {
             units.Add(unit);
+        }
+        public void UnregisterUnit(Unit unit)
+        {
+            units.Remove(unit);
         }
         public List<Unit> GetUnitsInAreaOfFaction(Vector3 start,Vector3 endPoint,string faction)
         {

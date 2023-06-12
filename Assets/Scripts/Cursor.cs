@@ -8,12 +8,12 @@ public class Cursor : MonoBehaviour
     public enum CursorMode{
         None,
         Selector,
+        TilePlacementMode,
         PlacementMode
     }
     public CursorMode mode;
     public List<Selectable> selected = new List<Selectable>();
     public Placeable placeable;
-    public TMPro.TMP_Dropdown tileDropdown;
     public TileMap.MapTile tileHandle;
 
     [SerializeField]
@@ -23,8 +23,11 @@ public class Cursor : MonoBehaviour
     Vector3 endPoint = Vector3.zero;
 
     bool startPainting = false;
+    [SerializeField]
+    SpriteRenderer spriteRenderer;
     void Update()
     {
+        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + new Vector3(0, 0, 20);
         switch (mode)
         {
             case CursorMode.None:
@@ -79,7 +82,7 @@ public class Cursor : MonoBehaviour
                     endPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 }
                 break;
-            case CursorMode.PlacementMode:
+            case CursorMode.TilePlacementMode:
                 if (Input.GetMouseButtonDown(0))
                 {
                     startPainting = true;
@@ -91,12 +94,33 @@ public class Cursor : MonoBehaviour
                 if (Input.GetMouseButtonDown(1))
                 {
                     mode = CursorMode.None;
+                    spriteRenderer.color = Color.white;
+                    spriteRenderer.sprite = null;
                 }
                 if (startPainting)
                 {
                     Vector3 point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     (int, int) coords = controller.GetMapTileFromWorldPosition(point);
                     controller.PlaceTile(tileHandle, coords.Item1, coords.Item2);
+                }
+                break;
+            case CursorMode.PlacementMode:
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Vector3 point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    (int, int) coords = controller.GetMapTileFromWorldPosition(point);
+                    Vector3 tilePosition = new Vector3(coords.Item1 + 0.5f, coords.Item2 + 0.5f);
+                    placeable.Place(tilePosition);
+                    mode = CursorMode.None;
+                    spriteRenderer.color = Color.white;
+                    spriteRenderer.sprite = null;
+                }
+                if (Input.GetMouseButtonDown(1))
+                {
+                    mode = CursorMode.None;
+                    spriteRenderer.color = Color.white;
+                    spriteRenderer.sprite = null;
+                    placeable.Discard();
                 }
                 break;
         }
@@ -111,9 +135,23 @@ public class Cursor : MonoBehaviour
     }
     public void BeginTilePlacementMode()
     {
-        tileHandle = controller.FindTile(tileDropdown.options[tileDropdown.value].text);
+        tileHandle = controller.FindTile(controller.tileDropdown.options[controller.tileDropdown.value].text);
+        mode = CursorMode.TilePlacementMode;
+        spriteRenderer.sprite = tileHandle.sprite;
+        spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+    }
+    public void BeginObjectivePlacement()
+    {
+        placeable = controller.objectiveFactory.CreatePlaceableObjective(controller.objectiveDropdown.options[controller.objectiveDropdown.value].text,"Player");
+        BeginPlaceableObjectMode();
+    }
+    public void BeginUnitPlacement()
+    {
+        //placeable = controller.unitFactory.CreatePlaceableUnit()
+    }
+    void BeginPlaceableObjectMode()
+    {
         mode = CursorMode.PlacementMode;
-
     }
 }
 public interface Selectable
@@ -124,5 +162,6 @@ public interface Selectable
 }
 public interface Placeable
 {
-    void Place(Vector3 screenPostion);
+    void Place(Vector3 position);
+    void Discard();
 }

@@ -34,9 +34,17 @@ public class ProduceUnits : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (objective.freezeLogic || objective.controller.freezeMap)
+        {
+            return;
+        }
+        TickProduction();
+    }
+    void TickProduction()
+    {
         for (int i = 0; i < timers.Count; i++)
         {
-            if (timers[i]<=0)
+            if (timers[i] <= 0)
             {
                 bool canProduce = !objective.controller.map.CheckIfReservedOrOccupied(
                     objective.controller.GetMapTileFromWorldPosition(transform.position + productionOffset)
@@ -57,21 +65,22 @@ public class ProduceUnits : MonoBehaviour
     {
         if (objective.gatherSpot!=(-1,-1))
         {
-            objective.controller.RegisterUnit(objective.controller.unitFactory.CreateUnit(
+            Unit unit = objective.controller.unitFactory.CreatePlaceableUnit(
                 slots[i].currentType,
-                transform.position + productionOffset,
-                objective.faction,
-                objective.gatherSpot
-             ));
+                objective.faction
+                );
+            Placeable placeableUnit = unit;
+            placeableUnit.Place(transform.position + productionOffset);
+            unit.unitMovement.BeginPathfind(objective.gatherSpot);
         }
         else
         {
-            objective.controller.RegisterUnit(objective.controller.unitFactory.CreateUnit(
+            Unit unit = objective.controller.unitFactory.CreatePlaceableUnit(
                 slots[i].currentType,
-                transform.position + productionOffset,
-                objective.faction,
-                objective.controller.GetMapTileFromWorldPosition(transform.position + productionOffset)
-                ));
+                objective.faction
+                );
+            Placeable placeableUnit = unit;
+            placeableUnit.Place(transform.position + productionOffset);
         }
 
     }

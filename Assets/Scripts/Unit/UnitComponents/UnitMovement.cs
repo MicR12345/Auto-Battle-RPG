@@ -22,6 +22,14 @@ public class UnitMovement : MonoBehaviour
     bool moving = false;
     private void FixedUpdate()
     {
+        if (unit.freezeLogic || unit.controller.freezeMap)
+        {
+            return;
+        }
+        TickUnitMovementLogic();
+    }
+    void TickUnitMovementLogic()
+    {
         if (pathfindPath == null && !pathfindTargetChanged)
         {
             pathfindTargetReached = true;

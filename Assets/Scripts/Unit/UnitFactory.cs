@@ -8,7 +8,7 @@ public class UnitFactory : MonoBehaviour
 
     public GameObject UnitPrefab;
     public List<UnitType> unitTypes = new List<UnitType>();
-    public Unit CreateUnit(string type, Vector3 position, string faction,(int,int) gatheringSpot)
+    public Unit DebugCreateUnit(string type, Vector3 position, string faction,(int,int) gatheringSpot)
     {
         GameObject unitObject = GameObject.Instantiate(UnitPrefab);
         unitObject.transform.position = position;
@@ -45,6 +45,31 @@ public class UnitFactory : MonoBehaviour
             }
         }
         return null;
+    }
+    public Unit CreatePlaceableUnit(string type, string faction)
+    {
+        GameObject unitObject = GameObject.Instantiate(UnitPrefab);
+        unitObject.name = type;
+        unitObject.transform.position = new Vector3(-10, -10);
+        Unit unit = unitObject.GetComponent<Unit>();
+        UnitType unitType = FindUnitData(type);
+        unit.unitType = unitType;
+        if (unitType == null)
+        {
+            GameObject.Destroy(unitObject);
+            Debug.LogError("Objective type not found");
+            return null;
+        }
+        unit.MaxHP = unitType.maxHP;
+        unit.speed = unitType.speed;
+        unit.Faction = faction;
+        foreach (ComponentWithParams comp in unitType.components)
+        {
+            unitObject.transform.Find(comp.name).gameObject.SetActive(true);
+        }
+        unit.controller = controller;
+        unit.freezeLogic = true;
+        return unit;
     }
 }
 [System.Serializable]
