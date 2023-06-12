@@ -9,7 +9,6 @@ public class Unit : MonoBehaviour,Selectable,Placeable
     public UnitMovement unitMovement;
     public GameObject selectorObject;
 
-    public List<Saveable> saveableComps = new List<Saveable>();
     [SerializeField]
     private int maxHP;
     public int MaxHP

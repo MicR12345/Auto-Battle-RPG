@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Xml;
+using System.Xml.Serialization;
 public class ObjectiveFactory : MonoBehaviour
 {
     public TileMap.MapController controller;
@@ -107,10 +108,11 @@ public class ObjectiveSprites
     public List<Sprite> stateSprite = new List<Sprite>();
     public float animSpeed = 3;
 }
-[System.Serializable]
+[System.Serializable,XmlRoot("Component")]
 public class ComponentWithParams
 {
     public string name;
+    [XmlArray("Subcomponents"),XmlArrayItem("Component")]
     public List<ComponentWithParams> componentsWithParams = new List<ComponentWithParams>();
     public ComponentWithParams FindParam(string name)
     {

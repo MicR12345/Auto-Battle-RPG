@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TMPro;
+using System.Xml;
+using System.Xml.Serialization;
+
 namespace TileMap
 {
     public class MapController : MonoBehaviour
     {
+        public const string defaultTileName = "grass";
+
         public PathfindMap.Map map;
         public Tilemap tilemap;
         public Tilemap impassableTilemap;
@@ -26,16 +31,21 @@ namespace TileMap
         public TMP_Dropdown unitDropdown;
 
         public bool freezeMap = false;
+
+        public int mapSizeX = 300;
+        public int mapSizeY = 300;
         private void Start()
         {
+            
             CreateTilesPrefabs();
-            CreateEmptyMapWithSize(300, 300);
+            LoadGame();
+            //CreateEmptyMapWithSize(mapSizeX, mapSizeY);
             FillMapEditorOptions();
         }
         void CreateEmptyMapWithSize(int x,int y)
         {
             map = new PathfindMap.Map(x, y);
-            MapTile mapTile = FindTile("grass");
+            MapTile mapTile = FindTile(defaultTileName);
             for (int i = 0; i < x; i++)
             {
                 for (int j = 0; j < y; j++)
@@ -164,6 +174,35 @@ namespace TileMap
             }
             return areaUnits;
         }
+        public void LoadGame()
+        {
+            SaveManager.GameState gameState = SaveManager.LoadGame("");
+            ReconstructTiles(gameState.mapData);
+        }
+        public void ReconstructTiles(SaveManager.MapData mapData)
+        {
+            mapSizeX = mapData.mapSizeX;
+            mapSizeY = mapData.mapSizeY;
+            CreateEmptyMapWithSize(mapData.mapSizeX, mapData.mapSizeY);
+            foreach (MapSaveTileData tileData in mapData.mapTiles)
+            {
+                MapTile mapTile = FindTile(tileData.tileName);
+                if (mapTile!=null)
+                {
+                    PlaceTile(mapTile, tileData.x, tileData.y);
+                }
+                else
+                {
+                    Debug.LogError("Saved tile not found: " + tileData.tileName);
+                }
+            }
+        }
+        public void SaveGame()
+        {
+            SaveManager.MapData mapData = new SaveManager.MapData(mapSizeX, mapSizeY, ref tilemap,defaultTileName);
+            SaveManager.GameState gameState = new SaveManager.GameState(mapData);
+            SaveManager.SaveGame(ref gameState);
+        }
     }
 
 
@@ -175,5 +214,24 @@ namespace TileMap
         [HideInInspector]
         public Tile tileObject;
         public Sprite sprite;
+    }
+    [System.Serializable]
+    public class MapSaveTileData
+    {
+        public string tileName;
+        public int x;
+        public int y;
+        public MapSaveTileData(string name,int x ,int y)
+        {
+            tileName = name;
+            this.x = x;
+            this.y = y;
+        }
+        public MapSaveTileData()
+        {
+            tileName = MapController.defaultTileName;
+            x = 0;
+            y = 0;
+        }
     }
 }

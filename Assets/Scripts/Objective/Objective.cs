@@ -7,7 +7,6 @@ public class Objective : MonoBehaviour,Selectable,Placeable
 
     public ObjectiveType objectiveType;
     public GameObject selectorObject;
-    public List<Saveable> saveableComps = new List<Saveable>();
     public (int, int) gatherSpot = (-1, -1);
     private int maxHP;
 

@@ -20,6 +20,16 @@ public class UnitMovement : MonoBehaviour
     bool tileReserved = false;
     bool pathfindTargetChanged = false;
     bool moving = false;
+
+    public (int,int)? ReservedTile
+    {
+        get
+        {
+            if (tileReserved) return pathfindPath[pathEnumerator];
+            else return null;
+        }
+    }
+
     private void FixedUpdate()
     {
         if (unit.freezeLogic || unit.controller.freezeMap)
