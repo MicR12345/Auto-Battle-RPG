@@ -147,7 +147,8 @@ public class Cursor : MonoBehaviour
     }
     public void BeginUnitPlacement()
     {
-        //placeable = controller.unitFactory.CreatePlaceableUnit()
+        placeable = controller.unitFactory.CreatePlaceableUnit(controller.unitDropdown.options[controller.unitDropdown.value].text, "Player");
+        BeginPlaceableObjectMode();
     }
     void BeginPlaceableObjectMode()
     {

@@ -55,6 +55,6 @@ public class Objective : MonoBehaviour,Selectable,Placeable
 
     void Placeable.Discard()
     {
-        GameObject.Destroy(this);
+        GameObject.Destroy(gameObject);
     }
 }

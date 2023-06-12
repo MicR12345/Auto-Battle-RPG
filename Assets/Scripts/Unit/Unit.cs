@@ -71,12 +71,13 @@ public class Unit : MonoBehaviour,Selectable,Placeable
 
     void Placeable.Discard()
     {
-        GameObject.Destroy(this);
+        GameObject.Destroy(gameObject);
     }
     [XmlRoot("Unit")]
-    public record UnitSaveData
+    public class UnitSaveData
     {
         public string type;
+        public string faction;
         public float positionX;
         public float positionY;
         public int hp;

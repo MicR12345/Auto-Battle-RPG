@@ -23,6 +23,7 @@ namespace TileMap
 
         public TMP_Dropdown tileDropdown;
         public TMP_Dropdown objectiveDropdown;
+        public TMP_Dropdown unitDropdown;
 
         public bool freezeMap = false;
         private void Start()
@@ -48,6 +49,7 @@ namespace TileMap
         {
             FillMapEditorTileOptions();
             FillMapEditorObjectiveOptions();
+            FillMapEditorUnitOptions();
         }
         void FillMapEditorTileOptions()
         {
@@ -71,6 +73,17 @@ namespace TileMap
                 options.Add(optionData );
             }
             objectiveDropdown.AddOptions(options);
+        }
+        void FillMapEditorUnitOptions()
+        {
+            List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
+            foreach (UnitType unitType in unitFactory.unitTypes)
+            {
+                TMP_Dropdown.OptionData optionData = new TMP_Dropdown.OptionData();
+                optionData.text = unitType.type;
+                options.Add(optionData);
+            }
+            unitDropdown.AddOptions(options);
         }
         void CreateTilesPrefabs()
         {
