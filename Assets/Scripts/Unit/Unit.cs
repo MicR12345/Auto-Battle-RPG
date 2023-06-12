@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Xml.Serialization;
-public class Unit : MonoBehaviour,Selectable,Placeable
+using System.Globalization;
+public class Unit : MonoBehaviour,Selectable,Placeable,StoresData
 {
     public TileMap.MapController controller;
 
     public UnitMovement unitMovement;
     public GameObject selectorObject;
+
+    public List<StoresData> componentSerializableData = new List<StoresData>();
 
     [SerializeField]
     private int maxHP;
@@ -72,6 +75,28 @@ public class Unit : MonoBehaviour,Selectable,Placeable
     {
         GameObject.Destroy(gameObject);
     }
+
+    DataStorage StoresData.GetData()
+    {
+        return GenerateData();
+    }
+
+    DataStorage GenerateData()
+    {
+        DataStorage dataStorage = new DataStorage("Unit");
+        dataStorage.RegisterNewParam("type", unitType.type);
+        dataStorage.RegisterNewParam("faction", faction);
+        dataStorage.RegisterNewParam("positionX", transform.position.x.ToString(CultureInfo.InvariantCulture.NumberFormat));
+        dataStorage.RegisterNewParam("positionY", transform.position.y.ToString(CultureInfo.InvariantCulture.NumberFormat));
+        dataStorage.RegisterNewParam("hp", HP.ToString());
+        dataStorage.RegisterNewParam("freezeLogic", freezeLogic.ToString());
+        foreach (StoresData item in componentSerializableData)
+        {
+            dataStorage.AddSubcomponent(item.GetData());
+        }
+        return dataStorage;
+    }
+
     [XmlRoot("Unit")]
     public class UnitSaveData
     {

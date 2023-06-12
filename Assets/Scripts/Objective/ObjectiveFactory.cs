@@ -125,4 +125,14 @@ public class ComponentWithParams
         }
         return null;
     }
+    public ComponentWithParams(string name)
+    {
+        this.name = name;
+        componentsWithParams = null;
+    }
+    public ComponentWithParams()
+    {
+        this.name = "";
+        componentsWithParams = null;
+    }
 }

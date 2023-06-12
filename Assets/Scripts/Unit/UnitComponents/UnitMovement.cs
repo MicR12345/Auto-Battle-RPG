@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitMovement : MonoBehaviour
+public class UnitMovement : MonoBehaviour,StoresData
 {
     public Unit unit;
     public (int, int) currentTile;
@@ -29,7 +29,10 @@ public class UnitMovement : MonoBehaviour
             else return null;
         }
     }
-
+    public void OnEnable()
+    {
+        unit.componentSerializableData.Add(this);
+    }
     private void FixedUpdate()
     {
         if (unit.freezeLogic || unit.controller.freezeMap)
@@ -183,5 +186,26 @@ public class UnitMovement : MonoBehaviour
         pathfindTargetReached = false;
         pathfindTarget = tile;
         pathfindTargetChanged = true;
+    }
+    public DataStorage GenerateData()
+    {
+        DataStorage dataStorage = new DataStorage("UnitMovement");
+        dataStorage.RegisterNewParam("currentTileX", currentTile.Item1.ToString());
+        dataStorage.RegisterNewParam("currentTileY", currentTile.Item2.ToString());
+        dataStorage.RegisterNewParam("pathfindTargetReached",pathfindTargetReached.ToString());
+        if (!pathfindTargetReached)
+        {
+            dataStorage.RegisterNewParam("pathfindTargetX", pathfindTarget.Item1.ToString());
+            dataStorage.RegisterNewParam("pathfindTargetY", pathfindTarget.Item2.ToString());
+            dataStorage.RegisterNewParam("tileReserved", tileReserved.ToString());
+            dataStorage.RegisterNewParam("reservedTileX", pathfindPath[pathEnumerator].Item1.ToString());
+            dataStorage.RegisterNewParam("reservedTileY", pathfindPath[pathEnumerator].Item2.ToString());
+        }
+        return dataStorage;
+    }
+
+    DataStorage StoresData.GetData()
+    {
+        return GenerateData();
     }
 }

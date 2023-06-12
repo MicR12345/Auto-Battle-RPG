@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,12 +35,12 @@ namespace TileMap
 
         public int mapSizeX = 300;
         public int mapSizeY = 300;
+
         private void Start()
         {
-            
             CreateTilesPrefabs();
-            LoadGame();
-            //CreateEmptyMapWithSize(mapSizeX, mapSizeY);
+            //LoadGame();
+            CreateEmptyMapWithSize(mapSizeX, mapSizeY);
             FillMapEditorOptions();
         }
         void CreateEmptyMapWithSize(int x,int y)
@@ -200,7 +201,19 @@ namespace TileMap
         public void SaveGame()
         {
             SaveManager.MapData mapData = new SaveManager.MapData(mapSizeX, mapSizeY, ref tilemap,defaultTileName);
-            SaveManager.GameState gameState = new SaveManager.GameState(mapData);
+            List<DataStorage> objectiveData = new List<DataStorage>();
+            foreach (StoresData objective in objectives)
+            {
+                objectiveData.Add(objective.GetData());
+            }
+            SaveManager.ObjectivesData objectivesData = new SaveManager.ObjectivesData(objectiveData);
+            List<DataStorage> unitData = new List<DataStorage>();
+            foreach (StoresData unit in units)
+            {
+                unitData.Add(unit.GetData());
+            }
+            SaveManager.UnitsData unitsData = new SaveManager.UnitsData(unitData);
+            SaveManager.GameState gameState = new SaveManager.GameState(mapData,objectivesData, unitsData);
             SaveManager.SaveGame(ref gameState);
         }
     }

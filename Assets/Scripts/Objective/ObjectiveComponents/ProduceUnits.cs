@@ -2,18 +2,18 @@ using System.Collections;
 using System.Globalization;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ProduceUnits : MonoBehaviour
+public class ProduceUnits : MonoBehaviour,StoresData
 {
     Objective objective;
     [SerializeField]
     List<ProductionSlot> slots = new List<ProductionSlot>();
-    List<float> timers = new List<float>();
 
     Vector3 productionOffset = Vector3.one * 3;
     void OnEnable()
     {
+
         objective = transform.parent.gameObject.GetComponent<Objective>();
+        objective.componentSerializableData.Add(this);
         ComponentWithParams unitProductionComponent = objective.objectiveType.FindParam("ProduceUnits");
         ComponentWithParams productionSlots = unitProductionComponent.FindParam("ProductionSlots");
         foreach (ComponentWithParams slot in productionSlots.componentsWithParams)
@@ -28,7 +28,8 @@ public class ProduceUnits : MonoBehaviour
             }
             productionSlot.currentType = productionSlot.upgrades[0];
             slots.Add(productionSlot);
-            timers.Add(time);
+
+            productionSlot.timer = time;
         } 
     }
 
@@ -42,9 +43,9 @@ public class ProduceUnits : MonoBehaviour
     }
     void TickProduction()
     {
-        for (int i = 0; i < timers.Count; i++)
+        for (int i = 0; i < slots.Count; i++)
         {
-            if (timers[i] <= 0)
+            if (slots[i].timer <= 0)
             {
                 bool canProduce = !objective.controller.map.CheckIfReservedOrOccupied(
                     objective.controller.GetMapTileFromWorldPosition(transform.position + productionOffset)
@@ -52,12 +53,12 @@ public class ProduceUnits : MonoBehaviour
                 if (canProduce)
                 {
                     Produce(i);
-                    timers[i] += slots[i].time;
+                    slots[i].timer += slots[i].time;
                 }
             }
             else
             {
-                timers[i] -= Time.deltaTime;
+                slots[i].timer -= Time.deltaTime;
             }
         }
     }
@@ -84,6 +85,24 @@ public class ProduceUnits : MonoBehaviour
         }
 
     }
+
+    DataStorage StoresData.GetData()
+    {
+        return GenerateData();
+    }
+
+    public DataStorage GenerateData()
+    {
+        DataStorage dataStorage = new DataStorage("ProduceUnits");
+        DataStorage productionSlots = new DataStorage("ProductionSlots");
+        foreach (ProductionSlot slot in slots)
+        {
+            productionSlots.AddSubcomponent(slot.convertToDataStorage());
+        }
+        dataStorage.AddSubcomponent(productionSlots);
+        return dataStorage;
+    }
+
     [System.Serializable]
     class ProductionSlot
     {
@@ -91,5 +110,21 @@ public class ProduceUnits : MonoBehaviour
         public int currentStage = 0;
         public float time;
         public List<string> upgrades = new List<string>();
+        public float timer;
+        public DataStorage convertToDataStorage()
+        {
+            DataStorage dataStorage = new DataStorage("ProductionSlot");
+            dataStorage.RegisterNewParam("type", currentType);
+            dataStorage.RegisterNewParam("stage",currentStage.ToString());
+            dataStorage.RegisterNewParam("time", time.ToString(CultureInfo.InvariantCulture.NumberFormat));
+            dataStorage.RegisterNewParam("timer", timer.ToString(CultureInfo.InvariantCulture.NumberFormat));
+            DataStorage upgradeStorage = new DataStorage("Upgrades");
+            for (int i = 0; i < upgrades.Count; i++)
+            {
+                upgradeStorage.RegisterNewParam(i.ToString(), upgrades[i]);
+            }
+            dataStorage.AddSubcomponent(upgradeStorage);
+            return dataStorage;
+        }
     }
 }

@@ -8,7 +8,7 @@ public class UnitFactory : MonoBehaviour
 
     public GameObject UnitPrefab;
     public List<UnitType> unitTypes = new List<UnitType>();
-    public Unit DebugCreateUnit(string type, Vector3 position, string faction,(int,int) gatheringSpot)
+    public Unit DebugCreateUnit(string type, Vector3 position, string faction,(int,int) gatheringSpot,bool exactPosition = true)
     {
         GameObject unitObject = GameObject.Instantiate(UnitPrefab);
         unitObject.transform.position = position;
