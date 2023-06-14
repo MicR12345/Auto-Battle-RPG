@@ -129,7 +129,7 @@ namespace PathfindMap
         }
         public bool CheckIfReserved((int, int) position)
         {
-            return mapTiles[position.Item1, position.Item2].reserved;
+            return mapTiles[position.Item1, position.Item2].reserved != null;
         }
         public bool CheckIfOccupied((int, int) position)
         {
@@ -144,8 +144,12 @@ namespace PathfindMap
         }
         public void UpdateOccupation((int,int) tile,(int,int) previousTile,OccupiesTile o)
         {
+
             mapTiles[previousTile.Item1, previousTile.Item2].occupied = null;
-            mapTiles[previousTile.Item1, previousTile.Item2].reserved = null;
+            if (mapTiles[previousTile.Item1, previousTile.Item2].reserved == o)
+            {
+                mapTiles[previousTile.Item1, previousTile.Item2].reserved = null;
+            }
             mapTiles[tile.Item1, tile.Item2].occupied = o;
         }
         public void Occupy((int, int) tile, OccupiesTile o)
@@ -156,15 +160,12 @@ namespace PathfindMap
         {
             mapTiles[tile.Item1, tile.Item2].occupiedStatic = true;
         }
-        public bool ReserveTile((int,int) tile,UnitMovement unitMovement)
+        public bool ReserveTile((int,int) tile,OccupiesTile o)
         {
-            if (mapTiles[tile.Item1, tile.Item2].reserved==null &&
-                mapTiles[tile.Item1, tile.Item2].occupied== null &&
-                !mapTiles[tile.Item1, tile.Item2].occupiedStatic &&
-                mapTiles[tile.Item1, tile.Item2].passable
+            if (!CheckIfReservedOrOccupied(tile)
                 )
             {
-                mapTiles[tile.Item1, tile.Item2].reserved = unitMovement;
+                mapTiles[tile.Item1, tile.Item2].reserved = o;
                 return true;
             }
             return false;
@@ -220,7 +221,7 @@ namespace PathfindMap
     public class MapTile
     {
         public bool passable;
-        public UnitMovement reserved;
+        public OccupiesTile reserved;
         public OccupiesTile occupied;
         public bool occupiedStatic;
         public float cost;
