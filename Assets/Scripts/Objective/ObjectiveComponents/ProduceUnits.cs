@@ -9,7 +9,7 @@ public class ProduceUnits : MonoBehaviour,StoresData
     List<ProductionSlot> slots = new List<ProductionSlot>();
 
     Vector3 productionOffset = Vector3.one * 3;
-    void OnEnable()
+    void Start()
     {
         objective = transform.parent.gameObject.GetComponent<Objective>();
         objective.componentSerializableData.Add(this);

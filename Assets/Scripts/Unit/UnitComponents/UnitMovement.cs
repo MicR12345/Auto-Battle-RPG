@@ -30,9 +30,46 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
             else return null;
         }
     }
-    public void OnEnable()
+    void Start()
     {
         unit.componentSerializableData.Add(this);
+        if (unit.isReconstructed)
+        {
+            DataStorage movementData = unit.reconstructionData.FindSubcomp("UnitMovement");
+            (int,int) newCurrentTile = (
+                int.Parse(movementData.FindParam("currentTileX").value),
+                int.Parse(movementData.FindParam("currentTileY").value)
+                );
+            if (newCurrentTile != currentTile)
+            {
+                unit.controller.map.UpdateOccupation(newCurrentTile, currentTile, this);
+                currentTile = newCurrentTile;
+            }
+            pathfindTargetReached = bool.Parse(movementData.FindParam("pathfindTargetReached").value);
+            if (!pathfindTargetReached)
+            {
+                pathfindTarget = (
+                    int.Parse(movementData.FindParam("pathfindTargetX").value),
+                    int.Parse(movementData.FindParam("pathfindTargetY").value)
+                    );
+                tileReserved = bool.Parse(movementData.FindParam("pathfindTargetReached").value);
+                if (tileReserved)
+                {
+                    (int, int) tileToBeReserved = (
+                        int.Parse(movementData.FindParam("reservedTileX").value),
+                        int.Parse(movementData.FindParam("reservedTileY").value)
+                        );
+                    unit.controller.map.ReserveTile(tileToBeReserved,this);
+                    moving = true;
+                    V3PathfindStep = PathfindMap.Map.ConvertPathNodeToV3(tileToBeReserved);
+                    pathfindTargetChanged = true;
+                }
+                else
+                {
+                    BeginPathfind(pathfindTarget);
+                }
+            }
+        }
     }
     private void FixedUpdate()
     {

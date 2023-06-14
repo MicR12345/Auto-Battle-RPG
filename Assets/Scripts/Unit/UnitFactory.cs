@@ -68,6 +68,37 @@ public class UnitFactory : MonoBehaviour
             unitObject.transform.Find(comp.name).gameObject.SetActive(true);
         }
         unit.controller = controller;
+        unit.unitMovement.gameObject.SetActive(true);
+        unit.freezeLogic = true;
+        return unit;
+    }
+    public Unit ReconstructUnitFromData(DataStorage unitData)
+    {
+        GameObject unitObject = GameObject.Instantiate(UnitPrefab);
+        string unitName = unitData.FindParam("type").value;
+        unitObject.name = unitName;
+        unitObject.transform.position = new Vector3(-10, -10);
+        Unit unit = unitObject.GetComponent<Unit>();
+        UnitType unitType = FindUnitData(unitName);
+        unit.unitType = unitType;
+        if (unitType == null)
+        {
+            GameObject.Destroy(unitObject);
+            Debug.LogError("Objective type not found");
+            return null;
+        }
+        unit.MaxHP = unitType.maxHP;
+        unit.speed = unitType.speed;
+        unit.Faction = unitData.FindParam("faction").value;
+        unit.HP = int.Parse(unitData.FindParam("hp").value);
+        foreach (DataStorage comp in unitData.subcomponents)
+        {
+            unitObject.transform.Find(comp.name).gameObject.SetActive(true);
+        }
+        unit.reconstructionData = unitData;
+        unit.isReconstructed = true;
+        unit.controller = controller;
+        unit.unitMovement.gameObject.SetActive(true);
         unit.freezeLogic = true;
         return unit;
     }

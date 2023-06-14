@@ -145,10 +145,10 @@ namespace PathfindMap
         public void UpdateOccupation((int,int) tile,(int,int) previousTile,OccupiesTile o)
         {
 
-            mapTiles[previousTile.Item1, previousTile.Item2].occupied = null;
-            if (mapTiles[previousTile.Item1, previousTile.Item2].reserved == o)
+            mapTiles[tile.Item1, tile.Item2].reserved = null;
+            if (mapTiles[previousTile.Item1, previousTile.Item2].occupied == o)
             {
-                mapTiles[previousTile.Item1, previousTile.Item2].reserved = null;
+                mapTiles[previousTile.Item1, previousTile.Item2].occupied = null;
             }
             mapTiles[tile.Item1, tile.Item2].occupied = o;
         }

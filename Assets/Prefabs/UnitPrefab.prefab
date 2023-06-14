@@ -93,14 +93,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1203488593370109577}
-  - component: {fileID: 7363261904666243864}
+  - component: {fileID: 7978890602625832893}
   m_Layer: 0
   m_Name: UnitMovement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1203488593370109577
 Transform:
   m_ObjectHideFlags: 0
@@ -116,7 +116,7 @@ Transform:
   m_Father: {fileID: 3581999440777422488}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7363261904666243864
+--- !u!114 &7978890602625832893
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,8 +162,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1203488593370109577}
   - {fileID: 6429617176462286918}
+  - {fileID: 1203488593370109577}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -180,8 +180,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
-  unitMovement: {fileID: 7363261904666243864}
+  unitMovement: {fileID: 7978890602625832893}
   selectorObject: {fileID: 3087709839494636976}
+  reconstructionData:
+    name: 
+    parameters: []
+    subcomponents: []
+  isReconstructed: 0
   maxHP: 0
   speed: 0
   damage: 0
@@ -192,6 +197,7 @@ MonoBehaviour:
     speed: 0
     components: []
     sprites: []
+  freezeLogic: 0
 --- !u!212 &8975885716610271861
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -181,6 +181,7 @@ namespace TileMap
             SaveManager.GameState gameState = SaveManager.LoadGame("");
             ReconstructTiles(gameState.mapData);
             ReconstructObjectives(gameState.objectivesData);
+            ReconstructUnits(gameState.unitsData);
         }
         public void ReconstructTiles(SaveManager.MapData mapData)
         {
@@ -210,6 +211,17 @@ namespace TileMap
                     float.Parse(objective.FindParam("y").value, CultureInfo.InvariantCulture.NumberFormat)
                     ) + new Vector3(.5f, .5f)
                     );
+            }
+        }
+        public void ReconstructUnits(SaveManager.UnitsData unitsData)
+        {
+            foreach (DataStorage unit in unitsData.units)
+            {
+                Placeable unitt = unitFactory.ReconstructUnitFromData(unit);
+                unitt.Place(new Vector3(
+                    float.Parse(unit.FindParam("x").value, CultureInfo.InvariantCulture.NumberFormat),
+                    float.Parse(unit.FindParam("y").value, CultureInfo.InvariantCulture.NumberFormat)
+                    ));
             }
         }
         public void SaveGame()

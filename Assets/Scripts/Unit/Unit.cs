@@ -13,7 +13,8 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData
     public GameObject selectorObject;
 
     public List<StoresData> componentSerializableData = new List<StoresData>();
-
+    public DataStorage reconstructionData = null;
+    public bool isReconstructed = false;
     [SerializeField]
     private int maxHP;
     public int MaxHP
@@ -29,7 +30,7 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData
     public int HP
     {
         get { return hp; }
-        private set { hp = value; }
+        set { hp = value; }
     }
     string faction;
     public string Faction
@@ -69,7 +70,7 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData
         unitMovement.currentTile = tile;
         transform.position = position;
         controller.RegisterUnit(this);
-        controller.map.Occupy(tile,transform.Find("UnitMovement").GetComponent<UnitMovement>());
+        controller.map.Occupy(tile,unitMovement);
         freezeLogic = false;
     }
 
@@ -91,7 +92,6 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData
         dataStorage.RegisterNewParam("x", transform.position.x.ToString(CultureInfo.InvariantCulture.NumberFormat));
         dataStorage.RegisterNewParam("y", transform.position.y.ToString(CultureInfo.InvariantCulture.NumberFormat));
         dataStorage.RegisterNewParam("hp", HP.ToString());
-        dataStorage.RegisterNewParam("freezeLogic", freezeLogic.ToString());
         foreach (StoresData item in componentSerializableData)
         {
             dataStorage.AddSubcomponent(item.GetData());
