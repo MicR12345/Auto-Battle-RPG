@@ -128,6 +128,28 @@ public class DataStorage
         }
         subcomponents.Add(subcomponent);
     }
+    public Parameter FindParam(string name)
+    {
+        foreach (Parameter param in parameters)
+        {
+            if (param.name==name)
+            {
+                return param;
+            }
+        }
+        return null;
+    }
+    public DataStorage FindSubcomp(string name)
+    {
+        foreach (DataStorage comp in subcomponents)
+        {
+            if (comp.name == name)
+            {
+                return comp;
+            }
+        }
+        return null;
+    }
 }
 [System.Serializable]
 public class Parameter

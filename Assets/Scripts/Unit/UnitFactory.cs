@@ -32,7 +32,7 @@ public class UnitFactory : MonoBehaviour
         }
         unit.controller = controller;
         unit.unitMovement.BeginPathfind(gatheringSpot);
-        controller.map.Occupy(controller.GetMapTileFromWorldPosition(position));
+        //controller.map.Occupy(controller.GetMapTileFromWorldPosition(position));
         return unit;
     }
     public UnitType FindUnitData(string type)

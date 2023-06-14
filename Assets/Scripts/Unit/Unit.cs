@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Xml.Serialization;
 using System.Globalization;
+using PathfindMap;
+
 public class Unit : MonoBehaviour,Selectable,Placeable,StoresData
 {
     public TileMap.MapController controller;
@@ -67,7 +69,7 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData
         unitMovement.currentTile = tile;
         transform.position = position;
         controller.RegisterUnit(this);
-        controller.map.Occupy(tile);
+        controller.map.Occupy(tile,transform.Find("UnitMovement").GetComponent<UnitMovement>());
         freezeLogic = false;
     }
 
@@ -86,8 +88,8 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData
         DataStorage dataStorage = new DataStorage("Unit");
         dataStorage.RegisterNewParam("type", unitType.type);
         dataStorage.RegisterNewParam("faction", faction);
-        dataStorage.RegisterNewParam("positionX", transform.position.x.ToString(CultureInfo.InvariantCulture.NumberFormat));
-        dataStorage.RegisterNewParam("positionY", transform.position.y.ToString(CultureInfo.InvariantCulture.NumberFormat));
+        dataStorage.RegisterNewParam("x", transform.position.x.ToString(CultureInfo.InvariantCulture.NumberFormat));
+        dataStorage.RegisterNewParam("y", transform.position.y.ToString(CultureInfo.InvariantCulture.NumberFormat));
         dataStorage.RegisterNewParam("hp", HP.ToString());
         dataStorage.RegisterNewParam("freezeLogic", freezeLogic.ToString());
         foreach (StoresData item in componentSerializableData)
@@ -97,14 +99,4 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData
         return dataStorage;
     }
 
-    [XmlRoot("Unit")]
-    public class UnitSaveData
-    {
-        public string type;
-        public string faction;
-        public float positionX;
-        public float positionY;
-        public int hp;
-        public bool freezeLogic;
-    }
 }

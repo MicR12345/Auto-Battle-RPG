@@ -3306,7 +3306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaba53b11fdadba4bb32376f79fc5e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 15
+  speed: 40
   controller: {fileID: 1174861704}
   MapBound: {fileID: 331166999}
   MapBound2: {fileID: 69413733}

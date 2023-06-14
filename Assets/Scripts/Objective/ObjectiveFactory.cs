@@ -64,16 +64,49 @@ public class ObjectiveFactory : MonoBehaviour
         objectiveObject.name = type;
         Objective objective = objectiveObject.GetComponent<Objective>();
         ObjectiveType objectiveType = FindObjectiveData(type);
-        objective.objectiveType = objectiveType;
         if (objectiveType == null)
         {
             GameObject.Destroy(objectiveObject);
             Debug.LogError("Objective type not found");
             return null;
         }
+        objective.objectiveType = objectiveType;
         objective.MaxHP = objectiveType.maxHP;
         objective.faction = faction;
         foreach (ComponentWithParams comp in objectiveType.components)
+        {
+            objectiveObject.transform.Find(comp.name).gameObject.SetActive(true);
+        }
+        objective.controller = controller;
+        objective.freezeLogic = true;
+        return objective;
+    }
+    public Objective ReconstructObjectiveFromData(DataStorage objectiveData)
+    {
+        GameObject objectiveObject = GameObject.Instantiate(ObjectivePrefab);
+        objectiveObject.transform.position = new Vector3(-10, -10);
+        string objectiveName = objectiveData.FindParam("name").value;
+        objectiveObject.name = objectiveName;
+        Objective objective = objectiveObject.GetComponent<Objective>();
+        objective.isReconstructed = true;
+        objective.reconstructionData = objectiveData;
+        ObjectiveType objectiveType = FindObjectiveData(objectiveName);
+        if (objectiveType == null)
+        {
+            GameObject.Destroy(objectiveObject);
+            Debug.LogError("Objective type not found");
+            return null;
+        }
+        objective.objectiveType = objectiveType;
+        objective.MaxHP = objectiveType.maxHP;
+        objective.HP = int.Parse(objectiveData.FindParam("hp").value);
+        objective.gatherSpot =
+            (
+            int.Parse(objectiveData.FindParam("gatherSpotX").value),
+            int.Parse(objectiveData.FindParam("gatherSpotY").value)
+            );
+        objective.faction = objectiveData.FindParam("faction").value;
+        foreach (DataStorage comp in objectiveData.subcomponents)
         {
             objectiveObject.transform.Find(comp.name).gameObject.SetActive(true);
         }

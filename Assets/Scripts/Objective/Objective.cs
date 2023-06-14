@@ -12,7 +12,8 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData
     private int maxHP;
 
     public List<StoresData> componentSerializableData = new List<StoresData>();
-
+    public DataStorage reconstructionData = null;
+    public bool isReconstructed= false;
     public bool freezeLogic = false;
     public int MaxHP
     {
@@ -68,6 +69,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData
     {
         (int, int) postion = controller.GetMapTileFromWorldPosition(transform.position);
         DataStorage dataStorage = new DataStorage("Objective");
+        dataStorage.RegisterNewParam("name", objectiveType.type);
         dataStorage.RegisterNewParam("x", postion.Item1.ToString());
         dataStorage.RegisterNewParam("y", postion.Item2.ToString());
         dataStorage.RegisterNewParam("gatherSpotX", gatherSpot.Item1.ToString());

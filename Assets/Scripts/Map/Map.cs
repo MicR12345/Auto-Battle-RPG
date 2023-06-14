@@ -27,7 +27,7 @@ namespace PathfindMap
         {
             mapTiles[x,y] = new MapTile(passable);
         }
-        public List<(int,int)> Astar((int,int) start, (int,int) end)
+        public (List<(int,int)>,bool) Astar((int,int) start, (int,int) end)
         {
             bool[,] visited = new bool[sizeX, sizeY];
             List<PathfindNode> open = new List<PathfindNode>();
@@ -45,18 +45,18 @@ namespace PathfindMap
             {
                 open.Sort(new CompareByScore());
                 PathfindNode q = open[0];
-                if (q.fscore<closest.fscore)
+                if (q.hscore <closest.hscore)
                 {
                     closest = q;
                     increaseCounter = 0;
                 }
-                else
+                else if(q.hscore> closest.hscore)
                 {
                     increaseCounter++;
                 }
-                if (increaseCounter>= closestProximityReattempts)
+                if (increaseCounter>= sizeX + sizeY)
                 {
-                    return CreatePath(closest);
+                    return (CreatePath(closest),false);
                 }
                 open.Remove(q);
                 List<PathfindNode> descendants = new List<PathfindNode>();
@@ -67,7 +67,7 @@ namespace PathfindMap
                         if (i == 0 && j == 0) continue;
                         if (q.x + i >= sizeX || q.x + i < 0 || q.y + j >= sizeY || q.y + j < 0) 
                             continue;
-                        if (mapTiles[q.x + i, q.y + j].passable && !mapTiles[q.x + i, q.y + j].occupiedStatic && (!mapTiles[q.x + i, q.y + j].occupied || q.gscore > 10)
+                        if (mapTiles[q.x + i, q.y + j].passable && !mapTiles[q.x + i, q.y + j].occupiedStatic && (q.gscore > 20 || !CheckIfOccupied((q.x + i, q.y + j)))
                             && (mapTiles[q.x + i, q.y + j].reserved==null || q.gscore>10) 
                             && !visited[q.x + i, q.y + j])
                         {
@@ -92,7 +92,7 @@ namespace PathfindMap
                 {
                     if (descendants[i].x == end.Item1 && descendants[i].y== end.Item2)
                     {
-                        return CreatePath(descendants[i]);
+                        return (CreatePath(descendants[i]),true);
                     }
                     else
                     {
@@ -104,7 +104,7 @@ namespace PathfindMap
             }
             //Debug.Log("Couldn't find path from" + start.Item1 + ", " + start.Item2 + " to " + end.Item1 + ", " + end.Item2);
             //Path not found
-            return CreatePath(closest);
+            return (CreatePath(closest),false);
 
         }
         public List<(int,int)> CreatePath(PathfindNode p)
@@ -125,8 +125,7 @@ namespace PathfindMap
         }
         public bool CheckIfReservedOrOccupied((int,int) position)
         {
-            return mapTiles[position.Item1, position.Item2].reserved != null || mapTiles[position.Item1, position.Item2].occupied
-                || mapTiles[position.Item1, position.Item2].occupiedStatic;
+            return mapTiles[position.Item1, position.Item2].reserved != null || CheckIfOccupied(position) || !mapTiles[position.Item1, position.Item2].passable;
         }
         public bool CheckIfReserved((int, int) position)
         {
@@ -134,22 +133,24 @@ namespace PathfindMap
         }
         public bool CheckIfOccupied((int, int) position)
         {
-            return mapTiles[position.Item1, position.Item2].occupied || mapTiles[position.Item1, position.Item2].occupiedStatic;
+            if (mapTiles[position.Item1, position.Item2].occupied != null)
+            {
+                return !mapTiles[position.Item1, position.Item2].occupied.IsMoving() || mapTiles[position.Item1, position.Item2].occupiedStatic;
+            }
+            else
+            {
+                return mapTiles[position.Item1, position.Item2].occupiedStatic;
+            }
         }
-        public bool CheckIfReachableReverse((int, int) end, (int, int) start)
+        public void UpdateOccupation((int,int) tile,(int,int) previousTile,OccupiesTile o)
         {
-            if (Astar(start, end) != null) return true;
-            return false;
-        }
-        public void UpdateOccupation((int,int) tile,(int,int) previousTile)
-        {
-            mapTiles[previousTile.Item1, previousTile.Item2].occupied = false;
+            mapTiles[previousTile.Item1, previousTile.Item2].occupied = null;
             mapTiles[previousTile.Item1, previousTile.Item2].reserved = null;
-            mapTiles[tile.Item1, tile.Item2].occupied = true;
+            mapTiles[tile.Item1, tile.Item2].occupied = o;
         }
-        public void Occupy((int, int) tile)
+        public void Occupy((int, int) tile, OccupiesTile o)
         {
-            mapTiles[tile.Item1, tile.Item2].occupied = true;
+            mapTiles[tile.Item1, tile.Item2].occupied = o;
         }
         public void OccupyStatic((int, int) tile)
         {
@@ -157,7 +158,11 @@ namespace PathfindMap
         }
         public bool ReserveTile((int,int) tile,UnitMovement unitMovement)
         {
-            if (mapTiles[tile.Item1, tile.Item2].reserved==null && !mapTiles[tile.Item1, tile.Item2].occupied && !mapTiles[tile.Item1, tile.Item2].occupiedStatic)
+            if (mapTiles[tile.Item1, tile.Item2].reserved==null &&
+                mapTiles[tile.Item1, tile.Item2].occupied== null &&
+                !mapTiles[tile.Item1, tile.Item2].occupiedStatic &&
+                mapTiles[tile.Item1, tile.Item2].passable
+                )
             {
                 mapTiles[tile.Item1, tile.Item2].reserved = unitMovement;
                 return true;
@@ -169,6 +174,7 @@ namespace PathfindMap
             public int x;
             public int y;
             public float gscore;
+            public float hscore = float.PositiveInfinity;
             public float fscore = float.PositiveInfinity;
             public PathfindNode parent = null;
             public PathfindNode((int,int) position,float gscore = 0,PathfindNode parent = null)
@@ -180,7 +186,8 @@ namespace PathfindMap
             }
             public void CalculateFscoreEuclid((int,int) start,(int,int) end)
             {
-                fscore = gscore +Mathf.Sqrt(Mathf.Pow(end.Item1 - start.Item1,2) + Mathf.Pow(end.Item2 - start.Item2,2));
+                hscore = Mathf.Sqrt(Mathf.Pow(end.Item1 - start.Item1, 2) + Mathf.Pow(end.Item2 - start.Item2, 2));
+                fscore = gscore + hscore;
             }
             public int CompareTo(object obj)
             {
@@ -214,16 +221,20 @@ namespace PathfindMap
     {
         public bool passable;
         public UnitMovement reserved;
-        public bool occupied;
+        public OccupiesTile occupied;
         public bool occupiedStatic;
         public float cost;
-        public MapTile(bool passable = true,float cost = 0.75f)
+        public MapTile(bool passable = true,float cost = 1f)
         {
             this.cost = cost;
             reserved = null;
-            occupied = false;
+            occupied = null;
             occupiedStatic = false;
             this.passable = passable;
         }
+    }
+    public interface OccupiesTile
+    {
+        public bool IsMoving();
     }
 }

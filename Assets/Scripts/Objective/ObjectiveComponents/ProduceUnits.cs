@@ -11,25 +11,37 @@ public class ProduceUnits : MonoBehaviour,StoresData
     Vector3 productionOffset = Vector3.one * 3;
     void OnEnable()
     {
-
         objective = transform.parent.gameObject.GetComponent<Objective>();
         objective.componentSerializableData.Add(this);
-        ComponentWithParams unitProductionComponent = objective.objectiveType.FindParam("ProduceUnits");
-        ComponentWithParams productionSlots = unitProductionComponent.FindParam("ProductionSlots");
-        foreach (ComponentWithParams slot in productionSlots.componentsWithParams)
+        if (objective.isReconstructed)
         {
-            ProductionSlot productionSlot = new ProductionSlot();
-            float time = float.Parse(slot.FindParam("Time").componentsWithParams[0].name,
-                      CultureInfo.InvariantCulture.NumberFormat);
-            productionSlot.time = time;
-            foreach (ComponentWithParams stage in slot.FindParam("Stages").componentsWithParams)
+            DataStorage productionData = objective.reconstructionData.FindSubcomp(transform.name);
+            DataStorage productionSlots = productionData.FindSubcomp("ProductionSlots");
+            foreach (DataStorage slot in productionSlots.subcomponents)
             {
-                productionSlot.upgrades.Add(stage.name);
+                ProductionSlot productionSlot = new ProductionSlot(slot);
+                slots.Add(productionSlot);
             }
-            productionSlot.currentType = productionSlot.upgrades[0];
-            slots.Add(productionSlot);
+        }
+        else
+        {
+            ComponentWithParams unitProductionComponent = objective.objectiveType.FindParam("ProduceUnits");
+            ComponentWithParams productionSlots = unitProductionComponent.FindParam("ProductionSlots");
+            foreach (ComponentWithParams slot in productionSlots.componentsWithParams)
+            {
+                ProductionSlot productionSlot = new ProductionSlot();
+                float time = float.Parse(slot.FindParam("Time").componentsWithParams[0].name,
+                          CultureInfo.InvariantCulture.NumberFormat);
+                productionSlot.time = time;
+                foreach (ComponentWithParams stage in slot.FindParam("Stages").componentsWithParams)
+                {
+                    productionSlot.upgrades.Add(stage.name);
+                }
+                productionSlot.currentType = productionSlot.upgrades[0];
+                slots.Add(productionSlot);
 
-            productionSlot.timer = time;
+                productionSlot.timer = time;
+            }
         } 
     }
 
@@ -93,7 +105,7 @@ public class ProduceUnits : MonoBehaviour,StoresData
 
     public DataStorage GenerateData()
     {
-        DataStorage dataStorage = new DataStorage("ProduceUnits");
+        DataStorage dataStorage = new DataStorage(transform.name);
         DataStorage productionSlots = new DataStorage("ProductionSlots");
         foreach (ProductionSlot slot in slots)
         {
@@ -125,6 +137,22 @@ public class ProduceUnits : MonoBehaviour,StoresData
             }
             dataStorage.AddSubcomponent(upgradeStorage);
             return dataStorage;
+        }
+        public ProductionSlot(DataStorage dataStorage)
+        {
+            currentType = dataStorage.FindParam("type").value;
+            currentStage = int.Parse(dataStorage.FindParam("stage").value);
+            time = float.Parse(dataStorage.FindParam("time").value,CultureInfo.InvariantCulture.NumberFormat);
+            timer = float.Parse(dataStorage.FindParam("timer").value, CultureInfo.InvariantCulture.NumberFormat);
+            DataStorage upgradeStorage = dataStorage.FindSubcomp("Upgrades");
+            for (int i = 0; i < upgradeStorage.parameters.Count; i++)
+            {
+                upgrades.Add(upgradeStorage.parameters[i].value);
+            }
+        }
+        public ProductionSlot()
+        {
+
         }
     }
 }

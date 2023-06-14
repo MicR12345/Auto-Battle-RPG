@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 using TMPro;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Globalization;
 
 namespace TileMap
 {
@@ -39,8 +40,8 @@ namespace TileMap
         private void Start()
         {
             CreateTilesPrefabs();
-            //LoadGame();
-            CreateEmptyMapWithSize(mapSizeX, mapSizeY);
+            LoadGame();
+            //CreateEmptyMapWithSize(mapSizeX, mapSizeY);
             FillMapEditorOptions();
         }
         void CreateEmptyMapWithSize(int x,int y)
@@ -179,6 +180,7 @@ namespace TileMap
         {
             SaveManager.GameState gameState = SaveManager.LoadGame("");
             ReconstructTiles(gameState.mapData);
+            ReconstructObjectives(gameState.objectivesData);
         }
         public void ReconstructTiles(SaveManager.MapData mapData)
         {
@@ -196,6 +198,18 @@ namespace TileMap
                 {
                     Debug.LogError("Saved tile not found: " + tileData.tileName);
                 }
+            }
+        }
+        public void ReconstructObjectives(SaveManager.ObjectivesData objectivesData)
+        {
+            foreach (DataStorage objective in objectivesData.objectives)
+            {
+                Placeable objectiv = objectiveFactory.ReconstructObjectiveFromData(objective);
+                objectiv.Place(new Vector3(
+                    float.Parse(objective.FindParam("x").value,CultureInfo.InvariantCulture.NumberFormat),
+                    float.Parse(objective.FindParam("y").value, CultureInfo.InvariantCulture.NumberFormat)
+                    ) + new Vector3(.5f, .5f)
+                    );
             }
         }
         public void SaveGame()

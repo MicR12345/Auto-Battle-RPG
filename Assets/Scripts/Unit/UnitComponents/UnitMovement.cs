@@ -1,8 +1,9 @@
+using PathfindMap;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitMovement : MonoBehaviour,StoresData
+public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
 {
     public Unit unit;
     public (int, int) currentTile;
@@ -87,7 +88,7 @@ public class UnitMovement : MonoBehaviour,StoresData
                     }
                     (int, int) prevTile = currentTile;
                     currentTile = pathfindPath[pathEnumerator - 1];
-                    unit.controller.map.UpdateOccupation(currentTile, prevTile);
+                    unit.controller.map.UpdateOccupation(currentTile, prevTile,this);
                     transform.parent.position = V3PathfindStep;
                     moving = false;
                     tileReserved = false;
@@ -102,52 +103,64 @@ public class UnitMovement : MonoBehaviour,StoresData
     }
     public void Pathfind((int,int) destination)
     {
-        pathfindPath = unit.controller.map.Astar(currentTile, destination);
-        if (pathfindPath==null)
+        (List<(int,int)>, bool) path = unit.controller.map.Astar(currentTile, destination);
+        if (path.Item1==null || path.Item1.Count==0)
         {
             pathfindTargetReached = true;
             return;
         }
-        if (pathfindPath.Count>0)
+        else
         {
-            if (pathfindTarget != pathfindPath[pathfindPath.Count-1])
+            if (path.Item2)
             {
-                pathfindTarget = pathfindPath[pathfindPath.Count-1];
+                pathfindPath = path.Item1;
+                pathfindTarget = destination;
             }
             else
             {
-                pathfindTarget = destination;
+                pathfindPath = path.Item1;
+                pathfindTarget = path.Item1[path.Item1.Count - 1];
             }
-            pathEnumerator = 0;
-            pathfindTargetReached = false;
         }
         if (pathfindPath.Count==0)
         {
             pathfindTargetReached = true;
         }
-
+        pathEnumerator = 0;
     }
     public void PartialPathfind()
     {
-        int newEnumerator = FindNextUnoccupiedTile();
-        if (newEnumerator == pathfindPath.Count)
+        if (pathfindPath.Count - pathEnumerator < 10)
         {
             Pathfind(pathfindTarget);
+            return;
+        }
+        int newEnumerator = FindNextUnoccupiedTile();
+        if (newEnumerator - pathEnumerator >3 || newEnumerator == pathfindPath.Count)
+        {
+            Pathfind(pathfindTarget);
+            return;
         }
         else
         {
-            List<(int, int)> partialPath = unit.controller.map.Astar(currentTile, pathfindPath[newEnumerator]);
-            if (partialPath == null || partialPath.Count == 0)
+            (List<(int, int)>,bool) partialPath = unit.controller.map.Astar(currentTile, pathfindPath[newEnumerator]);
+            if (partialPath.Item1 == null)
             {
-                pathfindTargetReached = true;
+                Pathfind(pathfindTarget);
                 return;
             }
-            if (partialPath[partialPath.Count-1] != pathfindPath[newEnumerator])
+            if (partialPath.Item2)
             {
-                pathfindTarget = partialPath[partialPath.Count - 1];
+                pathfindPath.RemoveRange(pathEnumerator, newEnumerator - pathEnumerator);
+                pathfindPath.InsertRange(pathEnumerator, partialPath.Item1);
+                return;
             }
-            pathfindPath.RemoveRange(pathEnumerator, newEnumerator - pathEnumerator);
-            pathfindPath.InsertRange(pathEnumerator, partialPath);
+            else
+            {
+                Pathfind(pathfindTarget);
+                return;
+            }
+            
         }
 
     }
@@ -189,7 +202,7 @@ public class UnitMovement : MonoBehaviour,StoresData
     }
     public DataStorage GenerateData()
     {
-        DataStorage dataStorage = new DataStorage("UnitMovement");
+        DataStorage dataStorage = new DataStorage(transform.name);
         dataStorage.RegisterNewParam("currentTileX", currentTile.Item1.ToString());
         dataStorage.RegisterNewParam("currentTileY", currentTile.Item2.ToString());
         dataStorage.RegisterNewParam("pathfindTargetReached",pathfindTargetReached.ToString());
@@ -207,5 +220,10 @@ public class UnitMovement : MonoBehaviour,StoresData
     DataStorage StoresData.GetData()
     {
         return GenerateData();
+    }
+
+    bool OccupiesTile.IsMoving()
+    {
+        return moving;
     }
 }
