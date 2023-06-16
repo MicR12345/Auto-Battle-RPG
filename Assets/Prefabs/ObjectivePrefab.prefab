@@ -55,6 +55,12 @@ MonoBehaviour:
     components: []
     sprites: []
   selectorObject: {fileID: 2114024250670620949}
+  reconstructionData:
+    name: 
+    parameters: []
+    subcomponents: []
+  isReconstructed: 0
+  freezeLogic: 0
   faction: 
 --- !u!212 &3487029980064599154
 SpriteRenderer:

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Xml.Serialization;
-public class Objective : MonoBehaviour,Selectable,Placeable,StoresData
+public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Targetable
 {
     public TileMap.MapController controller;
 
@@ -28,7 +28,22 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData
     public int HP
     {
         get { return hp; }
-        set { hp = value; }
+        set {
+            if (hp + value < 0)
+            {
+                if (faction!="Neutral")
+                {
+                    
+                }
+                else
+                {
+                    faction = "Neutral";
+                    freezeLogic = true;
+                }
+                //TODO : Change to neutral
+            }
+            hp = value; 
+        }
     }
     public string faction;
 
@@ -81,5 +96,35 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData
             dataStorage.AddSubcomponent(item.GetData());
         }
         return dataStorage;
+    }
+
+    bool Selectable.IsDeadInside()
+    {
+        return false;
+    }
+
+    void Damageable.ApplyDamage(int damage)
+    {
+        HP = HP - damage;
+    }
+
+    string Damageable.GetFaction()
+    {
+        return faction;
+    }
+
+    Vector3 Targetable.GetShootPosition()
+    {
+        return transform.position;
+    }
+
+    string Targetable.GetFaction()
+    {
+        return faction;
+    }
+
+    bool Targetable.IsTargedDeadInside()
+    {
+        return false;
     }
 }

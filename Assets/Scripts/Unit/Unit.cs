@@ -5,16 +5,20 @@ using System.Xml.Serialization;
 using System.Globalization;
 using PathfindMap;
 
-public class Unit : MonoBehaviour,Selectable,Placeable,StoresData
+public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Targetable
 {
     public TileMap.MapController controller;
 
     public UnitMovement unitMovement;
     public GameObject selectorObject;
 
+    public GameObject bulletPrefab;
+
     public List<StoresData> componentSerializableData = new List<StoresData>();
     public DataStorage reconstructionData = null;
     public bool isReconstructed = false;
+
+    public bool isDead = false;
     [SerializeField]
     private int maxHP;
     public int MaxHP
@@ -30,7 +34,13 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData
     public int HP
     {
         get { return hp; }
-        set { hp = value; }
+        set { 
+            if (hp + value < 0)
+            {
+                DestoryThis();
+            }
+            hp = value; 
+        }
     }
     string faction;
     public string Faction
@@ -41,9 +51,9 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData
     [SerializeField]
     public int speed;
     [SerializeField]
-    int damage;
+    public int damage;
     [SerializeField]
-    int range;
+    public int range = 20;
     public UnitType unitType;
 
     public bool freezeLogic = false;
@@ -99,4 +109,39 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData
         return dataStorage;
     }
 
+    void Damageable.ApplyDamage(int damage)
+    {
+        HP = HP - damage;
+    }
+
+    Vector3 Targetable.GetShootPosition()
+    {
+        return transform.position;
+    }
+
+    string Targetable.GetFaction()
+    {
+        return faction;
+    }
+
+    string Damageable.GetFaction()
+    {
+        return faction;
+    }
+
+    bool Targetable.IsTargedDeadInside()
+    {
+        return isDead;
+    }
+    public void DestoryThis()
+    {
+        controller.UnregisterUnit(this);
+        isDead = true;
+        GameObject.Destroy(this.gameObject);
+    }
+
+    bool Selectable.IsDeadInside()
+    {
+        return isDead;
+    }
 }

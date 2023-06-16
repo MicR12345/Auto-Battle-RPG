@@ -64,7 +64,7 @@ public class Cursor : MonoBehaviour
                 {
                     endPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     //Units take priority in selection
-                    List<Unit> units = controller.GetUnitsInAreaOfFaction(startingPoint, endPoint, "Player");
+                    List<Unit> units = controller.GetUnitsInAreaOfFaction(startingPoint, endPoint,"Player");
                     if (units.Count>0)
                     {
                         ClearSelected();
@@ -129,7 +129,11 @@ public class Cursor : MonoBehaviour
     {
         foreach (Selectable item in selected)
         {
-            item.Unselect();
+            if (!item.IsDeadInside())
+            {
+                item.Unselect();
+            }
+            
         }
         selected.Clear();
     }
@@ -142,12 +146,12 @@ public class Cursor : MonoBehaviour
     }
     public void BeginObjectivePlacement()
     {
-        placeable = controller.objectiveFactory.CreatePlaceableObjective(controller.objectiveDropdown.options[controller.objectiveDropdown.value].text,"Player");
+        placeable = controller.objectiveFactory.CreatePlaceableObjective(controller.objectiveDropdown.options[controller.objectiveDropdown.value].text, controller.factionSelectionDropdown.options[controller.factionSelectionDropdown.value].text);
         BeginPlaceableObjectMode();
     }
     public void BeginUnitPlacement()
     {
-        placeable = controller.unitFactory.CreatePlaceableUnit(controller.unitDropdown.options[controller.unitDropdown.value].text, "Player");
+        placeable = controller.unitFactory.CreatePlaceableUnit(controller.unitDropdown.options[controller.unitDropdown.value].text, controller.factionSelectionDropdown.options[controller.factionSelectionDropdown.value].text);
         BeginPlaceableObjectMode();
     }
     void BeginPlaceableObjectMode()
@@ -160,6 +164,7 @@ public interface Selectable
     void OnSelect();
     void OnAction(Vector3 screenPostion);
     void Unselect();
+    bool IsDeadInside();
 }
 public interface Placeable
 {

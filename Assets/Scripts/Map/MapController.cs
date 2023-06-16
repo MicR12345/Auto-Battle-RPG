@@ -31,17 +31,18 @@ namespace TileMap
         public TMP_Dropdown tileDropdown;
         public TMP_Dropdown objectiveDropdown;
         public TMP_Dropdown unitDropdown;
-
+        public TMP_Dropdown factionSelectionDropdown;
+        
         public bool freezeMap = false;
 
-        public int mapSizeX = 300;
-        public int mapSizeY = 300;
+        public int mapSizeX = 100;
+        public int mapSizeY = 100;
 
         private void Start()
         {
             CreateTilesPrefabs();
-            LoadGame();
-            //CreateEmptyMapWithSize(mapSizeX, mapSizeY);
+            //LoadGame();
+            CreateEmptyMapWithSize(mapSizeX, mapSizeY);
             FillMapEditorOptions();
         }
         void CreateEmptyMapWithSize(int x,int y)
