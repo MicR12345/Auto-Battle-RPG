@@ -1,16 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Globalization;
 
-public class UnitShoot : MonoBehaviour
+public class UnitShoot : MonoBehaviour,StoresData
 {
     public Targetable currentTarget;
     public Unit unit;
     bool ceaseFire = false;
     bool targetChanged = false;
+
+    public float shootingTime = 5f;
+    public float shootingCooldown = 0f;
     private void Start()
     {
+        if (unit.isReconstructed)
+        {
+            DataStorage data = unit.reconstructionData.FindSubcomp("UnitShoot");
+            shootingCooldown = float.Parse(data.FindParam("cooldown").value, CultureInfo.InvariantCulture.NumberFormat);
+            shootingTime = float.Parse(data.FindParam("time").value, CultureInfo.InvariantCulture.NumberFormat);
+        }
+        unit.componentSerializableData.Add(this);
         StartCoroutine(CheckForShooting());
+
+    }
+    private void FixedUpdate()
+    {
+        if (unit.controller.freezeMap || unit.freezeLogic) return;
+        if (shootingCooldown<=0f)
+        {
+            if (currentTarget!=null)
+            {
+                CreateBullet();
+                shootingCooldown += shootingTime;
+            }
+        }
+        else
+        {
+            shootingCooldown -= Time.deltaTime;
+        }
     }
     void CheckForEnemies()
     {
@@ -59,10 +87,6 @@ public class UnitShoot : MonoBehaviour
         for(; ; )
         {
             CheckForEnemies();
-            if (currentTarget != null)
-            {
-                CreateBullet();
-            }
             yield return new WaitForSeconds(.5f);
         }
     }
@@ -78,7 +102,15 @@ public class UnitShoot : MonoBehaviour
         bullet.speed = 16f;
         bullet.damage = unit.damage;
         bullet.faction = unit.Faction;
+        bullet.controller = unit.controller;
         bullet.bulletMovement.enabled = true;
     }
 
+    DataStorage StoresData.GetData()
+    {
+        DataStorage dataStorage = new DataStorage("UnitShoot");
+        dataStorage.RegisterNewParam("cooldown", shootingCooldown.ToString(CultureInfo.InvariantCulture.NumberFormat));
+        dataStorage.RegisterNewParam("time", shootingTime.ToString(CultureInfo.InvariantCulture.NumberFormat));
+        return dataStorage;
+    }
 }

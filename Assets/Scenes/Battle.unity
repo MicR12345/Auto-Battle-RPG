@@ -4967,7 +4967,7 @@ MonoBehaviour:
   objectiveDropdown: {fileID: 355211409}
   unitDropdown: {fileID: 1959660838}
   factionSelectionDropdown: {fileID: 133521199}
-  freezeMap: 0
+  freezeMap: 1
   mapSizeX: 100
   mapSizeY: 100
   bulletStorage: {fileID: 1213009247}

@@ -13,6 +13,8 @@ public class Bullet : MonoBehaviour,StoresData
     public float explosionRange = 1f;
     public string faction;
     public BulletMovement bulletMovement;
+
+    public TileMap.MapController controller;
     private void Start()
     {
         
@@ -73,6 +75,7 @@ public class Bullet : MonoBehaviour,StoresData
             );
         transform.parent = controller.bulletStorage.transform;
         transform.position = position;
+        this.controller = controller;
         bulletMovement.enabled = true;
     }
 }

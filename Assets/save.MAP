@@ -23,28 +23,41 @@
           </Parameter>
           <Parameter>
             <name>x</name>
-            <value>22.5</value>
+            <value>21.45602</value>
           </Parameter>
           <Parameter>
             <name>y</name>
-            <value>13.0904</value>
+            <value>15.5</value>
           </Parameter>
           <Parameter>
             <name>hp</name>
-            <value>5</value>
+            <value>20</value>
           </Parameter>
         </parameters>
         <subcomponents>
+          <DataStorage>
+            <name>UnitShoot</name>
+            <parameters>
+              <Parameter>
+                <name>cooldown</name>
+                <value>4.66</value>
+              </Parameter>
+              <Parameter>
+                <name>time</name>
+                <value>5</value>
+              </Parameter>
+            </parameters>
+          </DataStorage>
           <DataStorage>
             <name>UnitMovement</name>
             <parameters>
               <Parameter>
                 <name>currentTileX</name>
-                <value>22</value>
+                <value>20</value>
               </Parameter>
               <Parameter>
                 <name>currentTileY</name>
-                <value>12</value>
+                <value>15</value>
               </Parameter>
               <Parameter>
                 <name>pathfindTargetReached</name>
@@ -52,11 +65,11 @@
               </Parameter>
               <Parameter>
                 <name>pathfindTargetX</name>
-                <value>23</value>
+                <value>21</value>
               </Parameter>
               <Parameter>
                 <name>pathfindTargetY</name>
-                <value>14</value>
+                <value>15</value>
               </Parameter>
               <Parameter>
                 <name>tileReserved</name>
@@ -64,11 +77,11 @@
               </Parameter>
               <Parameter>
                 <name>reservedTileX</name>
-                <value>22</value>
+                <value>21</value>
               </Parameter>
               <Parameter>
                 <name>reservedTileY</name>
-                <value>13</value>
+                <value>15</value>
               </Parameter>
             </parameters>
           </DataStorage>
@@ -87,11 +100,11 @@
           </Parameter>
           <Parameter>
             <name>x</name>
-            <value>31.5</value>
+            <value>30.5</value>
           </Parameter>
           <Parameter>
             <name>y</name>
-            <value>16.5</value>
+            <value>15.5</value>
           </Parameter>
           <Parameter>
             <name>hp</name>
@@ -100,15 +113,28 @@
         </parameters>
         <subcomponents>
           <DataStorage>
+            <name>UnitShoot</name>
+            <parameters>
+              <Parameter>
+                <name>cooldown</name>
+                <value>4.54</value>
+              </Parameter>
+              <Parameter>
+                <name>time</name>
+                <value>5</value>
+              </Parameter>
+            </parameters>
+          </DataStorage>
+          <DataStorage>
             <name>UnitMovement</name>
             <parameters>
               <Parameter>
                 <name>currentTileX</name>
-                <value>31</value>
+                <value>30</value>
               </Parameter>
               <Parameter>
                 <name>currentTileY</name>
-                <value>16</value>
+                <value>15</value>
               </Parameter>
               <Parameter>
                 <name>pathfindTargetReached</name>
@@ -143,31 +169,31 @@
           </Parameter>
           <Parameter>
             <name>faction</name>
-            <value>Player</value>
+            <value>Enemy</value>
           </Parameter>
           <Parameter>
             <name>x</name>
-            <value>28.16007</value>
+            <value>23.13643</value>
           </Parameter>
           <Parameter>
             <name>y</name>
-            <value>14.97333</value>
+            <value>15.5</value>
           </Parameter>
           <Parameter>
             <name>targetX</name>
-            <value>31.5</value>
+            <value>20.45602</value>
           </Parameter>
           <Parameter>
             <name>targetY</name>
-            <value>16.5</value>
+            <value>15.5</value>
           </Parameter>
           <Parameter>
             <name>originX</name>
-            <value>22.29029</value>
+            <value>30.5</value>
           </Parameter>
           <Parameter>
             <name>originY</name>
-            <value>12.29029</value>
+            <value>15.5</value>
           </Parameter>
         </parameters>
       </DataStorage>
@@ -192,31 +218,31 @@
           </Parameter>
           <Parameter>
             <name>faction</name>
-            <value>Enemy</value>
+            <value>Player</value>
           </Parameter>
           <Parameter>
             <name>x</name>
-            <value>28.15994</value>
+            <value>25.70914</value>
           </Parameter>
           <Parameter>
             <name>y</name>
-            <value>15.00974</value>
+            <value>15.5</value>
           </Parameter>
           <Parameter>
             <name>targetX</name>
-            <value>22.47185</value>
+            <value>30.5</value>
           </Parameter>
           <Parameter>
             <name>targetY</name>
-            <value>12.47185</value>
+            <value>15.5</value>
           </Parameter>
           <Parameter>
             <name>originX</name>
-            <value>31.5</value>
+            <value>20.48559</value>
           </Parameter>
           <Parameter>
             <name>originY</name>
-            <value>16.5</value>
+            <value>15.5</value>
           </Parameter>
         </parameters>
       </DataStorage>

@@ -23,6 +23,7 @@ public class BulletMovement : MonoBehaviour
     }
     private void Update()
     {
+        if (bullet.controller.freezeMap) return;
         if (Vector3.Distance(transform.position,target)<.3f)
         {
             bullet.Explode();
