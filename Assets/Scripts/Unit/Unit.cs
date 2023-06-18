@@ -12,8 +12,6 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
     public UnitMovement unitMovement;
     public GameObject selectorObject;
 
-    public GameObject bulletPrefab;
-
     public List<StoresData> componentSerializableData = new List<StoresData>();
     public DataStorage reconstructionData = null;
     public bool isReconstructed = false;

@@ -29,16 +29,20 @@ public static class SaveManager
         public MapData mapData;
         public ObjectivesData objectivesData;
         public UnitsData unitsData;
+        public BulletData bulletData;
         public GameState()
         {
             this.mapData = new MapData();
             this.objectivesData = new ObjectivesData();
+            this.unitsData = new UnitsData();
+            this.bulletData = new BulletData();
         }
-        public GameState(MapData mapData,ObjectivesData objectivesData,UnitsData unitsData)
+        public GameState(MapData mapData,ObjectivesData objectivesData,UnitsData unitsData,BulletData bulletData)
         {
             this.mapData = mapData;
             this.objectivesData = objectivesData;
             this.unitsData = unitsData;
+            this.bulletData = bulletData;
         }
     }
     public class MapData
@@ -93,6 +97,18 @@ public static class SaveManager
         public UnitsData(List<DataStorage> data)
         {
             units = data;
+        }
+    }
+    public class BulletData
+    {
+        public List<DataStorage> bullets;
+        public BulletData()
+        {
+            bullets = null;
+        }
+        public BulletData(List<DataStorage> data)
+        {
+            bullets= data;
         }
     }
 }

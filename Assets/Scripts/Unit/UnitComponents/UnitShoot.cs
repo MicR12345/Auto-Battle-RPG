@@ -68,8 +68,9 @@ public class UnitShoot : MonoBehaviour
     }
     void CreateBullet()
     {
-        GameObject bulletObject = GameObject.Instantiate(unit.bulletPrefab);
+        GameObject bulletObject = GameObject.Instantiate(unit.controller.bulletPrefab);
         Bullet bullet = bulletObject.GetComponent<Bullet>();
+        bullet.transform.parent = unit.controller.bulletStorage.transform;
         bullet.transform.position = transform.position;
         bullet.origin = transform.position;
         bullet.target = currentTarget.GetShootPosition();

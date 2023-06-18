@@ -4949,6 +4949,7 @@ MonoBehaviour:
   impassableTilemap: {fileID: 0}
   objectiveFactory: {fileID: 2036764154}
   unitFactory: {fileID: 1954165118}
+  bulletPrefab: {fileID: 1912011600503024805, guid: d7b53cb94a9391e408da016efca60521, type: 3}
   placeableTiles:
   - tileName: grass
     passable: 1
@@ -4967,8 +4968,40 @@ MonoBehaviour:
   unitDropdown: {fileID: 1959660838}
   factionSelectionDropdown: {fileID: 133521199}
   freezeMap: 0
-  mapSizeX: 300
-  mapSizeY: 300
+  mapSizeX: 100
+  mapSizeY: 100
+  bulletStorage: {fileID: 1213009247}
+--- !u!1 &1213009247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1213009248}
+  m_Layer: 0
+  m_Name: BulletStorage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1213009248
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213009247}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1213239997
 GameObject:
   m_ObjectHideFlags: 0
@@ -6747,7 +6780,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 560.1, y: -26.019}
+  m_AnchoredPosition: {x: 560.1, y: -26.019043}
   m_SizeDelta: {x: 160, y: 50.537}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1770444281

@@ -95,6 +95,10 @@ public class UnitFactory : MonoBehaviour
         {
             unitObject.transform.Find(comp.name).gameObject.SetActive(true);
         }
+        foreach (ComponentWithParams comp in unitType.components)
+        {
+            unitObject.transform.Find(comp.name).gameObject.SetActive(true);
+        }
         unit.reconstructionData = unitData;
         unit.isReconstructed = true;
         unit.controller = controller;

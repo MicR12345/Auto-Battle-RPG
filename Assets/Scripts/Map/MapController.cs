@@ -20,9 +20,12 @@ namespace TileMap
 
         public ObjectiveFactory objectiveFactory;
         public UnitFactory unitFactory;
+        public GameObject bulletPrefab;
 
         public List<MapTile> placeableTiles = new List<MapTile>();
+        [HideInInspector]
         public List<Objective> objectives = new List<Objective>();
+        [HideInInspector]
         public List<Unit> units = new List<Unit>();
 
         public GameObject MapBound;
@@ -38,11 +41,12 @@ namespace TileMap
         public int mapSizeX = 100;
         public int mapSizeY = 100;
 
+        public GameObject bulletStorage;
         private void Start()
         {
             CreateTilesPrefabs();
-            //LoadGame();
-            CreateEmptyMapWithSize(mapSizeX, mapSizeY);
+            LoadGame();
+            //CreateEmptyMapWithSize(mapSizeX, mapSizeY);
             FillMapEditorOptions();
         }
         void CreateEmptyMapWithSize(int x,int y)
@@ -183,6 +187,7 @@ namespace TileMap
             ReconstructTiles(gameState.mapData);
             ReconstructObjectives(gameState.objectivesData);
             ReconstructUnits(gameState.unitsData);
+            ReconstructBullets(gameState.bulletData);
         }
         public void ReconstructTiles(SaveManager.MapData mapData)
         {
@@ -225,6 +230,15 @@ namespace TileMap
                     ));
             }
         }
+        public void ReconstructBullets(SaveManager.BulletData bulletData)
+        {
+            foreach (DataStorage bulletDat in bulletData.bullets)
+            {
+                GameObject bulletObject = GameObject.Instantiate(bulletPrefab);
+                Bullet bullet = bulletObject.GetComponent<Bullet>();
+                bullet.RestoreFromData(bulletDat,this);
+            }
+        }
         public void SaveGame()
         {
             SaveManager.MapData mapData = new SaveManager.MapData(mapSizeX, mapSizeY, ref tilemap,defaultTileName);
@@ -240,7 +254,17 @@ namespace TileMap
                 unitData.Add(unit.GetData());
             }
             SaveManager.UnitsData unitsData = new SaveManager.UnitsData(unitData);
-            SaveManager.GameState gameState = new SaveManager.GameState(mapData,objectivesData, unitsData);
+            List<DataStorage> bulletData = new List<DataStorage>();
+            foreach (Transform transform in bulletStorage.transform)
+            {
+                StoresData storesData;
+                if (transform.TryGetComponent<StoresData>(out storesData))
+                {
+                    bulletData.Add(storesData.GetData());
+                }
+            }
+            SaveManager.BulletData bulletsData = new SaveManager.BulletData(bulletData);
+            SaveManager.GameState gameState = new SaveManager.GameState(mapData,objectivesData, unitsData,bulletsData);
             SaveManager.SaveGame(ref gameState);
         }
     }
