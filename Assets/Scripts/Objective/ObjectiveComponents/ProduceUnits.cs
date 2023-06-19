@@ -8,7 +8,7 @@ public class ProduceUnits : MonoBehaviour,StoresData
     [SerializeField]
     List<ProductionSlot> slots = new List<ProductionSlot>();
 
-    Vector3 productionOffset = Vector3.one * 3;
+    Vector3 productionOffset = new Vector3(3,3);
     void Start()
     {
         objective = transform.parent.gameObject.GetComponent<Objective>();

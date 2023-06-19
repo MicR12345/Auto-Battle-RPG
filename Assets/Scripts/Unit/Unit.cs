@@ -133,6 +133,7 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
     }
     public void DestoryThis()
     {
+        controller.map.Occupy(unitMovement.currentTile, null);
         controller.UnregisterUnit(this);
         isDead = true;
         GameObject.Destroy(this.gameObject);

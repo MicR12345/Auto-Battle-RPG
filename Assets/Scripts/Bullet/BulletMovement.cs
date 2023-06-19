@@ -23,6 +23,11 @@ public class BulletMovement : MonoBehaviour
     }
     private void Update()
     {
+        if (bullet.controller == null)
+        {
+            GameObject.Destroy(gameObject);
+            return;
+        }
         if (bullet.controller.freezeMap) return;
         if (Vector3.Distance(transform.position,target)<.3f)
         {
