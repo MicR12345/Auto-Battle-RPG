@@ -51,7 +51,7 @@ public static class SaveManager
         public int mapSizeY;
         [XmlArray("Map"), XmlArrayItem("Tile")]
         public List<TileMap.MapSaveTileData> mapTiles;
-        public MapData(int mapSizeX,int mapSizeY,ref Tilemap tilemap,string defaultTile)
+        public MapData(int mapSizeX,int mapSizeY,TileMap.MapController controller,string defaultTile)
         {
             this.mapSizeX = mapSizeX;
             this.mapSizeY = mapSizeY;
@@ -60,10 +60,14 @@ public static class SaveManager
             {
                 for (int j = 0; j < mapSizeY; j++)
                 {
-                    TileBase tile = tilemap.GetTile(new Vector3Int(i, j));
-                    if (tile.name != defaultTile)
+                    TileBase[] tiles = controller.GetTile(i,j);
+                    if (tiles[0].name != defaultTile)
                     {
-                        mapTiles.Add(new TileMap.MapSaveTileData(tile.name, i, j));
+                        mapTiles.Add(new TileMap.MapSaveTileData(tiles[0].name, i, j));
+                    }
+                    if (tiles.Length > 1)
+                    {
+                        mapTiles.Add(new TileMap.MapSaveTileData(tiles[1].name, i, j));
                     }
                 }
             }
