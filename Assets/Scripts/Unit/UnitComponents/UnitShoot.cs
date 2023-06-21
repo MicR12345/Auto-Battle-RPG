@@ -29,6 +29,7 @@ public class UnitShoot : MonoBehaviour,StoresData
         if (unit.controller.freezeMap || unit.freezeLogic) return;
         if (shootingCooldown<=0f)
         {
+            if (currentTarget != null && currentTarget.IsTargedDeadInside())currentTarget = null;
             if (currentTarget!=null)
             {
                 CreateBullet();
