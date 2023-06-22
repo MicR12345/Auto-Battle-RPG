@@ -47,8 +47,8 @@ namespace TileMap
         private void Start()
         {
             CreateAllTiles();
-            LoadGame();
-            //CreateEmptyMapWithSize(mapSizeX, mapSizeY);
+            //LoadGame();
+            CreateEmptyMapWithSize(mapSizeX, mapSizeY);
             FillMapEditorOptions();
         }
         void CreateEmptyMapWithSize(int x,int y)
@@ -152,51 +152,295 @@ namespace TileMap
         }
         void CheckNeighboursForBorders(MapTile tile, int x, int y)
         {
+            bool[,] placeBorders = new bool[3,3];
+            foreach (Border border in tile.applicableBorders)
+            {
+                for (int i = -1; i <= 1; i++)
+                {
+                    for (int j = -1; j <= 1; j++)
+                    {
+                        if (i == 0 && j == 0) continue;
+                        if (x+i>=0 && x+i <mapSizeX && y+j>=0 && y+j<mapSizeY)
+                        {
+                            TileBase[] tiles = GetTile(x + i, y + j);
+                            if (tiles[tiles.Length-1].name==border.neighbourName)
+                            {
+                                string borderVariant = GetBorderVariantFromPosition(x, y, i, j, border.neighbourName);
+                                BorderTile borderTile = FindBorder(border.borderName);
+                                borderTilemap.SetTile(new Vector3Int(2 * x + 1 + i, 2 * y + 1 + j), borderTile.GetTileVariant(borderVariant));
+                                placeBorders[i + 1, j + 1] = true;
+                            }
+                            if(tiles[tiles.Length - 1].name == tile.tileName)
+                            {
+                                string borderVariant = GetBorderVariantSameTile(x, y, i, j, border.neighbourName);
+                                if (borderVariant!="None")
+                                {
+                                    BorderTile borderTile = FindBorder(border.borderName);
+                                    borderTilemap.SetTile(new Vector3Int(2 * x + 1 + i, 2 * y + 1 + j), borderTile.GetTileVariant(borderVariant));
+                                    placeBorders[i + 1, j + 1] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             for (int i = -1; i <= 1; i++)
             {
                 for (int j = -1; j <= 1; j++)
                 {
-                    if (x+i<0 || x+i>=mapSizeX)
+                    if (!placeBorders[i+1,j+1])
                     {
-                        continue;
-                    }
-                    if (y + j < 0 || y + j >= mapSizeY)
-                    {
-                        continue;
-                    }
-                    if (i==0 && j==0)
-                    {
-                        continue;
-                    }
-                    bool borderPlaced = false;
-                    foreach (Border item in tile.applicableBorders)
-                    {
-                        TileBase[] tilesOnMap = GetTile(x + i, y + j);
-                        if (tilesOnMap[tilesOnMap.Length - 1].name == item.neighbourName)
-                        {
-                            borderPlaced = true;
-                            BorderTile borderTile = FindBorder(item.borderName);
-                            borderTilemap.SetTile(new Vector3Int(2*x+1 + i,2*y+1 + j),borderTile.tiles[(-i+1)*3+(-j+1)]);
-                        }
-                        
-                        MapTile other = FindTile(tilesOnMap[tilesOnMap.Length-1].name);
-                        foreach (Border border in other.applicableBorders)
-                        {
-                            if (border.neighbourName == tile.tileName)
-                            {
-                                borderPlaced = true;
-                                BorderTile borderTile = FindBorder(item.borderName);
-                                borderTilemap.SetTile(new Vector3Int(2 * x + 1 + i, 2 * y + 1 + j), borderTile.tiles[(j + 1) * 3 + (i + 1)]);
-                            }
-                        }
-
-                    }
-                    if (!borderPlaced)
-                    {
-                        borderTilemap.SetTile(new Vector3Int(2 * x + 1 + i, 2 * y + 1 + j),null);
+                        borderTilemap.SetTile(new Vector3Int(2 * x + 1 + i, 2 * y + 1 + j), null);
                     }
                 }
             }
+        }
+        string GetBorderVariantSameTile(int x, int y, int i, int j, string neighbourName)
+        {
+            string tileName = GetTileName(x + i, y + j);
+            if (i<0)
+            {
+                if (j<0)
+                {
+                    string tileAbove = GetTileName(x + i, y + j + 1);
+                    string tileRight = GetTileName(x + i + 1, y + j);
+                    if (tileAbove==tileName && tileRight==tileName)
+                    {
+                        return "None";
+                    }
+                    else if (tileAbove==tileName)
+                    {
+                        if (tileRight == neighbourName)
+                        {
+                            return "CBR";
+                        }
+                        else return "None";
+                    }
+                    else if (tileRight == tileName)
+                    {
+                        if (tileAbove == neighbourName)
+                        {
+                            return "CTL";
+                        }
+                        else return "None";
+                    }
+                    else
+                    {
+                        return "PL";
+                    }
+                }
+                else if (j > 0)
+                {
+                    string tileBelow = GetTileName(x + i, y + j - 1);
+                    string tileRight = GetTileName(x + i + 1, y + j);
+                    if (tileBelow == tileName && tileRight == tileName)
+                    {
+                        return "None";
+                    }
+                    else if (tileBelow == tileName)
+                    {
+                        if (tileRight == neighbourName)
+                        {
+                            return "CTR";
+                        }
+                        else return "None";
+                    }
+                    else if (tileRight == tileName)
+                    {
+                        if (tileBelow == neighbourName)
+                        {
+                            return "CBL";
+                        }
+                        else return "None";
+                    }
+                    else
+                    {
+                        return "PR";
+                    }
+                }
+            }
+            else if (i > 0)
+            {
+                if (j < 0)
+                {
+                    string tileAbove = GetTileName(x + i, y + j + 1);
+                    string tileLeft = GetTileName(x + i - 1, y + j);
+                    if (tileAbove == tileName && tileLeft == tileName)
+                    {
+                        return "None";
+                    }
+                    else if (tileAbove == tileName)
+                    {
+                        if (tileLeft == neighbourName)
+                        {
+                            return "CBL";
+                        }
+                        else return "None";
+                    }
+                    else if (tileLeft == tileName)
+                    {
+                        if (tileAbove == neighbourName)
+                        {
+                            return "CTR";
+                        }
+                        else return "None";
+                    }
+                    else
+                    {
+                        return "PR";
+                    }
+                }
+                else if (j > 0)
+                {
+                    string tileBelow = GetTileName(x + i, y + j - 1);
+                    string tileLeft = GetTileName(x + i - 1, y + j);
+                    if (tileBelow == tileName && tileLeft == tileName)
+                    {
+                        return "None";
+                    }
+                    else if (tileBelow == tileName)
+                    {
+                        if (tileLeft == neighbourName)
+                        {
+                            return "CTL";
+                        }
+                        else return "None";
+                    }
+                    else if (tileLeft == tileName)
+                    {
+                        if (tileBelow == neighbourName)
+                        {
+                            return "CBR";
+                        }
+                        else return "None";
+                    }
+                    else
+                    {
+                        return "PL";
+                    }
+                }
+            }
+            return "None";
+        }
+        string GetBorderVariantFromPosition(int x,int y,int i,int j,string neighbourName)
+        {
+            if (i<0)
+            {
+                if (j<0)
+                {
+                    bool tileAbove = false, tileRight = false;
+                    if (GetTileName(x + i, y + j + 1) == neighbourName) tileAbove = true;
+                    if (GetTileName(x + i + 1, y + j) == neighbourName) tileRight = true;
+                    if (tileAbove && tileRight)
+                    {
+                        return "BL";
+                    }
+                    else if(tileAbove)
+                    {
+                        return "ML";
+                    }
+                    else if (tileRight)
+                    {
+                        return "B";
+                    }
+                    else
+                    {
+                        return "CBL";
+                    }
+                }
+                else if (j==0)
+                {
+                    return "ML";
+                }
+                else if (j > 0)
+                {
+                    bool tileBelow = false, tileRight = false;
+                    if (GetTileName(x + i, y + j - 1) == neighbourName) tileBelow = true;
+                    if (GetTileName(x + i + 1, y + j) == neighbourName) tileRight = true;
+                    if (tileBelow && tileRight)
+                    {
+                        return "TL";
+                    }
+                    else if (tileBelow)
+                    {
+                        return "ML";
+                    }
+                    else if (tileRight)
+                    {
+                        return "T";
+                    }
+                    else
+                    {
+                        return "CTL";
+                    }
+                }
+            }
+            else if (i == 0)
+            {
+                if (j < 0)
+                {
+                    return "B";
+                }
+                else
+                {
+                    return "T";
+                }
+            }
+            else if (i>0)
+            {
+                if (j < 0)
+                {
+                    bool tileAbove = false, tileLeft = false;
+                    if (GetTileName(x + i, y + j + 1) == neighbourName) tileAbove = true;
+                    if (GetTileName(x + i - 1, y + j) == neighbourName) tileLeft = true;
+                    if (tileAbove && tileLeft)
+                    {
+                        return "BR";
+                    }
+                    else if (tileAbove)
+                    {
+                        return "MR";
+                    }
+                    else if (tileLeft)
+                    {
+                        return "B";
+                    }
+                    else
+                    {
+                        return "CBR";
+                    }
+                }
+                else if (j == 0) return "MR";
+                else if (j>0)
+                {
+                    bool tileBelow = false, tileLeft = false;
+                    if (GetTileName(x + i, y + j - 1) == neighbourName) tileBelow = true;
+                    if (GetTileName(x + i - 1, y + j) == neighbourName) tileLeft = true;
+                    if (tileBelow && tileLeft)
+                    {
+                        return "TR";
+                    }
+                    else if (tileBelow)
+                    {
+                        return "MR";
+                    }
+                    else if (tileLeft)
+                    {
+                        return "T";
+                    }
+                    else
+                    {
+                        return "CTR";
+                    }
+                }
+            }
+            return "unknown";
+        }
+        public string GetTileName(int x,int y)
+        {
+            TileBase[] tile = GetTile(x, y);
+            string name = tile[tile.Length - 1].name;
+            return name;
         }
         public TileBase[] GetTile(int x, int y)
         {
@@ -409,88 +653,50 @@ namespace TileMap
     public class BorderTile
     {
         public string borderName;
-        //Unity inaczej tego nie potrafi rozpoznac
-        public List<Sprite> tilesTL;
-        public List<Sprite> tilesT;
-        public List<Sprite> tilesTR;
-        public List<Sprite> tilesML;
-        public List<Sprite> tilesMR;
-        public List<Sprite> tilesBL;
-        public List<Sprite> tilesB;
-        public List<Sprite> tilesBR;
-        [HideInInspector]
-        public TileBase[] tiles = new TileBase[9];
-        public List<Sprite> GetSpritesFromOffset(int i,int j)
+        public List<BorderVariant> borderVariants = new List<BorderVariant>();
+        public TileBase GetTileVariant(string variant)
         {
-            if (i==-1)
+            foreach (BorderVariant borderVariant in borderVariants)
             {
-                if (j==-1)
+                if (borderVariant.variant==variant)
                 {
-                    return tilesBL;
-                }
-                else if (j == 0)
-                {
-                    return tilesB;
-                }
-                else if (j==1)
-                {
-                    return tilesBR;
-                }
-            }
-            else if(i == 0)
-            {
-                if (j==-1)
-                {
-                    return tilesML;
-                }
-                else if (j == 1)
-                {
-                    return tilesMR;
-                }
-            }
-            else if (i==1)
-            {
-                if (j == -1)
-                {
-                    return tilesTL;
-                }
-                else if (j == 0)
-                {
-                    return tilesT;
-                }
-                else if (j == 1)
-                {
-                    return tilesTR;
+                    return borderVariant.tile;
                 }
             }
             return null;
         }
         public void GenerateTileData()
         {
-            tiles = new TileBase[9];
-            for (int i = -1; i <= 1; i++)
+            foreach (BorderVariant variant in borderVariants)
             {
-                for (int j = -1; j <= 1; j++)
-                {
-                    if (i == 0 && j == 0) continue;
-                    List<Sprite> sprites = this.GetSpritesFromOffset(i, j);
-                    if (sprites.Count > 1)
-                    {
-                        AnimatedTile tile = ScriptableObject.CreateInstance<AnimatedTile>();
-                        tile.name = borderName;
-                        tile.m_AnimatedSprites = sprites.ToArray();
-                        tile.m_MinSpeed = 1f;
-                        tile.m_MaxSpeed = 1f;
-                        tiles[(i + 1) * 3 + (j + 1)] = tile;
-                    }
-                    else
-                    {
-                        Tile tile = ScriptableObject.CreateInstance<Tile>();
-                        tile.name = borderName;
-                        tile.sprite = sprites[0];
-                        tiles[(i + 1) * 3 + (j + 1)] = tile;
-                    }
-                }
+                variant.CreateTile(this);
+            }
+        }
+    }
+    [System.Serializable]
+    public class BorderVariant
+    {
+        public string variant;
+        public List<Sprite> textures;
+        [HideInInspector]
+        public TileBase tile;
+        public void CreateTile(BorderTile borderTile)
+        {
+            if (textures.Count > 1)
+            {
+                AnimatedTile tile = ScriptableObject.CreateInstance<AnimatedTile>();
+                tile.name = borderTile.borderName + "_" + variant;
+                tile.m_AnimatedSprites = textures.ToArray();
+                tile.m_MinSpeed = 1f;
+                tile.m_MaxSpeed = 1f;
+                this.tile = tile;
+            }
+            else
+            {
+                Tile tile = ScriptableObject.CreateInstance<Tile>();
+                tile.name = borderTile.borderName + "_" + variant;
+                tile.sprite = textures[0];
+                this.tile = tile;
             }
         }
     }

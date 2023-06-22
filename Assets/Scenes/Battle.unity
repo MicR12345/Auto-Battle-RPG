@@ -5197,23 +5197,63 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1912011600503024805, guid: d7b53cb94a9391e408da016efca60521, type: 3}
   borderTiles:
   - borderName: impass
-    tilesTL:
-    - {fileID: -25475532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
-    tilesT:
-    - {fileID: -1920717294, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
-    tilesTR:
-    - {fileID: 604164458, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
-    tilesML:
-    - {fileID: 576271478, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
-    tilesMR:
-    - {fileID: -795331578, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
-    tilesBL:
-    - {fileID: -186667327, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
-    tilesB:
-    - {fileID: -1284216448, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
-    tilesBR:
-    - {fileID: 1526550532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
-    tiles: []
+    borderVariants:
+    - variant: TL
+      textures:
+      - {fileID: -25475532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      tile: {fileID: 0}
+    - variant: T
+      textures:
+      - {fileID: -1920717294, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      tile: {fileID: 0}
+    - variant: TR
+      textures:
+      - {fileID: 604164458, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      tile: {fileID: 0}
+    - variant: MR
+      textures:
+      - {fileID: -795331578, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      tile: {fileID: 0}
+    - variant: ML
+      textures:
+      - {fileID: 576271478, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      tile: {fileID: 0}
+    - variant: BL
+      textures:
+      - {fileID: -186667327, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      tile: {fileID: 0}
+    - variant: B
+      textures:
+      - {fileID: -1284216448, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      tile: {fileID: 0}
+    - variant: BR
+      textures:
+      - {fileID: 1526550532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      tile: {fileID: 0}
+    - variant: CBR
+      textures:
+      - {fileID: 1526550532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      tile: {fileID: 0}
+    - variant: CBL
+      textures:
+      - {fileID: -186667327, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      tile: {fileID: 0}
+    - variant: CTR
+      textures:
+      - {fileID: 604164458, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      tile: {fileID: 0}
+    - variant: CTL
+      textures:
+      - {fileID: -25475532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      tile: {fileID: 0}
+    - variant: PR
+      textures:
+      - {fileID: 21300000, guid: 78e0b74a1f4bc234691f5c341f68ba18, type: 3}
+      tile: {fileID: 0}
+    - variant: PL
+      textures:
+      - {fileID: 21300000, guid: 78e0b74a1f4bc234691f5c341f68ba18, type: 3}
+      tile: {fileID: 0}
   placeableTiles:
   - tileName: grass
     passable: 1
@@ -5242,7 +5282,7 @@ MonoBehaviour:
   objectiveDropdown: {fileID: 355211409}
   unitDropdown: {fileID: 1959660838}
   factionSelectionDropdown: {fileID: 133521199}
-  freezeMap: 1
+  freezeMap: 0
   mapSizeX: 100
   mapSizeY: 100
   bulletStorage: {fileID: 1213009247}

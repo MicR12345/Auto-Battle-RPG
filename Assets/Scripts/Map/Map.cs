@@ -54,7 +54,7 @@ namespace PathfindMap
                 {
                     increaseCounter++;
                 }
-                if (increaseCounter>= sizeX + sizeY)
+                if (increaseCounter>= closestProximityReattempts)
                 {
                     return (CreatePath(closest),false);
                 }
