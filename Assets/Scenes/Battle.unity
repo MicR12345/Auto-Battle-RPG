@@ -5232,19 +5232,19 @@ MonoBehaviour:
       tile: {fileID: 0}
     - variant: CBR
       textures:
-      - {fileID: 1526550532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: -25475532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
       tile: {fileID: 0}
     - variant: CBL
       textures:
-      - {fileID: -186667327, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: 604164458, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
       tile: {fileID: 0}
     - variant: CTR
       textures:
-      - {fileID: 604164458, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: -186667327, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
       tile: {fileID: 0}
     - variant: CTL
       textures:
-      - {fileID: -25475532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: 1526550532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
       tile: {fileID: 0}
     - variant: PR
       textures:
