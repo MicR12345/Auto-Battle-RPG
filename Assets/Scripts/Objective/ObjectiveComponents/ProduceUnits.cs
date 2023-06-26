@@ -2,7 +2,7 @@ using System.Collections;
 using System.Globalization;
 using System.Collections.Generic;
 using UnityEngine;
-public class ProduceUnits : MonoBehaviour,StoresData
+public class ProduceUnits : MonoBehaviour,StoresData,Component
 {
     Objective objective;
     [SerializeField]
@@ -113,6 +113,16 @@ public class ProduceUnits : MonoBehaviour,StoresData
         }
         dataStorage.AddSubcomponent(productionSlots);
         return dataStorage;
+    }
+
+    bool Component.isStatic()
+    {
+        return false;
+    }
+
+    string Component.getName()
+    {
+        return transform.name;
     }
 
     [System.Serializable]

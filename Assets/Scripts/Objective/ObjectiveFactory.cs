@@ -10,7 +10,38 @@ public class ObjectiveFactory : MonoBehaviour
     public GameObject ObjectivePrefab;
 
     public List<ObjectiveType> objectiveTypes = new List<ObjectiveType>();
-
+    public List<ObjectiveGraphics> objectiveGraphics = new List<ObjectiveGraphics>();
+    public List<Component> attachableObjectiveComponents= new List<Component>();
+    public void Start()
+    {
+        foreach (Transform child in ObjectivePrefab.transform)
+        {
+            Component comp;
+            if (child.TryGetComponent<Component>(out comp))
+            {
+                if (!comp.isStatic())
+                {
+                    attachableObjectiveComponents.Add(comp);
+                }
+            }
+        }
+    }
+    public List<TMPro.TMP_Dropdown.OptionData> PopulateObjectiveSpriteDropdown()
+    {
+        List<TMPro.TMP_Dropdown.OptionData> options = new List<TMPro.TMP_Dropdown.OptionData>();
+        foreach (ObjectiveGraphics graphics in objectiveGraphics)
+        {
+            TMPro.TMP_Dropdown.OptionData optionData = new TMPro.TMP_Dropdown.OptionData();
+            optionData.text = graphics.objectiveName;
+            optionData.image = graphics.objectiveSprites[0].stateSprite[0];
+            options.Add(optionData);
+        }
+        return options;
+    }
+    public List<Component> FetchComponents()
+    {
+        return attachableObjectiveComponents;
+    }
     public Objective DebugCreateObjective(string type, Vector3 position,string faction)
     {
         GameObject objectiveObject = GameObject.Instantiate(ObjectivePrefab);
@@ -90,6 +121,7 @@ public class ObjectiveFactory : MonoBehaviour
         Objective objective = objectiveObject.GetComponent<Objective>();
         objective.isReconstructed = true;
         objective.reconstructionData = objectiveData;
+        objective.freezeLogic = true;
         ObjectiveType objectiveType = FindObjectiveData(objectiveName);
         if (objectiveType == null)
         {
@@ -98,7 +130,7 @@ public class ObjectiveFactory : MonoBehaviour
             return null;
         }
         objective.objectiveType = objectiveType;
-        objective.MaxHP = objectiveType.maxHP;
+        objective.MaxHP = int.Parse(objectiveData.FindParam("maxHP").value);
         objective.HP = int.Parse(objectiveData.FindParam("hp").value);
         objective.gatherSpot =
             (
@@ -111,7 +143,6 @@ public class ObjectiveFactory : MonoBehaviour
             objectiveObject.transform.Find(comp.name).gameObject.SetActive(true);
         }
         objective.controller = controller;
-        objective.freezeLogic = true;
         return objective;
     }
 }
@@ -140,6 +171,12 @@ public class ObjectiveSprites
     public string name;
     public List<Sprite> stateSprite = new List<Sprite>();
     public float animSpeed = 3;
+}
+[System.Serializable]
+public class ObjectiveGraphics
+{
+    public string objectiveName;
+    public List<ObjectiveSprites> objectiveSprites = new List<ObjectiveSprites>();
 }
 [System.Serializable,XmlRoot("Component")]
 public class ComponentWithParams

@@ -116,7 +116,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
             }
             if (moving)
             {
-                if (Vector3.Distance(V3PathfindStep, transform.parent.position) < 0.01f)
+                if (Vector3.Distance(V3PathfindStep, transform.parent.position) < 0.1f)
                 {
                     pathEnumerator++;
                     if (pathEnumerator >= pathfindPath.Count)
@@ -132,8 +132,9 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
                 }
                 else
                 {
-                    transform.parent.position = Vector3.Lerp(transform.parent.position, V3PathfindStep,
-                        unit.speed * Time.deltaTime);
+                    transform.parent.position = transform.parent.position + Vector3.Normalize(V3PathfindStep - transform.parent.position) * unit.speed * Time.deltaTime;
+                    //transform.parent.position = Vector3.Lerp(transform.parent.position, V3PathfindStep,
+                    //    unit.speed * Time.deltaTime);
                 }
             }
         }

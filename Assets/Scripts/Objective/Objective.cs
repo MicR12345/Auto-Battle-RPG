@@ -89,6 +89,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         dataStorage.RegisterNewParam("y", postion.Item2.ToString());
         dataStorage.RegisterNewParam("gatherSpotX", gatherSpot.Item1.ToString());
         dataStorage.RegisterNewParam("gatherSpotY", gatherSpot.Item2.ToString());
+        dataStorage.RegisterNewParam("maxHP", maxHP.ToString());
         dataStorage.RegisterNewParam("hp", HP.ToString());
         dataStorage.RegisterNewParam("faction", faction);
         foreach (StoresData item in componentSerializableData)
