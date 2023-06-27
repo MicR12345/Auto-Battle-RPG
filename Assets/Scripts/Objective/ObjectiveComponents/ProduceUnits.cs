@@ -2,6 +2,8 @@ using System.Collections;
 using System.Globalization;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+
 public class ProduceUnits : MonoBehaviour,StoresData,Component
 {
     Objective objective;
@@ -123,6 +125,37 @@ public class ProduceUnits : MonoBehaviour,StoresData,Component
     string Component.getName()
     {
         return transform.name;
+    }
+
+    SimpleComponent Component.getRequiredFields()
+    {
+        SimpleComponent produceUnits = new SimpleComponent();
+        produceUnits.name = transform.name;
+        List<(string, TMP_InputField.ContentType)> fields = new List<(string, TMP_InputField.ContentType)> ();
+        produceUnits.fields = fields;
+        produceUnits.subComponents = new List<SimpleComponent> ();
+
+
+        SimpleComponent productionSlot = new SimpleComponent();
+        productionSlot.name = "ProductionSlots";
+        List<(string, TMP_InputField.ContentType)> productionFields = new List<(string, TMP_InputField.ContentType)>();
+        productionFields.Add(("type", TMP_InputField.ContentType.Alphanumeric));
+        productionFields.Add(("stage", TMP_InputField.ContentType.IntegerNumber));
+        productionFields.Add(("time", TMP_InputField.ContentType.DecimalNumber));
+        productionFields.Add(("timer", TMP_InputField.ContentType.DecimalNumber));
+        productionSlot.count = -1;
+        productionSlot.fields = productionFields;
+        produceUnits.subComponents.Add(productionSlot);
+
+        productionSlot.subComponents = new List<SimpleComponent> ();
+        SimpleComponent upgrade = new SimpleComponent();
+        upgrade.name = "Upgrades";
+        List<(string, TMP_InputField.ContentType)> upgradeFields = new List<(string, TMP_InputField.ContentType)>();
+        upgradeFields.Add(("upgradeName", TMP_InputField.ContentType.Alphanumeric));
+        upgrade.fields = upgradeFields;
+        productionSlot.subComponents.Add(upgrade);
+
+        return produceUnits;
     }
 
     [System.Serializable]

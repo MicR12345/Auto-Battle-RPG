@@ -159,6 +159,22 @@ public class DataStorage
         }
         return null;
     }
+    public void RemoveParam(Parameter parameter)
+    {
+        parameters.Remove(parameter);
+    }
+    public void EditParam(string name,string value)
+    {
+        foreach (Parameter param in parameters)
+        {
+            if (param.name == name)
+            {
+                param.value = value;
+                return;
+            }
+        }
+        RegisterNewParam(name, value);
+    }
     public DataStorage FindSubcomp(string name)
     {
         foreach (DataStorage comp in subcomponents)
