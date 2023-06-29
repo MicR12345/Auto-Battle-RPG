@@ -173,12 +173,12 @@ public class ProduceUnits : MonoBehaviour,StoresData,Component
             dataStorage.RegisterNewParam("stage",currentStage.ToString());
             dataStorage.RegisterNewParam("time", time.ToString(CultureInfo.InvariantCulture.NumberFormat));
             dataStorage.RegisterNewParam("timer", timer.ToString(CultureInfo.InvariantCulture.NumberFormat));
-            DataStorage upgradeStorage = new DataStorage("Upgrades");
             for (int i = 0; i < upgrades.Count; i++)
             {
-                upgradeStorage.RegisterNewParam(i.ToString(), upgrades[i]);
+                DataStorage upgrade = new DataStorage("Upgrades");
+                upgrade.RegisterNewParam("upgradeName", upgrades[i]);
+                dataStorage.AddSubcomponent(upgrade);
             }
-            dataStorage.AddSubcomponent(upgradeStorage);
             return dataStorage;
         }
         public ProductionSlot(DataStorage dataStorage)
@@ -187,10 +187,10 @@ public class ProduceUnits : MonoBehaviour,StoresData,Component
             currentStage = int.Parse(dataStorage.FindParam("stage").value);
             time = float.Parse(dataStorage.FindParam("time").value,CultureInfo.InvariantCulture.NumberFormat);
             timer = float.Parse(dataStorage.FindParam("timer").value, CultureInfo.InvariantCulture.NumberFormat);
-            DataStorage upgradeStorage = dataStorage.FindSubcomp("Upgrades");
-            for (int i = 0; i < upgradeStorage.parameters.Count; i++)
+            List<DataStorage> upgradesData = dataStorage.FindAllSubcomps("Upgrades");
+            for (int i = 0; i < upgradesData.Count; i++)
             {
-                upgrades.Add(upgradeStorage.parameters[i].value);
+                upgrades.Add(upgradesData[i].FindParam("upgradeName").value);
             }
         }
         public ProductionSlot()

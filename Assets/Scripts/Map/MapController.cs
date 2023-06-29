@@ -44,11 +44,14 @@ namespace TileMap
         public int mapSizeY = 100;
 
         public GameObject bulletStorage;
+
+        public bool mapEditorMode = false;
         private void Start()
         {
+            mapEditorMode = true;
             CreateAllTiles();
-            //LoadGame();
-            CreateEmptyMapWithSize(mapSizeX, mapSizeY);
+            LoadGame();
+            //CreateEmptyMapWithSize(mapSizeX, mapSizeY);
             FillMapEditorOptions();
         }
         void CreateEmptyMapWithSize(int x,int y)

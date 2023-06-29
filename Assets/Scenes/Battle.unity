@@ -912,7 +912,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 109900287}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1822727801}
+        m_TargetAssemblyTypeName: CreateObjectiveForm, Assembly-CSharp
+        m_MethodName: OnCreate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &109900287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10030,6 +10042,7 @@ MonoBehaviour:
   mapSizeX: 100
   mapSizeY: 100
   bulletStorage: {fileID: 1213009247}
+  mapEditorMode: 0
 --- !u!1 &1175768297
 GameObject:
   m_ObjectHideFlags: 0
@@ -14484,6 +14497,10 @@ MonoBehaviour:
   formAddSubcompTemplateText: {fileID: 896641162}
   formModifySubcompTemplate: {fileID: 927496532}
   formModifySubcompTemplateText: {fileID: 607496362}
+  objectiveName: {fileID: 74901509}
+  maxHP: {fileID: 1753962801}
+  faction: {fileID: 296043212}
+  hp: {fileID: 436740126}
 --- !u!1 &1829093498
 GameObject:
   m_ObjectHideFlags: 0

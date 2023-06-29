@@ -23,6 +23,21 @@ public static class SaveManager
         reader.Close();
         return gameState;
     }
+    public static void SaveObjectiveData(ref DataStorage data,string name)
+    {
+        XmlSerializer xmlSerializer = new XmlSerializer(typeof(DataStorage));
+        TextWriter writer = new StreamWriter(Application.dataPath + "/Objectives/" + name + ".objective");
+        xmlSerializer.Serialize(writer, data);
+        writer.Close();
+    }
+    public static DataStorage LoadObjectiveData(string name)
+    {
+        XmlSerializer xmlSerializer = new XmlSerializer(typeof(DataStorage));
+        TextReader reader = new StreamReader(Application.dataPath + "/Objectives/" + name + ".objective");
+        DataStorage gameState = (DataStorage)xmlSerializer.Deserialize(reader);
+        reader.Close();
+        return gameState;
+    }
     [System.Serializable,XmlRoot("GameState")]
     public class GameState
     {
@@ -177,6 +192,10 @@ public class DataStorage
     }
     public DataStorage FindSubcomp(string name)
     {
+        if (subcomponents==null)
+        {
+            return null;
+        }
         foreach (DataStorage comp in subcomponents)
         {
             if (comp.name == name)
@@ -185,6 +204,26 @@ public class DataStorage
             }
         }
         return null;
+    }
+    public List<DataStorage> FindAllSubcomps(string name)
+    {
+        List<DataStorage> list = new List<DataStorage>();
+        if (subcomponents == null)
+        {
+            return null;
+        }
+        foreach (DataStorage comp in subcomponents)
+        {
+            if (comp.name == name)
+            {
+                list.Add(comp);
+            }
+        }
+        if (list.Count==0)
+        {
+            return null;
+        }
+        return list;
     }
 }
 [System.Serializable]

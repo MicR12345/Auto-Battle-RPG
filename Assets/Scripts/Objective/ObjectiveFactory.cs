@@ -122,14 +122,14 @@ public class ObjectiveFactory : MonoBehaviour
         objective.isReconstructed = true;
         objective.reconstructionData = objectiveData;
         objective.freezeLogic = true;
-        ObjectiveType objectiveType = FindObjectiveData(objectiveName);
-        if (objectiveType == null)
-        {
-            GameObject.Destroy(objectiveObject);
-            Debug.LogError("Objective type not found");
-            return null;
-        }
-        objective.objectiveType = objectiveType;
+        //ObjectiveType objectiveType = FindObjectiveData(objectiveName);
+        //if (objectiveType == null)
+        //{
+        //    GameObject.Destroy(objectiveObject);
+        //    Debug.LogError("Objective type not found");
+        //    return null;
+        //}
+        //objective.objectiveType = objectiveType;
         objective.MaxHP = int.Parse(objectiveData.FindParam("maxHP").value);
         objective.HP = int.Parse(objectiveData.FindParam("hp").value);
         objective.gatherSpot =

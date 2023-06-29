@@ -37,7 +37,12 @@ public class CreateObjectiveForm : MonoBehaviour
 
     TextMeshProUGUI selectedVariable;
 
-    bool changingComponent = false;
+    List<bool> changingComponent = new List<bool>();
+
+    public TMP_InputField objectiveName;
+    public TMP_InputField maxHP;
+    public TMP_Dropdown faction;
+    public Slider hp;
     public Component DisplayedComponent
     {
         set
@@ -55,8 +60,17 @@ public class CreateObjectiveForm : MonoBehaviour
                     displayedComponent = comp;
                     componentHeap = new List<Component>();
                     dataHeap.Add(currentEditedDataReference);
-                    currentEditedDataReference = new DataStorage(value.getName());
-                    PopulateSimpleComponents(value);
+                    DataStorage data = currentEditedDataReference.FindSubcomp(value.getName());
+                    if (data!=null)
+                    {
+                        currentEditedDataReference = data;
+                    }
+                    else
+                    {
+                        currentEditedDataReference = new DataStorage(value.getName());
+                    }
+                    
+                    PopulateSimpleComponents(value, currentEditedDataReference);
                 }
             }
         }
@@ -65,7 +79,8 @@ public class CreateObjectiveForm : MonoBehaviour
     {
         set
         {
-            changingComponent = false;
+            changingComponent.Add(false);
+            //changingComponent = false;
             dataHeap.Add(currentEditedDataReference);
             currentEditedDataReference = new DataStorage(value.getName());
             componentHeap.Add(displayedComponent);
@@ -79,13 +94,15 @@ public class CreateObjectiveForm : MonoBehaviour
         {
             componentHeap.Add(displayedComponent);
             displayedComponent = value;
-            changingComponent = true;
+            //changingComponent = true;
+            changingComponent.Add(true);
             PopulateSimpleComponents(value,currentEditedDataReference);
         }
     }
     public void PrevComponent(DataStorage data = null,bool remove = false)
     {
-        changingComponent = true;
+        selectedVariable = null;
+        //changingComponent = true;
         currentEditedDataReference = dataHeap[dataHeap.Count - 1];
         dataHeap.RemoveAt(dataHeap.Count - 1);
         if (data != null && !remove)
@@ -98,11 +115,16 @@ public class CreateObjectiveForm : MonoBehaviour
         }
         displayedComponent = componentHeap[componentHeap.Count - 1];
         componentHeap.RemoveAt(componentHeap.Count - 1);
+        changingComponent.RemoveAt(changingComponent.Count - 1);
+        changingComponent.Add(true);
         PopulateSimpleComponents(displayedComponent, currentEditedDataReference);
+        changingComponent.RemoveAt(changingComponent.Count - 1);
+        //changingComponent = false;
     }
     public void CreateForm()
     {
-        changingComponent = false;
+        //changingComponent = false;
+        changingComponent.Add(true);
         createdData = new DataStorage("Objective");
         currentEditedDataReference = createdData;
         dataHeap = new List<DataStorage>();
@@ -129,9 +151,17 @@ public class CreateObjectiveForm : MonoBehaviour
         foreach ((string, TMP_InputField.ContentType) item in simpleComponent.fields)
         {
             formTemplateInput.contentType = item.Item2;
-            if (changingComponent)
+            if (changingComponent[changingComponent.Count - 1])
             {
-                formTemplateInput.text = data.FindParam(item.Item1).value;
+                Parameter value = data.FindParam(item.Item1);
+                if (value!=null)
+                {
+                    formTemplateInput.text = value.value;
+                }
+            }
+            else
+            {
+                formTemplateInput.text = "";
             }
             formTemplateText.text = item.Item1;
             GameObject inputField = GameObject.Instantiate(formTemplate, formList);
@@ -142,7 +172,7 @@ public class CreateObjectiveForm : MonoBehaviour
         {
             foreach (SimpleComponent subSC in simpleComponent.subComponents)
             {
-                if (changingComponent && data.subcomponents!=null)
+                if (changingComponent[changingComponent.Count-1] && data.subcomponents!=null)
                 {
                     foreach (DataStorage dataStorage in data.subcomponents)
                     {
@@ -220,7 +250,10 @@ public class CreateObjectiveForm : MonoBehaviour
     }
     public void OnChangeData(TMP_InputField inputField)
     {
-        currentEditedDataReference.EditParam(selectedVariable.text, inputField.text);
+        if (selectedVariable!=null)
+        {
+            currentEditedDataReference.EditParam(selectedVariable.text, inputField.text);
+        }
     }
     public void OnSelectVariable(TextMeshProUGUI textMeshProUGUI)
     {
@@ -228,9 +261,9 @@ public class CreateObjectiveForm : MonoBehaviour
     }
     public void OnSave()
     {
-        if (componentHeap.Count >1)
+        if (componentHeap.Count >0)
         {
-            if (!changingComponent)
+            if (!changingComponent[changingComponent.Count - 1])
             {
                 DataStorage temp = currentEditedDataReference;
                 PrevComponent(temp);
@@ -242,15 +275,24 @@ public class CreateObjectiveForm : MonoBehaviour
         }
         else
         {
-            Debug.Log("TODO");
-            gameObject.SetActive(false);
+            Component baseComp = displayedComponent;
+            //changingComponent = true;
+            DataStorage data = createdData.FindSubcomp(displayedComponent.getName());
+            if (data==null)
+            {
+                createdData.AddSubcomponent(currentEditedDataReference);
+            }
+            currentEditedDataReference = createdData;
+            dataHeap.RemoveAt(dataHeap.Count-1);
+            DisplayedComponent = baseComp;
+            //gameObject.SetActive(false);
         }
     }
     public void OnDestroyData()
     {
-        if (componentHeap.Count >1)
+        if (componentHeap.Count >0)
         {
-            if (changingComponent)
+            if (changingComponent[changingComponent.Count - 1])
             {
                 DataStorage temp = currentEditedDataReference;
                 PrevComponent(temp,true);
@@ -262,8 +304,22 @@ public class CreateObjectiveForm : MonoBehaviour
         }
         else
         {
-            DisplayedComponent = null;
+            Component baseComp = displayedComponent;
+            //changingComponent = true;
+            PrevComponent();
+            DisplayedComponent = baseComp;
         }
+    }
+    public void OnCreate()
+    {
+        createdData.RegisterNewParam("name",objectiveName.text);
+        createdData.RegisterNewParam("maxHP", maxHP.text);
+        createdData.RegisterNewParam("faction", faction.options[faction.value].text);
+        createdData.RegisterNewParam("hp", Mathf.FloorToInt(hp.value * int.Parse(maxHP.text)).ToString());
+        createdData.RegisterNewParam("gatherSpotX", "-1");
+        createdData.RegisterNewParam("gatherSpotY", "-1");
+        SaveManager.SaveObjectiveData(ref createdData, objectiveName.text);
+        gameObject.SetActive(false);
     }
     class Counter
     {
