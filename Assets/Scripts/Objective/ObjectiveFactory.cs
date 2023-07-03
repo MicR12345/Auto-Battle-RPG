@@ -9,7 +9,6 @@ public class ObjectiveFactory : MonoBehaviour
 
     public GameObject ObjectivePrefab;
 
-    public List<ObjectiveType> objectiveTypes = new List<ObjectiveType>();
     public List<ObjectiveGraphics> objectiveGraphics = new List<ObjectiveGraphics>();
     public List<Component> attachableObjectiveComponents= new List<Component>();
     public void Start()
@@ -33,50 +32,24 @@ public class ObjectiveFactory : MonoBehaviour
         {
             TMPro.TMP_Dropdown.OptionData optionData = new TMPro.TMP_Dropdown.OptionData();
             optionData.text = graphics.objectiveName;
-            optionData.image = graphics.objectiveSprites[0].stateSprite[0];
             options.Add(optionData);
         }
         return options;
     }
-    public List<Component> FetchComponents()
+    public ObjectiveGraphics FindGraphics(string name)
     {
-        return attachableObjectiveComponents;
-    }
-    public Objective DebugCreateObjective(string type, Vector3 position,string faction)
-    {
-        GameObject objectiveObject = GameObject.Instantiate(ObjectivePrefab);
-        objectiveObject.transform.position = position;
-        objectiveObject.name = type;
-        Objective objective = objectiveObject.GetComponent<Objective>();
-        ObjectiveType objectiveType = FindObjectiveData(type);
-        objective.objectiveType = objectiveType;
-        if (objectiveType==null)
+        foreach (ObjectiveGraphics graphics in objectiveGraphics)
         {
-            GameObject.Destroy(objectiveObject);
-            Debug.LogError("Objective type not found");
-            return null;
-        }
-        objective.MaxHP = objectiveType.maxHP;
-        objective.faction = faction;
-        foreach (ComponentWithParams comp in objectiveType.components)
-        {
-            objectiveObject.transform.Find(comp.name).gameObject.SetActive(true);
-        }
-        OccupySpaceUnderObjective(controller.GetMapTileFromWorldPosition(position));
-        objective.controller = controller;
-        objective.freezeLogic = false;
-        return objective;
-    }
-    public ObjectiveType FindObjectiveData(string type)
-    {
-        for (int i = 0; i < objectiveTypes.Count; i++)
-        {
-            if (type == objectiveTypes[i].type)
+            if (graphics.objectiveName==name)
             {
-                return objectiveTypes[i];
+                return graphics;
             }
         }
         return null;
+    }
+    public List<Component> FetchComponents()
+    {
+        return attachableObjectiveComponents;
     }
     public void OccupySpaceUnderObjective((int,int) tile)
     {
@@ -88,30 +61,6 @@ public class ObjectiveFactory : MonoBehaviour
             }
         }
     }
-    public Objective CreatePlaceableObjective(string type, string faction)
-    {
-        GameObject objectiveObject = GameObject.Instantiate(ObjectivePrefab);
-        objectiveObject.transform.position = new Vector3(-10,-10);
-        objectiveObject.name = type;
-        Objective objective = objectiveObject.GetComponent<Objective>();
-        ObjectiveType objectiveType = FindObjectiveData(type);
-        if (objectiveType == null)
-        {
-            GameObject.Destroy(objectiveObject);
-            Debug.LogError("Objective type not found");
-            return null;
-        }
-        objective.objectiveType = objectiveType;
-        objective.MaxHP = objectiveType.maxHP;
-        objective.faction = faction;
-        foreach (ComponentWithParams comp in objectiveType.components)
-        {
-            objectiveObject.transform.Find(comp.name).gameObject.SetActive(true);
-        }
-        objective.controller = controller;
-        objective.freezeLogic = true;
-        return objective;
-    }
     public Objective ReconstructObjectiveFromData(DataStorage objectiveData)
     {
         GameObject objectiveObject = GameObject.Instantiate(ObjectivePrefab);
@@ -122,6 +71,8 @@ public class ObjectiveFactory : MonoBehaviour
         objective.isReconstructed = true;
         objective.reconstructionData = objectiveData;
         objective.freezeLogic = true;
+        objective.faction = objectiveData.FindParam("faction").value;
+        objective.graphics = FindGraphics(objectiveData.FindParam("graphicsPackage").value);
         //ObjectiveType objectiveType = FindObjectiveData(objectiveName);
         //if (objectiveType == null)
         //{
@@ -137,7 +88,6 @@ public class ObjectiveFactory : MonoBehaviour
             int.Parse(objectiveData.FindParam("gatherSpotX").value),
             int.Parse(objectiveData.FindParam("gatherSpotY").value)
             );
-        objective.faction = objectiveData.FindParam("faction").value;
         foreach (DataStorage comp in objectiveData.subcomponents)
         {
             objectiveObject.transform.Find(comp.name).gameObject.SetActive(true);
@@ -177,6 +127,19 @@ public class ObjectiveGraphics
 {
     public string objectiveName;
     public List<ObjectiveSprites> objectiveSprites = new List<ObjectiveSprites>();
+    public ObjectiveSprites FindGraphicsState(string name)
+    {
+        foreach (ObjectiveSprites spriteGroup in objectiveSprites)
+        {
+            if (spriteGroup.name==name)
+            {
+                return spriteGroup;
+            }
+        }
+        Debug.LogError("Graphics not found");
+        return null;
+
+    }
 }
 [System.Serializable,XmlRoot("Component")]
 public class ComponentWithParams

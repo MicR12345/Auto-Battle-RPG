@@ -2652,7 +2652,19 @@ MonoBehaviour:
     m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1822727801}
+        m_TargetAssemblyTypeName: CreateObjectiveForm, Assembly-CSharp
+        m_MethodName: SetObjectivePreview
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &298855955
 MonoBehaviour:
@@ -9956,59 +9968,59 @@ MonoBehaviour:
     borderVariants:
     - variant: TL
       textures:
-      - {fileID: -25475532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: 1089916096, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
     - variant: T
       textures:
-      - {fileID: -1920717294, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: -796783482, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
     - variant: TR
       textures:
-      - {fileID: 604164458, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: 240501703, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
     - variant: MR
       textures:
-      - {fileID: -795331578, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: -1898735660, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
     - variant: ML
       textures:
-      - {fileID: 576271478, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: 1981716572, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
     - variant: BL
       textures:
-      - {fileID: -186667327, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: 1975224570, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
     - variant: B
       textures:
-      - {fileID: -1284216448, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: 512991023, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
     - variant: BR
       textures:
-      - {fileID: 1526550532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: -284926658, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
     - variant: CBR
       textures:
-      - {fileID: -25475532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: 806888824, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
     - variant: CBL
       textures:
-      - {fileID: 604164458, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: 759920603, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
     - variant: CTR
       textures:
-      - {fileID: -186667327, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: 846947228, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
     - variant: CTL
       textures:
-      - {fileID: 1526550532, guid: d0c1d90ec2caae44eb815bee22992ba2, type: 3}
+      - {fileID: 1527248197, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
     - variant: PR
       textures:
-      - {fileID: 21300000, guid: 78e0b74a1f4bc234691f5c341f68ba18, type: 3}
+      - {fileID: 347947217, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
     - variant: PL
       textures:
-      - {fileID: 21300000, guid: 78e0b74a1f4bc234691f5c341f68ba18, type: 3}
+      - {fileID: 290917734, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
       tile: {fileID: 0}
   placeableTiles:
   - tileName: grass
@@ -10016,17 +10028,16 @@ MonoBehaviour:
     isMaskLayer: 0
     tileObject: {fileID: 0}
     sprite:
-    - {fileID: 21300000, guid: 78e0b74a1f4bc234691f5c341f68ba18, type: 3}
+    - {fileID: -1641830946, guid: 283c8672e12318c469d294fff4a4a3c9, type: 3}
     applicableBorders:
     - neighbourName: impass
       borderName: impass
   - tileName: impass
     passable: 0
-    isMaskLayer: 1
+    isMaskLayer: 0
     tileObject: {fileID: 0}
     sprite:
-    - {fileID: 21300000, guid: 262d45014c41fde4ea6b868add8672f0, type: 3}
-    - {fileID: 21300000, guid: 4ae977d7107ebfe448975af141d3f44a, type: 3}
+    - {fileID: 274899298, guid: 283c8672e12318c469d294fff4a4a3c9, type: 3}
     applicableBorders:
     - neighbourName: grass
       borderName: impass
@@ -14485,6 +14496,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteDropdown: {fileID: 298855954}
   objectiveFactory: {fileID: 2036764154}
+  objectiveImagePreview: {fileID: 607007598}
   componentTemplate: {fileID: 1990525839}
   componentTemplateText: {fileID: 1724167109}
   componentTemplateFormButton: {fileID: 1990525846}
@@ -16040,7 +16052,13 @@ MonoBehaviour:
             - name: Unit1
               componentsWithParams: []
     sprites: []
-  objectiveGraphics: []
+  objectiveGraphics:
+  - objectiveName: Base
+    objectiveSprites:
+    - name: Player
+      stateSprite:
+      - {fileID: 21300000, guid: fc464a374702f3b49adcc618d277a074, type: 3}
+      animSpeed: 1
 --- !u!4 &2036764155
 Transform:
   m_ObjectHideFlags: 0

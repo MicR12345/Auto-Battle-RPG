@@ -30,10 +30,10 @@ public static class SaveManager
         xmlSerializer.Serialize(writer, data);
         writer.Close();
     }
-    public static DataStorage LoadObjectiveData(string name)
+    public static DataStorage LoadObjectiveData(string path)
     {
         XmlSerializer xmlSerializer = new XmlSerializer(typeof(DataStorage));
-        TextReader reader = new StreamReader(Application.dataPath + "/Objectives/" + name + ".objective");
+        TextReader reader = new StreamReader(path);
         DataStorage gameState = (DataStorage)xmlSerializer.Deserialize(reader);
         reader.Close();
         return gameState;

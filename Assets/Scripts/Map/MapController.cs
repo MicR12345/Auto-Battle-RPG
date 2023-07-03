@@ -46,10 +46,13 @@ namespace TileMap
         public GameObject bulletStorage;
 
         public bool mapEditorMode = false;
+
+        List<DataStorage> objectivePrefabs;
         private void Start()
         {
             mapEditorMode = true;
             CreateAllTiles();
+            LoadObjectives();
             LoadGame();
             //CreateEmptyMapWithSize(mapSizeX, mapSizeY);
             FillMapEditorOptions();
@@ -67,10 +70,31 @@ namespace TileMap
             }
             MapBound2.transform.position = new Vector3(x, y);
         }
+        public void LoadObjectives()
+        {
+            string[] files = System.IO.Directory.GetFiles(Application.dataPath + "/Objectives/", "*.objective");
+            objectivePrefabs = new List<DataStorage>();
+            foreach (string file in files)
+            {
+                objectivePrefabs.Add(SaveManager.LoadObjectiveData(file));
+            }
+            FillMapEditorObjectiveOptions();
+        }
+        public DataStorage FindObjectivePrefab(string name)
+        {
+            foreach (DataStorage objective in objectivePrefabs)
+            {
+                if (objective.FindParam("name").value==name)
+                {
+                    return objective;
+                }
+            }
+            return null;
+        }
         void FillMapEditorOptions()
         {
             FillMapEditorTileOptions();
-            FillMapEditorObjectiveOptions();
+            
             FillMapEditorUnitOptions();
         }
         void FillMapEditorTileOptions()
@@ -88,10 +112,10 @@ namespace TileMap
         void FillMapEditorObjectiveOptions()
         {
             List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
-            foreach (ObjectiveType objectiveType in objectiveFactory.objectiveTypes)
+            foreach (DataStorage objectiveData in objectivePrefabs)
             {
                 TMP_Dropdown.OptionData optionData = new TMP_Dropdown.OptionData();
-                optionData.text = objectiveType.type;
+                optionData.text = objectiveData.FindParam("name").value;
                 options.Add(optionData );
             }
             objectiveDropdown.AddOptions(options);

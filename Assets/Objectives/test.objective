@@ -4,7 +4,7 @@
   <parameters>
     <Parameter>
       <name>name</name>
-      <value>asd</value>
+      <value>TEST</value>
     </Parameter>
     <Parameter>
       <name>maxHP</name>
@@ -26,6 +26,10 @@
       <name>gatherSpotY</name>
       <value>-1</value>
     </Parameter>
+    <Parameter>
+      <name>graphicsPackage</name>
+      <value>Base</value>
+    </Parameter>
   </parameters>
   <subcomponents>
     <DataStorage>
@@ -37,19 +41,19 @@
           <parameters>
             <Parameter>
               <name>type</name>
-              <value>asd</value>
+              <value>Unit1</value>
             </Parameter>
             <Parameter>
               <name>stage</name>
-              <value>1</value>
+              <value>0</value>
             </Parameter>
             <Parameter>
               <name>time</name>
-              <value>1</value>
+              <value>3</value>
             </Parameter>
             <Parameter>
               <name>timer</name>
-              <value>1</value>
+              <value>3</value>
             </Parameter>
           </parameters>
           <subcomponents>
@@ -58,7 +62,7 @@
               <parameters>
                 <Parameter>
                   <name>upgradeName</name>
-                  <value>test</value>
+                  <value>Unit1</value>
                 </Parameter>
               </parameters>
             </DataStorage>

@@ -8,6 +8,10 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
 
     public ObjectiveType objectiveType;
     public GameObject selectorObject;
+    public Animator animator;
+
+    public ObjectiveGraphics graphics;
+
     public (int, int) gatherSpot = (-1, -1);
     private int maxHP;
 
@@ -15,6 +19,8 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
     public DataStorage reconstructionData = null;
     public bool isReconstructed= false;
     public bool freezeLogic = false;
+
+    string graphicsState = "";
     public int MaxHP
     {
         get { return maxHP; }
@@ -43,6 +49,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
                 //TODO : Change to neutral
             }
             hp = value; 
+            ResolveGraphics();
         }
     }
     public string faction;
@@ -92,6 +99,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         dataStorage.RegisterNewParam("maxHP", maxHP.ToString());
         dataStorage.RegisterNewParam("hp", HP.ToString());
         dataStorage.RegisterNewParam("faction", faction);
+        dataStorage.RegisterNewParam("graphicsPackage", graphics.objectiveName);
         foreach (StoresData item in componentSerializableData)
         {
             dataStorage.AddSubcomponent(item.GetData());
@@ -109,7 +117,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         HP = HP - damage;
     }
 
-    string Damageable.GetFaction()
+    public string GetFaction()
     {
         return faction;
     }
@@ -119,13 +127,24 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         return transform.position;
     }
 
-    string Targetable.GetFaction()
-    {
-        return faction;
-    }
-
     bool Targetable.IsTargedDeadInside()
     {
         return false;
+    }
+    public void ResolveGraphics()
+    {
+        string newState = "";
+        if (HP > Mathf.FloorToInt(0.75f * MaxHP)) newState = faction;
+        //Tu kolejne warunki stanów grafiki
+
+        if (newState!=graphicsState)
+        {
+            graphicsState = newState;
+            ObjectiveSprites sprites = graphics.FindGraphicsState(newState);
+            if (sprites != null)
+            {
+                animator.SetSpriteList(sprites.stateSprite, sprites.animSpeed);
+            }
+        }
     }
 }

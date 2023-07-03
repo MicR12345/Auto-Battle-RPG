@@ -18,8 +18,8 @@ public class ProduceUnits : MonoBehaviour,StoresData,Component
         if (objective.isReconstructed)
         {
             DataStorage productionData = objective.reconstructionData.FindSubcomp(transform.name);
-            DataStorage productionSlots = productionData.FindSubcomp("ProductionSlots");
-            foreach (DataStorage slot in productionSlots.subcomponents)
+            List<DataStorage> productionSlots = productionData.FindAllSubcomps("ProductionSlots");
+            foreach (DataStorage slot in productionSlots)
             {
                 ProductionSlot productionSlot = new ProductionSlot(slot);
                 slots.Add(productionSlot);

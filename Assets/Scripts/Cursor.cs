@@ -144,7 +144,7 @@ public class Cursor : MonoBehaviour
     }
     public void BeginObjectivePlacement()
     {
-        placeable = controller.objectiveFactory.CreatePlaceableObjective(controller.objectiveDropdown.options[controller.objectiveDropdown.value].text, controller.factionSelectionDropdown.options[controller.factionSelectionDropdown.value].text);
+        placeable = controller.objectiveFactory.ReconstructObjectiveFromData(controller.FindObjectivePrefab(controller.objectiveDropdown.options[controller.objectiveDropdown.value].text));
         BeginPlaceableObjectMode();
     }
     public void BeginUnitPlacement()

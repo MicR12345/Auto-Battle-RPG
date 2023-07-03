@@ -9,6 +9,9 @@ public class CreateObjectiveForm : MonoBehaviour
     public TMP_Dropdown spriteDropdown;
 
     public ObjectiveFactory objectiveFactory;
+
+    public Image objectiveImagePreview;
+
     public GameObject componentTemplate;
     public TextMeshProUGUI componentTemplateText;
     public CreateObjectiveFormButton componentTemplateFormButton;
@@ -130,6 +133,7 @@ public class CreateObjectiveForm : MonoBehaviour
         dataHeap = new List<DataStorage>();
         counters = new List<Counter>();
         spriteDropdown.options = objectiveFactory.PopulateObjectiveSpriteDropdown();
+        SetObjectivePreview();
         components = objectiveFactory.FetchComponents();
         foreach (Component comp in components)
         {
@@ -142,6 +146,14 @@ public class CreateObjectiveForm : MonoBehaviour
                 componentPanel.name = comp.getName();
                 componentPanel.SetActive(true);
             }
+        }
+    }
+    public void SetObjectivePreview()
+    {
+        ObjectiveGraphics objectiveGraphics = objectiveFactory.FindGraphics(spriteDropdown.options[spriteDropdown.value].text);
+        if (objectiveGraphics != null)
+        {
+            objectiveImagePreview.sprite = objectiveGraphics.objectiveSprites[0].stateSprite[0];
         }
     }
     void PopulateSimpleComponents(Component comp,DataStorage data = null)
@@ -318,7 +330,9 @@ public class CreateObjectiveForm : MonoBehaviour
         createdData.RegisterNewParam("hp", Mathf.FloorToInt(hp.value * int.Parse(maxHP.text)).ToString());
         createdData.RegisterNewParam("gatherSpotX", "-1");
         createdData.RegisterNewParam("gatherSpotY", "-1");
+        createdData.RegisterNewParam("graphicsPackage", spriteDropdown.options[spriteDropdown.value].text);
         SaveManager.SaveObjectiveData(ref createdData, objectiveName.text);
+        objectiveFactory.controller.LoadObjectives();
         gameObject.SetActive(false);
     }
     class Counter
