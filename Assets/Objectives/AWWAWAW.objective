@@ -49,11 +49,11 @@
             </Parameter>
             <Parameter>
               <name>time</name>
-              <value>1</value>
+              <value>3</value>
             </Parameter>
             <Parameter>
               <name>timer</name>
-              <value>1</value>
+              <value>3</value>
             </Parameter>
           </parameters>
           <subcomponents>

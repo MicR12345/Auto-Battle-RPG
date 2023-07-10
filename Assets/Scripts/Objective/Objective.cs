@@ -75,6 +75,10 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         transform.position = position;
         controller.objectiveFactory.OccupySpaceUnderObjective(controller.GetMapTileFromWorldPosition(position));
         controller.RegisterObjective(this);
+        if (controller.aiController.controlledFaction==faction)
+        {
+            controller.aiController.RegisterObjective(this);
+        }
         freezeLogic = false;
     }
 
@@ -155,6 +159,21 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
 
     void AIControllable.ReciveOrder(string order, (int, int)? target)
     {
-        throw new System.NotImplementedException();
+        switch (order)
+        {
+            case "target":
+                (int, int) ntarget;
+                try
+                {
+                    ntarget = ((int, int))target;
+                }
+                catch (System.Exception)
+                {
+                    Debug.LogError("No pathfind target");
+                    return;
+                }
+                gatherSpot = ntarget;
+                break;
+        }
     }
 }
