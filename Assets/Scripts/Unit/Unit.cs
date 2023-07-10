@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 using System.Globalization;
 using PathfindMap;
 
-public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Targetable
+public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Targetable,AIControllable
 {
     public TileMap.MapController controller;
 
@@ -15,6 +15,8 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
     public List<StoresData> componentSerializableData = new List<StoresData>();
     public DataStorage reconstructionData = null;
     public bool isReconstructed = false;
+
+    public Targetable currentTarget;
 
     public bool isDead = false;
     [SerializeField]
@@ -79,6 +81,10 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
         transform.position = position;
         controller.RegisterUnit(this);
         controller.map.Occupy(tile,unitMovement);
+        if (controller.aiController.controlledFaction==faction)
+        {
+            controller.aiController.RegisterUnit(this);
+        }
         freezeLogic = false;
     }
 
@@ -122,7 +128,7 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
         return faction;
     }
 
-    string Damageable.GetFaction()
+    public string GetFaction()
     {
         return faction;
     }
@@ -142,5 +148,40 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
     bool Selectable.IsDeadInside()
     {
         return isDead;
+    }
+
+    (string, Targetable) AIControllable.CurrentState()
+    {
+        if (!unitMovement.pathfindTargetReached)
+        {
+            return ("moving",currentTarget);
+        }
+        else
+        {
+            return ("idle", currentTarget);
+        }
+    }
+
+    void AIControllable.ReciveOrder(string order, (int, int)? target)
+    {
+        switch (order)
+        {
+            case "move":
+                (int, int) ntarget;
+                try
+                {
+                    ntarget = ((int, int))target;
+                }
+                catch (System.Exception)
+                {
+                    Debug.LogError("No pathfind target");
+                    return;
+                }
+                unitMovement.BeginPathfind(ntarget);
+                break;
+            case "stop":
+                unitMovement.BeginPathfind(unitMovement.currentTile);
+                break;
+        }
     }
 }

@@ -14,7 +14,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
     [SerializeField]
     (int, int) pathfindTarget;
     [SerializeField]
-    bool pathfindTargetReached = true;
+    public bool pathfindTargetReached = true;
 
     Vector3 V3PathfindStep;
 
@@ -77,9 +77,9 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
         {
             return;
         }
-        TickUnitMovementLogic();
+        StartCoroutine(TickUnitMovementLogic());
     }
-    void TickUnitMovementLogic()
+    IEnumerator TickUnitMovementLogic()
     {
         if (pathfindPath == null && !pathfindTargetChanged)
         {
@@ -138,6 +138,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
                 }
             }
         }
+        yield return null;
     }
     public void Pathfind((int,int) destination)
     {

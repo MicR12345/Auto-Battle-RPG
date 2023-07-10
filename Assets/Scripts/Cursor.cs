@@ -42,8 +42,11 @@ public class Cursor : MonoBehaviour
                         Selectable selectable;
                         if(raycastHit.collider.gameObject.TryGetComponent<Selectable>(out selectable))
                         {
-                            selectable.OnSelect();
-                            selected.Add(selectable);
+                            if (selectable.GetFaction()=="Player")
+                            {
+                                selectable.OnSelect();
+                                selected.Add(selectable);
+                            }
                         }
                     }
                 }
@@ -169,6 +172,7 @@ public interface Selectable
     void OnAction(Vector3 screenPostion);
     void Unselect();
     bool IsDeadInside();
+    string GetFaction();
 }
 public interface Placeable
 {

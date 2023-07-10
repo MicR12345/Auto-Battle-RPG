@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Xml.Serialization;
-public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Targetable
+public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Targetable,AIControllable
 {
     public TileMap.MapController controller;
 
@@ -146,5 +146,15 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
                 animator.SetSpriteList(sprites.stateSprite, sprites.animSpeed);
             }
         }
+    }
+
+    (string, Targetable) AIControllable.CurrentState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void AIControllable.ReciveOrder(string order, (int, int)? target)
+    {
+        throw new System.NotImplementedException();
     }
 }

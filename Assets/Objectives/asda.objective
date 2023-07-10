@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DataStorage xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <name>Objective</name>
+  <parameters>
+    <Parameter>
+      <name>name</name>
+      <value>asda</value>
+    </Parameter>
+    <Parameter>
+      <name>maxHP</name>
+      <value>6000</value>
+    </Parameter>
+    <Parameter>
+      <name>faction</name>
+      <value>Player</value>
+    </Parameter>
+    <Parameter>
+      <name>hp</name>
+      <value>6000</value>
+    </Parameter>
+    <Parameter>
+      <name>gatherSpotX</name>
+      <value>-1</value>
+    </Parameter>
+    <Parameter>
+      <name>gatherSpotY</name>
+      <value>-1</value>
+    </Parameter>
+    <Parameter>
+      <name>graphicsPackage</name>
+      <value>Base</value>
+    </Parameter>
+  </parameters>
+</DataStorage>

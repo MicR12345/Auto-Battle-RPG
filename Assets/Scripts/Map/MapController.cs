@@ -22,7 +22,7 @@ namespace TileMap
         public ObjectiveFactory objectiveFactory;
         public UnitFactory unitFactory;
         public GameObject bulletPrefab;
-
+        public AIController aiController;
         public List<BorderTile> borderTiles = new List<BorderTile>();
         public List<MapTile> placeableTiles = new List<MapTile>();
         [HideInInspector]

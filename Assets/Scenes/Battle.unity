@@ -9963,64 +9963,65 @@ MonoBehaviour:
   objectiveFactory: {fileID: 2036764154}
   unitFactory: {fileID: 1954165118}
   bulletPrefab: {fileID: 1912011600503024805, guid: d7b53cb94a9391e408da016efca60521, type: 3}
+  aiController: {fileID: 1636886360}
   borderTiles:
   - borderName: impass
     borderVariants:
     - variant: TL
       textures:
-      - {fileID: 1089916096, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: 1070054471, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
     - variant: T
       textures:
-      - {fileID: -796783482, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: 1529379082, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
     - variant: TR
       textures:
-      - {fileID: 240501703, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: -1490753939, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
     - variant: MR
       textures:
-      - {fileID: -1898735660, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: 423438205, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
     - variant: ML
       textures:
-      - {fileID: 1981716572, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: -1012663159, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
     - variant: BL
       textures:
-      - {fileID: 1975224570, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: -1719282191, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
     - variant: B
       textures:
-      - {fileID: 512991023, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: 384798884, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
     - variant: BR
       textures:
-      - {fileID: -284926658, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: -301191844, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
     - variant: CBR
       textures:
-      - {fileID: 806888824, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: 1739728494, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
     - variant: CBL
       textures:
-      - {fileID: 759920603, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: 2138072702, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
     - variant: CTR
       textures:
-      - {fileID: 846947228, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: 666104746, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
     - variant: CTL
       textures:
-      - {fileID: 1527248197, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: 113001968, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
     - variant: PR
       textures:
-      - {fileID: 347947217, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: -836705939, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
     - variant: PL
       textures:
-      - {fileID: 290917734, guid: c69083342eeb2da429db7ead1daa4f70, type: 3}
+      - {fileID: -1726738560, guid: 35b6496a0cb27ae40b514b33adc4c4ff, type: 3}
       tile: {fileID: 0}
   placeableTiles:
   - tileName: grass
@@ -10028,7 +10029,7 @@ MonoBehaviour:
     isMaskLayer: 0
     tileObject: {fileID: 0}
     sprite:
-    - {fileID: -1641830946, guid: 283c8672e12318c469d294fff4a4a3c9, type: 3}
+    - {fileID: -501148656, guid: 02c24bcd06792ee409e7980153480b8f, type: 3}
     applicableBorders:
     - neighbourName: impass
       borderName: impass
@@ -10037,7 +10038,13 @@ MonoBehaviour:
     isMaskLayer: 0
     tileObject: {fileID: 0}
     sprite:
-    - {fileID: 274899298, guid: 283c8672e12318c469d294fff4a4a3c9, type: 3}
+    - {fileID: -810198064, guid: 02c24bcd06792ee409e7980153480b8f, type: 3}
+    - {fileID: 1186709174, guid: 02c24bcd06792ee409e7980153480b8f, type: 3}
+    - {fileID: 310969972, guid: 02c24bcd06792ee409e7980153480b8f, type: 3}
+    - {fileID: -607492252, guid: 02c24bcd06792ee409e7980153480b8f, type: 3}
+    - {fileID: 298274302, guid: 02c24bcd06792ee409e7980153480b8f, type: 3}
+    - {fileID: -1269527223, guid: 02c24bcd06792ee409e7980153480b8f, type: 3}
+    - {fileID: -717182498, guid: 02c24bcd06792ee409e7980153480b8f, type: 3}
     applicableBorders:
     - neighbourName: grass
       borderName: impass
@@ -12660,6 +12667,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1636421265}
   m_CullTransparentMesh: 1
+--- !u!1 &1636886359
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1636886361}
+  - component: {fileID: 1636886360}
+  m_Layer: 0
+  m_Name: AIController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1636886360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636886359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f922f9fc61e37946b3559a97ce86b99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controlledFaction: Enemy
+  controller: {fileID: 1174861704}
+--- !u!4 &1636886361
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636886359}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1648149990
 GameObject:
   m_ObjectHideFlags: 0
@@ -16033,31 +16086,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1174861704}
   ObjectivePrefab: {fileID: 973159889927365230, guid: efa32e5d61b3c194dbba317299d7307e, type: 3}
-  objectiveTypes:
-  - type: Base
-    maxHP: 5000
-    components:
-    - name: ProduceUnits
-      componentsWithParams:
-      - name: ProductionSlots
-        componentsWithParams:
-        - name: Slot
-          componentsWithParams:
-          - name: Time
-            componentsWithParams:
-            - name: 5
-              componentsWithParams: []
-          - name: Stages
-            componentsWithParams:
-            - name: Unit1
-              componentsWithParams: []
-    sprites: []
   objectiveGraphics:
   - objectiveName: Base
     objectiveSprites:
     - name: Player
       stateSprite:
       - {fileID: 21300000, guid: fc464a374702f3b49adcc618d277a074, type: 3}
+      - {fileID: 21300000, guid: 78e0b74a1f4bc234691f5c341f68ba18, type: 3}
+      animSpeed: 1
+    - name: Enemy
+      stateSprite:
+      - {fileID: 21300000, guid: fc464a374702f3b49adcc618d277a074, type: 3}
+      - {fileID: 21300000, guid: 78e0b74a1f4bc234691f5c341f68ba18, type: 3}
       animSpeed: 1
 --- !u!4 &2036764155
 Transform:
