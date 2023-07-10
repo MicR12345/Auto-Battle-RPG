@@ -108,12 +108,10 @@ public class ProduceUnits : MonoBehaviour,StoresData,Component
     public DataStorage GenerateData()
     {
         DataStorage dataStorage = new DataStorage(transform.name);
-        DataStorage productionSlots = new DataStorage("ProductionSlots");
         foreach (ProductionSlot slot in slots)
         {
-            productionSlots.AddSubcomponent(slot.convertToDataStorage());
+            dataStorage.AddSubcomponent(slot.convertToDataStorage());
         }
-        dataStorage.AddSubcomponent(productionSlots);
         return dataStorage;
     }
 
@@ -168,7 +166,7 @@ public class ProduceUnits : MonoBehaviour,StoresData,Component
         public float timer;
         public DataStorage convertToDataStorage()
         {
-            DataStorage dataStorage = new DataStorage("ProductionSlot");
+            DataStorage dataStorage = new DataStorage("ProductionSlots");
             dataStorage.RegisterNewParam("type", currentType);
             dataStorage.RegisterNewParam("stage",currentStage.ToString());
             dataStorage.RegisterNewParam("time", time.ToString(CultureInfo.InvariantCulture.NumberFormat));

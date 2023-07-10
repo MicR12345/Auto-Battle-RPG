@@ -21,7 +21,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
     bool tileReserved = false;
     bool pathfindTargetChanged = false;
     bool moving = false;
-
+    bool pathfindAfterMove = false;
     public (int,int)? ReservedTile
     {
         get
@@ -52,7 +52,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
                     int.Parse(movementData.FindParam("pathfindTargetX").value),
                     int.Parse(movementData.FindParam("pathfindTargetY").value)
                     );
-                tileReserved = bool.Parse(movementData.FindParam("pathfindTargetReached").value);
+                tileReserved = bool.Parse(movementData.FindParam("tileReserved").value);
                 if (tileReserved)
                 {
                     (int, int) tileToBeReserved = (
@@ -63,6 +63,9 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
                     moving = true;
                     V3PathfindStep = PathfindMap.Map.ConvertPathNodeToV3(tileToBeReserved);
                     pathfindTargetChanged = true;
+                    pathfindPath = new List<(int, int)>();
+                    pathfindPath.Add(tileToBeReserved);
+                    pathfindAfterMove = true;
                 }
                 else
                 {
@@ -77,7 +80,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
         {
             return;
         }
-        StartCoroutine(TickUnitMovementLogic());
+        StartCoroutine(NewTickMovementLogic());
     }
     IEnumerator TickUnitMovementLogic()
     {
@@ -121,7 +124,15 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
                     pathEnumerator++;
                     if (pathEnumerator >= pathfindPath.Count)
                     {
-                        pathfindTargetReached = true;
+                        if (pathfindAfterMove)
+                        {
+                            pathfindAfterMove = false;
+                            BeginPathfind(pathfindTarget);
+                        }
+                        else
+                        {
+                            pathfindTargetReached = true;
+                        }
                     }
                     (int, int) prevTile = currentTile;
                     currentTile = pathfindPath[pathEnumerator - 1];
@@ -138,6 +149,69 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
                 }
             }
         }
+        yield return null;
+    }
+    IEnumerator NewTickMovementLogic()
+    {
+        if (tileReserved)
+        {
+            if (!moving)
+            {
+                moving = true;
+                V3PathfindStep = PathfindMap.Map.ConvertPathNodeToV3(pathfindPath[pathEnumerator]);
+            }
+            if (moving)
+            {
+                if (Vector3.Distance(V3PathfindStep, transform.parent.position) < 0.1f)
+                {
+                    pathEnumerator++;
+                    (int, int) prevTile = currentTile;
+                    currentTile = pathfindPath[pathEnumerator - 1];
+                    unit.controller.map.UpdateOccupation(currentTile, prevTile, this);
+                    transform.parent.position = V3PathfindStep;
+                    moving = false;
+                    tileReserved = false;
+                }
+                else
+                {
+                    transform.parent.position = transform.parent.position + Vector3.Normalize(V3PathfindStep - transform.parent.position) * unit.speed * Time.deltaTime;
+                }
+            }
+        }
+        else
+        {
+            if (pathfindPath != null && pathfindPath.Count > pathEnumerator && !pathfindTargetReached)
+            {
+                tileReserved = TryReservingTile(pathfindPath[pathEnumerator]);
+                if (!tileReserved)
+                {
+                    PartialPathfind();
+                }
+            }
+            else
+            {
+                if (!pathfindTargetReached)
+                {
+                    if (pathfindPath == null)
+                    {
+                        Pathfind(pathfindTarget);
+                    }
+                    else
+                    {
+                        if (pathfindPath.Count <= pathEnumerator)
+                        {
+                            Pathfind(pathfindTarget);
+                        }
+                    }
+                    if (pathfindTargetChanged)
+                    {
+                        pathfindTargetChanged = false;
+                        Pathfind(pathfindTarget);
+                    }
+                }
+            }
+        }
+        
         yield return null;
     }
     public void Pathfind((int,int) destination)
