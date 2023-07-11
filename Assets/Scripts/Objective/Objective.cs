@@ -137,6 +137,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
     {
         freezeLogic = false;
         this.faction = faction;
+        HP = MaxHP;
         if (faction==controller.aiController.controlledFaction)
         {
             controller.aiController.RegisterObjective(this);
