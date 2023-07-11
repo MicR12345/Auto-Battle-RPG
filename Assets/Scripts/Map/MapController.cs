@@ -53,8 +53,8 @@ namespace TileMap
             mapEditorMode = true;
             CreateAllTiles();
             LoadObjectives();
-            LoadGame();
-            //CreateEmptyMapWithSize(mapSizeX, mapSizeY);
+            //LoadGame();
+            CreateEmptyMapWithSize(mapSizeX, mapSizeY);
             FillMapEditorOptions();
         }
         void CreateEmptyMapWithSize(int x,int y)

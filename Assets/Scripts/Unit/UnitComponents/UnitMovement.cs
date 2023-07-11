@@ -80,7 +80,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
         {
             return;
         }
-        StartCoroutine(NewTickMovementLogic());
+        NewTickMovementLogic();
     }
     IEnumerator TickUnitMovementLogic()
     {
@@ -151,7 +151,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
         }
         yield return null;
     }
-    IEnumerator NewTickMovementLogic()
+    void NewTickMovementLogic()
     {
         if (tileReserved)
         {
@@ -180,7 +180,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
         }
         else
         {
-            if (pathfindPath != null && pathfindPath.Count > pathEnumerator && !pathfindTargetReached)
+            if (pathfindPath != null && pathfindPath.Count > pathEnumerator && !pathfindTargetReached && !pathfindTargetChanged)
             {
                 tileReserved = TryReservingTile(pathfindPath[pathEnumerator]);
                 if (!tileReserved)
@@ -211,8 +211,6 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
                 }
             }
         }
-        
-        yield return null;
     }
     public void Pathfind((int,int) destination)
     {

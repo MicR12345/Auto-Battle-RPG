@@ -50,11 +50,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
-  objectiveType:
-    type: 
-    maxHP: 0
-    components: []
-    sprites: []
   selectorObject: {fileID: 2114024250670620949}
   animator: {fileID: 5756058326700495275}
   graphics:
@@ -66,6 +61,9 @@ MonoBehaviour:
     subcomponents: []
   isReconstructed: 0
   freezeLogic: 0
+  destructible: 0
+  captureProgresses: []
+  hp: 0
   faction: 
 --- !u!212 &3487029980064599154
 SpriteRenderer:
@@ -321,7 +319,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 20
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

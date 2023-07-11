@@ -29,16 +29,15 @@ public class AIController : MonoBehaviour
     {
         controlledObjectives.Remove(objective);
     }
-    IEnumerator ObjectiveAI(Objective objective)
+    void ObjectiveAI(Objective objective)
     {
         AIControllable aiControllable = objective as AIControllable;
         if (priorityTargetQueue.Count > 0)
         {
             aiControllable.ReciveOrder("target", controller.GetMapTileFromWorldPosition(priorityTargetQueue[0].Item1.GetShootPosition()));
         }
-        yield break;
     }
-    IEnumerator UnitAI(Unit unit)
+    void UnitAI(Unit unit)
     {
         AIControllable aiControllable = unit as AIControllable;
         (string,Targetable) state = aiControllable.CurrentState();
@@ -49,7 +48,6 @@ public class AIController : MonoBehaviour
                 aiControllable.ReciveOrder("move", controller.GetMapTileFromWorldPosition(priorityTargetQueue[0].Item1.GetShootPosition()));
             }
         }
-        yield break;
     }
     void PopulateTargetQueue()
     {
@@ -70,11 +68,11 @@ public class AIController : MonoBehaviour
             PopulateTargetQueue();
             foreach (Unit units in controlledUnits)
             {
-                if(!units.freezeLogic)StartCoroutine(UnitAI(units));
+                if(!units.freezeLogic)UnitAI(units);
             }
             foreach (Objective objective in controlledObjectives)
             {
-                if (!objective.freezeLogic) StartCoroutine(ObjectiveAI(objective));
+                if (!objective.freezeLogic) ObjectiveAI(objective);
             }
             yield return new WaitForSeconds(5f);
         }
