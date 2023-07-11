@@ -15190,10 +15190,11 @@ MonoBehaviour:
   UnitPrefab: {fileID: 6444543152508308346, guid: 910e5d31f5891c64cbf236afd6a9099e, type: 3}
   unitTypes:
   - type: Unit1
-    maxHP: 20
+    maxHP: 200
     speed: 3
     capturePower: 20
     range: 7
+    damage: 50
     components:
     - name: UnitShoot
       componentsWithParams: []

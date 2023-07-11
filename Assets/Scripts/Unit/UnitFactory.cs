@@ -92,6 +92,7 @@ public class UnitFactory : MonoBehaviour
         unit.MaxHP = unitType.maxHP;
         unit.speed = unitType.speed;
         unit.range = unitType.range;
+        unit.damage = unitType.damage;
         unit.capturePower = unitType.capturePower;
         unit.Faction = unitData.FindParam("faction").value;
         unit.HP = int.Parse(unitData.FindParam("hp").value);
@@ -119,6 +120,7 @@ public class UnitType
     public int speed;
     public int capturePower;
     public int range;
+    public int damage;
     public List<ComponentWithParams> components = new List<ComponentWithParams>();
     public List<UnitSprites> sprites = new List<UnitSprites>();
 }

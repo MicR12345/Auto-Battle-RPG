@@ -149,7 +149,10 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
         }
         controller.UnregisterUnit(this);
         isDead = true;
-        controller.aiController.UnregisterUnit(this);
+        if (controller.aiController.controlledFaction == faction)
+        {
+            controller.aiController.UnregisterUnit(this);
+        }
         GameObject.Destroy(this.gameObject);
     }
 

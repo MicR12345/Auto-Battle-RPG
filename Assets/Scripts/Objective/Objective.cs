@@ -74,7 +74,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
     {
         while (faction=="Neutral")
         {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 20);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 15);
             for (int i = 0; i < colliders.Length; i++)
             {
                 Unit unit;
