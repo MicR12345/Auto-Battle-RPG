@@ -54,6 +54,8 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
     public int damage;
     [SerializeField]
     public int range = 20;
+    [SerializeField]
+    public int capturePower = 20;
     public UnitType unitType;
 
     public bool freezeLogic = false;
@@ -140,8 +142,14 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
     public void DestoryThis()
     {
         controller.map.Occupy(unitMovement.currentTile, null);
+        (int, int)? reserved = unitMovement.ReservedTile;
+        if (reserved != null)
+        {
+            controller.map.ForceReserve(((int,int))reserved, null);
+        }
         controller.UnregisterUnit(this);
         isDead = true;
+        controller.aiController.UnregisterUnit(this);
         GameObject.Destroy(this.gameObject);
     }
 

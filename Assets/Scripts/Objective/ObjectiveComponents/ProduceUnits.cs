@@ -25,26 +25,6 @@ public class ProduceUnits : MonoBehaviour,StoresData,Component
                 slots.Add(productionSlot);
             }
         }
-        else
-        {
-            ComponentWithParams unitProductionComponent = objective.objectiveType.FindParam("ProduceUnits");
-            ComponentWithParams productionSlots = unitProductionComponent.FindParam("ProductionSlots");
-            foreach (ComponentWithParams slot in productionSlots.componentsWithParams)
-            {
-                ProductionSlot productionSlot = new ProductionSlot();
-                float time = float.Parse(slot.FindParam("Time").componentsWithParams[0].name,
-                          CultureInfo.InvariantCulture.NumberFormat);
-                productionSlot.time = time;
-                foreach (ComponentWithParams stage in slot.FindParam("Stages").componentsWithParams)
-                {
-                    productionSlot.upgrades.Add(stage.name);
-                }
-                productionSlot.currentType = productionSlot.upgrades[0];
-                slots.Add(productionSlot);
-
-                productionSlot.timer = time;
-            }
-        } 
     }
 
     void FixedUpdate()

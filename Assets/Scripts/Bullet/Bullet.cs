@@ -32,6 +32,11 @@ public class Bullet : MonoBehaviour,StoresData
                     damageable.ApplyDamage(damage);
                 }
             }
+            Captureable captureable;
+            if (collider.TryGetComponent<Captureable>(out captureable))
+            {
+                captureable.TryCapturing(damage, faction);
+            }
         }
         GameObject.Destroy(gameObject);
     }

@@ -21,6 +21,14 @@ public class AIController : MonoBehaviour
     {
         controlledObjectives.Add(objective);
     }
+    public void UnregisterUnit(Unit unit)
+    {
+        controlledUnits.Remove(unit);
+    }
+    public void UnregisterObjective(Objective objective)
+    {
+        controlledObjectives.Remove(objective);
+    }
     IEnumerator ObjectiveAI(Objective objective)
     {
         AIControllable aiControllable = objective as AIControllable;

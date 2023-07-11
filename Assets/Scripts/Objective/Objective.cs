@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Xml.Serialization;
-public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Targetable,AIControllable
+public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Targetable,AIControllable,Captureable
 {
     public TileMap.MapController controller;
 
-    public ObjectiveType objectiveType;
     public GameObject selectorObject;
     public Animator animator;
 
@@ -20,6 +19,10 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
     public bool isReconstructed= false;
     public bool freezeLogic = false;
 
+    public bool destructible = false;
+    IEnumerator captureCoorutine;
+    [SerializeField]
+    List<CaptureProgress> captureProgresses = new List<CaptureProgress>();
     string graphicsState = "";
     public int MaxHP
     {
@@ -30,27 +33,131 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
             HP = value; 
         }
     }
+    [SerializeField]
     private int hp;
     public int HP
     {
         get { return hp; }
         set {
-            if (hp + value < 0)
+            if (value <= 0)
             {
                 if (faction!="Neutral")
                 {
-                    
+                    if (destructible)
+                    {
+                        DestroyThis();
+                        return;
+                    }
+                    NeutralizeThis();
                 }
                 else
                 {
-                    faction = "Neutral";
-                    freezeLogic = true;
+                    hp = maxHP / 2;
                 }
                 //TODO : Change to neutral
             }
-            hp = value; 
-            ResolveGraphics();
+            else
+            {
+                if (faction != "Neutral")
+                {
+                    hp = value;
+                    ResolveGraphics();
+                }
+                else
+                {
+                    ResolveGraphics();
+                }
+            }
         }
+    }
+    IEnumerator CaputureCoorutine()
+    {
+        while (faction=="Neutral")
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 20);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Unit unit;
+                if (colliders[i].TryGetComponent<Unit>(out unit))
+                {
+                    CaptureProgress progress = FindCaptureProgress(unit.Faction);
+                    if (progress != null)
+                    {
+                        progress.value += unit.capturePower;
+                        CheckForCapture();
+                    }
+                }
+            }
+            yield return new WaitForSeconds(1f);
+        }
+    }
+    void CheckForCapture()
+    {
+        if (faction == "Neutral")
+        {
+            foreach (CaptureProgress progress in captureProgresses)
+            {
+                if (progress.value>= maxHP)
+                {
+                    CaptureThis(progress.faction);
+                    return;
+                }
+            }
+        }
+    }
+
+    CaptureProgress FindCaptureProgress(string faction)
+    {
+        foreach (CaptureProgress progress in captureProgresses)
+        {
+            if (progress.faction == faction)
+            {
+                return progress;
+            }
+        }
+        return null;
+    }
+    public void TryIncrementingCaptureProgress(int value,string faction)
+    {
+        if (this.faction=="Neutral")
+        {
+            CaptureProgress progress = FindCaptureProgress(faction);
+            if (progress!=null)
+            {
+                progress.value += value/2;
+                CheckForCapture();
+            }
+            else
+            {
+                captureProgresses.Add(new CaptureProgress(0,faction));
+            }
+        }
+    }
+    void CaptureThis(string faction)
+    {
+        freezeLogic = false;
+        this.faction = faction;
+        if (faction==controller.aiController.controlledFaction)
+        {
+            controller.aiController.RegisterObjective(this);
+        }
+        StopCoroutine(captureCoorutine);
+    }
+    
+    void NeutralizeThis()
+    {
+        if (faction == controller.aiController.controlledFaction)
+        {
+            controller.aiController.UnregisterObjective(this);
+        }
+        faction = "Neutral";
+        freezeLogic = true;
+        captureCoorutine = CaputureCoorutine();
+        StartCoroutine(captureCoorutine);
+    }
+    void DestroyThis()
+    {
+        //TODO
     }
     public string faction;
 
@@ -79,7 +186,16 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         {
             controller.aiController.RegisterObjective(this);
         }
-        freezeLogic = false;
+        if (faction!="Neutral")
+        {
+            freezeLogic = false;
+        }
+        else
+        {
+            captureCoorutine = CaputureCoorutine();
+            StartCoroutine(CaputureCoorutine());
+        }
+        
     }
 
     void Placeable.Discard()
@@ -95,7 +211,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
     {
         (int, int) postion = controller.GetMapTileFromWorldPosition(transform.position);
         DataStorage dataStorage = new DataStorage("Objective");
-        dataStorage.RegisterNewParam("name", objectiveType.type);
+        dataStorage.RegisterNewParam("name", transform.name);
         dataStorage.RegisterNewParam("x", postion.Item1.ToString());
         dataStorage.RegisterNewParam("y", postion.Item2.ToString());
         dataStorage.RegisterNewParam("gatherSpotX", gatherSpot.Item1.ToString());
@@ -137,7 +253,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
     }
     public void ResolveGraphics()
     {
-        string newState = "";
+        string newState = faction;
         if (HP > Mathf.FloorToInt(0.75f * MaxHP)) newState = faction;
         //Tu kolejne warunki stanów grafiki
 
@@ -174,6 +290,22 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
                 }
                 gatherSpot = ntarget;
                 break;
+        }
+    }
+
+    void Captureable.TryCapturing(int value,string faction)
+    {
+        TryIncrementingCaptureProgress(value, faction);
+    }
+    [System.Serializable]
+    public class CaptureProgress
+    {
+        public int value = 0;
+        public string faction = "";
+        public CaptureProgress(int value,string faction)
+        {
+            this.value = value;
+            this.faction = faction;
         }
     }
 }

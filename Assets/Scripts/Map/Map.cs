@@ -156,6 +156,10 @@ namespace PathfindMap
         {
             mapTiles[tile.Item1, tile.Item2].occupied = o;
         }
+        public void ForceReserve((int, int) tile, OccupiesTile o)
+        {
+            mapTiles[tile.Item1, tile.Item2].reserved = o;
+        }
         public void OccupyStatic((int, int) tile)
         {
             mapTiles[tile.Item1, tile.Item2].occupiedStatic = true;

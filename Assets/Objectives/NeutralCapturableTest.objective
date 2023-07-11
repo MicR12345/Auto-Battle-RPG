@@ -4,7 +4,7 @@
   <parameters>
     <Parameter>
       <name>name</name>
-      <value>AWWAWAW</value>
+      <value>NeutralCapturableTest</value>
     </Parameter>
     <Parameter>
       <name>maxHP</name>
@@ -12,11 +12,11 @@
     </Parameter>
     <Parameter>
       <name>faction</name>
-      <value>Enemy</value>
+      <value>Neutral</value>
     </Parameter>
     <Parameter>
       <name>hp</name>
-      <value>3656</value>
+      <value>263</value>
     </Parameter>
     <Parameter>
       <name>gatherSpotX</name>

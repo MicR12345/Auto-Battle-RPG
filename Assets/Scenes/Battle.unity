@@ -12698,6 +12698,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controlledFaction: Enemy
   controller: {fileID: 1174861704}
+  controlledObjectives: []
+  controlledUnits: []
 --- !u!4 &1636886361
 Transform:
   m_ObjectHideFlags: 0
@@ -15190,6 +15192,8 @@ MonoBehaviour:
   - type: Unit1
     maxHP: 20
     speed: 3
+    capturePower: 20
+    range: 7
     components:
     - name: UnitShoot
       componentsWithParams: []
@@ -16098,6 +16102,10 @@ MonoBehaviour:
       stateSprite:
       - {fileID: 21300000, guid: fc464a374702f3b49adcc618d277a074, type: 3}
       - {fileID: 21300000, guid: 78e0b74a1f4bc234691f5c341f68ba18, type: 3}
+      animSpeed: 1
+    - name: Neutral
+      stateSprite:
+      - {fileID: 21300000, guid: fc464a374702f3b49adcc618d277a074, type: 3}
       animSpeed: 1
 --- !u!4 &2036764155
 Transform:

@@ -63,6 +63,8 @@ public class UnitFactory : MonoBehaviour
         unit.MaxHP = unitType.maxHP;
         unit.speed = unitType.speed;
         unit.Faction = faction;
+        unit.range = unitType.range;
+        unit.capturePower = unitType.capturePower;
         foreach (ComponentWithParams comp in unitType.components)
         {
             unitObject.transform.Find(comp.name).gameObject.SetActive(true);
@@ -89,6 +91,8 @@ public class UnitFactory : MonoBehaviour
         }
         unit.MaxHP = unitType.maxHP;
         unit.speed = unitType.speed;
+        unit.range = unitType.range;
+        unit.capturePower = unitType.capturePower;
         unit.Faction = unitData.FindParam("faction").value;
         unit.HP = int.Parse(unitData.FindParam("hp").value);
         foreach (DataStorage comp in unitData.subcomponents)
@@ -113,6 +117,8 @@ public class UnitType
     public string type;
     public int maxHP;
     public int speed;
+    public int capturePower;
+    public int range;
     public List<ComponentWithParams> components = new List<ComponentWithParams>();
     public List<UnitSprites> sprites = new List<UnitSprites>();
 }
