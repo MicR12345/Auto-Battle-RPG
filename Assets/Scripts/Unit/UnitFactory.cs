@@ -64,6 +64,7 @@ public class UnitFactory : MonoBehaviour
         unit.speed = unitType.speed;
         unit.Faction = faction;
         unit.range = unitType.range;
+        unit.damage = unitType.damage;
         unit.capturePower = unitType.capturePower;
         foreach (ComponentWithParams comp in unitType.components)
         {

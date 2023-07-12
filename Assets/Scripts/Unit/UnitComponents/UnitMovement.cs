@@ -2,6 +2,8 @@ using PathfindMap;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Jobs;
+using System.Threading.Tasks;
 
 public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
 {
@@ -22,6 +24,8 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
     bool pathfindTargetChanged = false;
     bool moving = false;
     bool pathfindAfterMove = false;
+
+    Task<(List<(int, int)>, bool)> pathfindHandle = null;
     public (int,int)? ReservedTile
     {
         get
@@ -84,71 +88,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
     }
     IEnumerator TickUnitMovementLogic()
     {
-        if (pathfindPath == null && !pathfindTargetChanged)
-        {
-            pathfindTargetReached = true;
-            //TODO Reattempt to pathfind when locked inside units
-        }
-        if (!pathfindTargetReached)
-        {
-            if (!pathfindTargetChanged && pathEnumerator > pathfindPath.Count)
-            {
-                Pathfind(pathfindTarget);
-            }
-            if (!tileReserved)
-            {
-                if (pathfindTargetChanged)
-                {
-                    pathfindTargetChanged = false;
-                    Pathfind(pathfindTarget);
-                }
-                else
-                {
-                    tileReserved = TryReservingTile(pathfindPath[pathEnumerator]);
-                    if (!tileReserved)
-                    {
-                        PartialPathfind();
-                    }
-                }
-
-            }
-            else
-            {
-                moving = true;
-                V3PathfindStep = PathfindMap.Map.ConvertPathNodeToV3(pathfindPath[pathEnumerator]);
-            }
-            if (moving)
-            {
-                if (Vector3.Distance(V3PathfindStep, transform.parent.position) < 0.1f)
-                {
-                    pathEnumerator++;
-                    if (pathEnumerator >= pathfindPath.Count)
-                    {
-                        if (pathfindAfterMove)
-                        {
-                            pathfindAfterMove = false;
-                            BeginPathfind(pathfindTarget);
-                        }
-                        else
-                        {
-                            pathfindTargetReached = true;
-                        }
-                    }
-                    (int, int) prevTile = currentTile;
-                    currentTile = pathfindPath[pathEnumerator - 1];
-                    unit.controller.map.UpdateOccupation(currentTile, prevTile,this);
-                    transform.parent.position = V3PathfindStep;
-                    moving = false;
-                    tileReserved = false;
-                }
-                else
-                {
-                    transform.parent.position = transform.parent.position + Vector3.Normalize(V3PathfindStep - transform.parent.position) * unit.speed * Time.deltaTime;
-                    //transform.parent.position = Vector3.Lerp(transform.parent.position, V3PathfindStep,
-                    //    unit.speed * Time.deltaTime);
-                }
-            }
-        }
+        
         yield return null;
     }
     void NewTickMovementLogic()
@@ -180,6 +120,19 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
         }
         else
         {
+            if (pathfindHandle!=null)
+            {
+                if (!pathfindHandle.IsCompleted)
+                {
+                    return;
+                }
+                else
+                {
+                    pathfindPath = new List<(int, int)>();
+                    (List<(int, int)>, bool) output = pathfindHandle.Result;
+                    pathfindPath = output.Item1;
+                }
+            }
             if (pathfindPath != null && pathfindPath.Count > pathEnumerator && !pathfindTargetReached && !pathfindTargetChanged)
             {
                 tileReserved = TryReservingTile(pathfindPath[pathEnumerator]);
@@ -214,29 +167,8 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
     }
     public void Pathfind((int,int) destination)
     {
-        (List<(int,int)>, bool) path = unit.controller.map.Astar(currentTile, destination);
-        if (path.Item1==null || path.Item1.Count==0)
-        {
-            pathfindTargetReached = true;
-            return;
-        }
-        else
-        {
-            if (path.Item2)
-            {
-                pathfindPath = path.Item1;
-                pathfindTarget = destination;
-            }
-            else
-            {
-                pathfindPath = path.Item1;
-                pathfindTarget = path.Item1[path.Item1.Count - 1];
-            }
-        }
-        if (pathfindPath.Count==0)
-        {
-            pathfindTargetReached = true;
-        }
+        //(List<(int,int)>, bool) path = unit.controller.map.Astar(currentTile, destination,unit.range);
+        pathfindHandle = unit.controller.map.CreatePathfindThread(currentTile, destination, unit.range);
         pathEnumerator = 0;
     }
     public void PartialPathfind()
@@ -254,7 +186,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
         }
         else
         {
-            (List<(int, int)>,bool) partialPath = unit.controller.map.Astar(currentTile, pathfindPath[newEnumerator]);
+            (List<(int, int)>,bool) partialPath = unit.controller.map.Astar(currentTile, pathfindPath[newEnumerator],unit.range);
             if (partialPath.Item1 == null)
             {
                 Pathfind(pathfindTarget);

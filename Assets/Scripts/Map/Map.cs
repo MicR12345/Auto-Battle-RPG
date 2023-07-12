@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Collections;
 using Unity.Jobs;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PathfindMap
 {
@@ -27,7 +29,7 @@ namespace PathfindMap
         {
             mapTiles[x,y] = new MapTile(passable);
         }
-        public (List<(int,int)>,bool) Astar((int,int) start, (int,int) end)
+        public (List<(int,int)>,bool) Astar((int,int) start, (int,int) end,float tolerance)
         {
             bool[,] visited = new bool[sizeX, sizeY];
             List<PathfindNode> open = new List<PathfindNode>();
@@ -54,9 +56,9 @@ namespace PathfindMap
                 {
                     increaseCounter++;
                 }
-                if (increaseCounter>= closestProximityReattempts)
+                if (increaseCounter>=5 && closest.hscore<tolerance)
                 {
-                    return (CreatePath(closest),false);
+                    return (CreatePath(closest),true);
                 }
                 open.Remove(q);
                 List<PathfindNode> descendants = new List<PathfindNode>();
@@ -174,6 +176,39 @@ namespace PathfindMap
             }
             return false;
         }
+        public Task<(List<(int, int)>, bool)> CreatePathfindThread((int,int) start, (int, int) end,float tolerance)
+        {
+            Task<(List<(int, int)>, bool)> t = Task<(List<(int, int)>, bool)>.Factory.StartNew(
+                () =>
+                {
+                    return Astar(start, end, tolerance);
+                }
+                );
+            return t;
+        }
+        public class CompareByScore : IComparer<PathfindNode>
+        {
+            public int Compare(PathfindNode x, PathfindNode y)
+            {
+                return y.CompareTo(x);
+            }
+        }
+        public class MapTile
+        {
+            public bool passable;
+            public OccupiesTile reserved;
+            public OccupiesTile occupied;
+            public bool occupiedStatic;
+            public float cost;
+            public MapTile(bool passable = true, float cost = 1f)
+            {
+                this.cost = cost;
+                reserved = null;
+                occupied = null;
+                occupiedStatic = false;
+                this.passable = passable;
+            }
+        }
         public class PathfindNode : IComparable
         {
             public int x;
@@ -182,14 +217,14 @@ namespace PathfindMap
             public float hscore = float.PositiveInfinity;
             public float fscore = float.PositiveInfinity;
             public PathfindNode parent = null;
-            public PathfindNode((int,int) position,float gscore = 0,PathfindNode parent = null)
+            public PathfindNode((int, int) position, float gscore = 0, PathfindNode parent = null)
             {
                 x = position.Item1;
                 y = position.Item2;
                 this.gscore = gscore;
                 this.parent = parent;
             }
-            public void CalculateFscoreEuclid((int,int) start,(int,int) end)
+            public void CalculateFscoreEuclid((int, int) start, (int, int) end)
             {
                 hscore = Mathf.Sqrt(Mathf.Pow(end.Item1 - start.Item1, 2) + Mathf.Pow(end.Item2 - start.Item2, 2));
                 fscore = gscore + hscore;
@@ -212,32 +247,8 @@ namespace PathfindMap
                 }
             }
         }
+    }
 
-        public class CompareByScore : IComparer<PathfindNode>
-        {
-            public int Compare(PathfindNode x, PathfindNode y)
-            {
-                return y.CompareTo(x);
-            }
-        }
-    }
-    [System.Serializable]
-    public class MapTile
-    {
-        public bool passable;
-        public OccupiesTile reserved;
-        public OccupiesTile occupied;
-        public bool occupiedStatic;
-        public float cost;
-        public MapTile(bool passable = true,float cost = 1f)
-        {
-            this.cost = cost;
-            reserved = null;
-            occupied = null;
-            occupiedStatic = false;
-            this.passable = passable;
-        }
-    }
     public interface OccupiesTile
     {
         public bool IsMoving();
