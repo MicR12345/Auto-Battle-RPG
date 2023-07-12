@@ -60,6 +60,10 @@ namespace PathfindMap
                 {
                     return (CreatePath(closest),true);
                 }
+                if (increaseCounter>closestProximityReattempts)
+                {
+                    return (CreatePath(closest), true);
+                }
                 open.Remove(q);
                 List<PathfindNode> descendants = new List<PathfindNode>();
                 for (int i = -1; i <= 1; i++)
