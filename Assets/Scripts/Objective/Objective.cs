@@ -24,6 +24,9 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
     [SerializeField]
     List<CaptureProgress> captureProgresses = new List<CaptureProgress>();
     string graphicsState = "";
+
+    public HealthBar healthBar;
+    public CaptureBars captureBars;
     public int MaxHP
     {
         get { return maxHP; }
@@ -54,7 +57,6 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
                 {
                     hp = maxHP / 2;
                 }
-                //TODO : Change to neutral
             }
             else
             {
@@ -68,6 +70,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
                     ResolveGraphics();
                 }
             }
+            UpdateHealthBar();
         }
     }
     IEnumerator CaputureCoorutine()
@@ -88,7 +91,15 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
                     }
                 }
             }
+            UpdateCaptureBars();
             yield return new WaitForSeconds(1f);
+        }
+    }
+    void UpdateCaptureBars()
+    {
+        foreach (CaptureProgress captureProgress in captureProgresses)
+        {
+            captureBars.SetBar(captureProgress.faction, captureProgress.value, MaxHP);
         }
     }
     void CheckForCapture()
@@ -104,6 +115,10 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
                 }
             }
         }
+    }
+    void UpdateHealthBar()
+    {
+        healthBar.SetHealthBar(HP, MaxHP);
     }
 
     CaptureProgress FindCaptureProgress(string faction)
@@ -132,6 +147,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
                 captureProgresses.Add(new CaptureProgress(0,faction));
             }
         }
+        UpdateCaptureBars();
     }
     void CaptureThis(string faction)
     {
@@ -142,7 +158,11 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         {
             controller.aiController.RegisterObjective(this);
         }
+        ResolveGraphics();
         StopCoroutine(captureCoorutine);
+        captureProgresses.Clear();
+        captureBars.ClearBars();
+        healthBar.gameObject.SetActive(true);
     }
     
     void NeutralizeThis()
@@ -154,6 +174,8 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         faction = "Neutral";
         freezeLogic = true;
         captureCoorutine = CaputureCoorutine();
+        ResolveGraphics();
+        healthBar.gameObject.SetActive(false);
         StartCoroutine(captureCoorutine);
     }
     void DestroyThis()
@@ -193,6 +215,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         }
         else
         {
+            healthBar.gameObject.SetActive(false);
             captureCoorutine = CaputureCoorutine();
             StartCoroutine(CaputureCoorutine());
         }

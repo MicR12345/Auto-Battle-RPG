@@ -29,7 +29,7 @@ public class UnitShoot : MonoBehaviour,StoresData
         if (unit.controller.freezeMap || unit.freezeLogic) return;
         if (shootingCooldown<=0f)
         {
-            if (currentTarget != null && currentTarget.IsTargedDeadInside())currentTarget = null;
+            if (currentTarget != null && (currentTarget.IsTargedDeadInside() || currentTarget.GetFaction() == unit.Faction))currentTarget = null;
             if (currentTarget!=null)
             {
                 CreateBullet();
@@ -45,7 +45,7 @@ public class UnitShoot : MonoBehaviour,StoresData
     {
         if (!ceaseFire)
         {
-            if (currentTarget!=null && currentTarget.IsTargedDeadInside())
+            if (currentTarget!=null && (currentTarget.IsTargedDeadInside() || currentTarget.GetFaction()==unit.Faction))
             {
                 currentTarget = null;
             }
