@@ -134,6 +134,7 @@ public class CreateObjectiveForm : MonoBehaviour
     }
     public void CreateForm()
     {
+        ClearSimpleComponents();
         ClearCreationValues();
         isEdited = false;
         editedObjective = null;
@@ -161,6 +162,7 @@ public class CreateObjectiveForm : MonoBehaviour
     }
     public void EditForm(DataStorage dataStorage,Selectable selectable)
     {
+        ClearSimpleComponents();
         ClearCreationValues();
         isEdited = true;
         editedObjective = selectable;
@@ -169,6 +171,7 @@ public class CreateObjectiveForm : MonoBehaviour
         createdData = dataStorage;
         currentEditedDataReference = createdData;
         FillCreationData();
+
         dataHeap = new List<DataStorage>();
         counters = new List<Counter>();
         spriteDropdown.options = objectiveFactory.PopulateObjectiveSpriteDropdown();
