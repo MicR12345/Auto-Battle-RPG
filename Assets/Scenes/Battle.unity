@@ -10355,9 +10355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9716c3aec7cf3b449bacd2a9384c8ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  map:
-    sizeX: 0
-    sizeY: 0
   tilemap: {fileID: 764594261}
   borderTilemap: {fileID: 422192756}
   maskTilemap: {fileID: 829147011}
@@ -10458,8 +10455,8 @@ MonoBehaviour:
   unitDropdown: {fileID: 1959660838}
   factionSelectionDropdown: {fileID: 133521199}
   freezeMap: 0
-  mapSizeX: 100
-  mapSizeY: 100
+  mapSizeX: 200
+  mapSizeY: 200
   bulletStorage: {fileID: 1213009247}
   mapEditorMode: 0
 --- !u!1 &1175768297
@@ -15766,29 +15763,11 @@ MonoBehaviour:
     - UnitShoot
     bulletPhases:
     - phaseName: shoot
-      phaseCD: 0.1
+      phaseCD: 5
       amplitude: 3
       speed: 5
       damage: 50
       range: 0
-    - phaseName: shootExtra
-      phaseCD: 0.1
-      amplitude: 0
-      speed: 7
-      damage: 10
-      range: 7
-    - phaseName: shootExtra
-      phaseCD: 0.1
-      amplitude: 0
-      speed: 7
-      damage: 10
-      range: 7
-    - phaseName: shootExtra
-      phaseCD: 5
-      amplitude: 0
-      speed: 7
-      damage: 10
-      range: 7
     sprites: []
 --- !u!4 &1954165119
 Transform:

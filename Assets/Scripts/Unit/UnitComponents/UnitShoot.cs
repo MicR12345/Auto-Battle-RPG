@@ -57,7 +57,7 @@ public class UnitShoot : MonoBehaviour,StoresData
                 break;
             case "shootExtra":
                 Targetable target = CheckForEnemiesOpportunity(currentPhase);
-                if (target != null)
+                if (target != null && !target.IsTargedDeadInside())
                 {
                     CreateBulletAltTarget(currentPhase, target);
                 }

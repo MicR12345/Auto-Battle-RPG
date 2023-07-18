@@ -86,11 +86,6 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
         }
         NewTickMovementLogic();
     }
-    IEnumerator TickUnitMovementLogic()
-    {
-        
-        yield return null;
-    }
     void NewTickMovementLogic()
     {
         if (tileReserved)
@@ -271,5 +266,10 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
     bool OccupiesTile.IsMoving()
     {
         return moving;
+    }
+
+    bool OccupiesTile.isDead()
+    {
+        return unit.isDead;
     }
 }

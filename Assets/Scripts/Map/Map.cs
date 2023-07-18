@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace PathfindMap
 {
-    [System.Serializable]
     public class Map
     {
         public int sizeX;
@@ -139,8 +138,12 @@ namespace PathfindMap
         }
         public bool CheckIfOccupied((int, int) position)
         {
-            if (mapTiles[position.Item1, position.Item2].occupied != null)
+            if (mapTiles[position.Item1, position.Item2].occupied is not null)
             {
+                if (mapTiles[position.Item1, position.Item2].occupied.isDead())
+                {
+                    return mapTiles[position.Item1, position.Item2].occupiedStatic;
+                }
                 return !mapTiles[position.Item1, position.Item2].occupied.IsMoving() || mapTiles[position.Item1, position.Item2].occupiedStatic;
             }
             else
@@ -256,5 +259,6 @@ namespace PathfindMap
     public interface OccupiesTile
     {
         public bool IsMoving();
+        public bool isDead();
     }
 }

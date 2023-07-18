@@ -56,7 +56,7 @@ public class Cursor : MonoBehaviour
                         Selectable selectable;
                         if(raycastHit.collider.gameObject.TryGetComponent<Selectable>(out selectable))
                         {
-                            if (selectable.GetFaction()=="Player")
+                            if (selectable.GetFaction()=="Player" || controller.mapEditorMode)
                             {
                                 selectable.OnSelect();
                                 selected.Add(selectable);
@@ -181,7 +181,10 @@ public class Cursor : MonoBehaviour
     {
         Vector3 point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         (int, int) coords = controller.GetMapTileFromWorldPosition(point);
-        controller.PlaceTile(tileHandle, coords.Item1, coords.Item2);
+        if (coords.Item1>=0 && coords.Item2>=0 && coords.Item1<controller.mapSizeX&& coords.Item2< controller.mapSizeY)
+        {
+            controller.PlaceTile(tileHandle, coords.Item1, coords.Item2);
+        }
     }
 }
 public interface Selectable
