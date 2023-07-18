@@ -7,4 +7,5 @@ public interface Targetable
     Vector3 GetShootPosition();
     string GetFaction();
     bool IsTargedDeadInside();
+    int GetTargetPriority();
 }

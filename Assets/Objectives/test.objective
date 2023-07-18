@@ -4,7 +4,7 @@
   <parameters>
     <Parameter>
       <name>name</name>
-      <value>TEST</value>
+      <value>Test</value>
     </Parameter>
     <Parameter>
       <name>maxHP</name>
@@ -30,6 +30,14 @@
       <name>graphicsPackage</name>
       <value>Base</value>
     </Parameter>
+    <Parameter>
+      <name>partialLoseCondition</name>
+      <value>False</value>
+    </Parameter>
+    <Parameter>
+      <name>loseCondition</name>
+      <value>True</value>
+    </Parameter>
   </parameters>
   <subcomponents>
     <DataStorage>
@@ -45,15 +53,15 @@
             </Parameter>
             <Parameter>
               <name>stage</name>
-              <value>0</value>
+              <value>1</value>
             </Parameter>
             <Parameter>
               <name>time</name>
-              <value>10</value>
+              <value>5</value>
             </Parameter>
             <Parameter>
               <name>timer</name>
-              <value>10</value>
+              <value>5</value>
             </Parameter>
           </parameters>
           <subcomponents>

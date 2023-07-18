@@ -22,19 +22,33 @@ public class Cursor : MonoBehaviour
     Vector3 startingPoint = Vector3.zero;
     Vector3 endPoint = Vector3.zero;
 
+    public Transform selectorTransform;
+
     bool startPainting = false;
     [SerializeField]
     SpriteRenderer spriteRenderer;
+
+    public CreateObjectiveForm objectiveForm;
     void Update()
     {
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + new Vector3(0, 0, 20);
         switch (mode)
         {
             case CursorMode.None:
+                if (Input.GetKeyDown(KeyCode.F1) && controller.mapEditorMode)
+                {
+                    if (selected.Count==1 && selected[0].GetType() == typeof(Objective))
+                    {
+                        objectiveForm.gameObject.SetActive(true);
+                        selected[0].PerformCommand("freeze");
+                        objectiveForm.EditForm(selected[0].GetData(), selected[0]);
+                    }
+                }
                 if (Input.GetMouseButtonDown(0))
                 {
                     ClearSelected();
                     startingPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    selectorTransform.gameObject.SetActive(true);
                     mode = CursorMode.Selector;
                     RaycastHit2D raycastHit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
                     if (raycastHit.collider != null)
@@ -66,6 +80,8 @@ public class Cursor : MonoBehaviour
                 if (Input.GetMouseButtonUp(0))
                 {
                     endPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    selectorTransform.localScale = Vector3.zero;
+                    selectorTransform.gameObject.SetActive(false);
                     //Units take priority in selection
                     List<Unit> units = controller.GetUnitsInAreaOfFaction(startingPoint, endPoint,"Player");
                     if (units.Count>0)
@@ -83,6 +99,8 @@ public class Cursor : MonoBehaviour
                 else
                 {
                     endPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    selectorTransform.position = (endPoint - startingPoint)/2 + new Vector3(startingPoint.x,startingPoint.y);
+                    selectorTransform.localScale = endPoint - startingPoint;
                 }
                 break;
             case CursorMode.TilePlacementMode:
@@ -173,6 +191,8 @@ public interface Selectable
     void Unselect();
     bool IsDeadInside();
     string GetFaction();
+    DataStorage GetData();
+    void PerformCommand(string command);
 }
 public interface Placeable
 {

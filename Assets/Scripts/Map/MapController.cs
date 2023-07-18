@@ -45,7 +45,7 @@ namespace TileMap
 
         public GameObject bulletStorage;
 
-        public bool mapEditorMode = false;
+        public bool mapEditorMode = true;
 
         List<DataStorage> objectivePrefabs;
         private void Start()

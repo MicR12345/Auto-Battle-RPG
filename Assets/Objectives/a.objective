@@ -4,11 +4,11 @@
   <parameters>
     <Parameter>
       <name>name</name>
-      <value>asda</value>
+      <value>a</value>
     </Parameter>
     <Parameter>
       <name>maxHP</name>
-      <value>6000</value>
+      <value>5000</value>
     </Parameter>
     <Parameter>
       <name>faction</name>
@@ -16,7 +16,7 @@
     </Parameter>
     <Parameter>
       <name>hp</name>
-      <value>6000</value>
+      <value>5000</value>
     </Parameter>
     <Parameter>
       <name>gatherSpotX</name>
@@ -29,6 +29,14 @@
     <Parameter>
       <name>graphicsPackage</name>
       <value>Base</value>
+    </Parameter>
+    <Parameter>
+      <name>partialLoseCondition</name>
+      <value>False</value>
+    </Parameter>
+    <Parameter>
+      <name>loseCondition</name>
+      <value>True</value>
     </Parameter>
   </parameters>
 </DataStorage>

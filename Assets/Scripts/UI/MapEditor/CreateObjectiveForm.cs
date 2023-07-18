@@ -6,6 +6,8 @@ using TMPro;
 
 public class CreateObjectiveForm : MonoBehaviour
 {
+    public TileMap.MapController controller;
+
     public TMP_Dropdown spriteDropdown;
 
     public ObjectiveFactory objectiveFactory;
@@ -26,6 +28,7 @@ public class CreateObjectiveForm : MonoBehaviour
 
     public GameObject formModifySubcompTemplate;
     public TextMeshProUGUI formModifySubcompTemplateText;
+
     List<Component> components;
     List<Component> componentHeap;
 
@@ -46,6 +49,11 @@ public class CreateObjectiveForm : MonoBehaviour
     public TMP_InputField maxHP;
     public TMP_Dropdown faction;
     public Slider hp;
+    public Toggle loseCondition;
+    public Toggle partialLoseCondition;
+
+    bool isEdited = false;
+    Selectable editedObjective = null;
     public Component DisplayedComponent
     {
         set
@@ -126,6 +134,9 @@ public class CreateObjectiveForm : MonoBehaviour
     }
     public void CreateForm()
     {
+        ClearCreationValues();
+        isEdited = false;
+        editedObjective = null;
         //changingComponent = false;
         changingComponent.Add(true);
         createdData = new DataStorage("Objective");
@@ -148,8 +159,37 @@ public class CreateObjectiveForm : MonoBehaviour
             }
         }
     }
+    public void EditForm(DataStorage dataStorage,Selectable selectable)
+    {
+        ClearCreationValues();
+        isEdited = true;
+        editedObjective = selectable;
+        //changingComponent = false;
+        changingComponent.Add(true);
+        createdData = dataStorage;
+        currentEditedDataReference = createdData;
+        FillCreationData();
+        dataHeap = new List<DataStorage>();
+        counters = new List<Counter>();
+        spriteDropdown.options = objectiveFactory.PopulateObjectiveSpriteDropdown();
+        SetObjectivePreview();
+        components = objectiveFactory.FetchComponents();
+        foreach (Component comp in components)
+        {
+            if (componentList.Find(comp.getName()) == null)
+            {
+                componentTemplateText.text = comp.getName();
+                GameObject componentPanel = GameObject.Instantiate(componentTemplate, componentList);
+                CreateObjectiveFormButton formButton = componentPanel.GetComponent<CreateObjectiveFormButton>();
+                formButton.component = comp;
+                componentPanel.name = comp.getName();
+                componentPanel.SetActive(true);
+            }
+        }
+    }
     public void SetObjectivePreview()
     {
+        //TODO
         ObjectiveGraphics objectiveGraphics = objectiveFactory.FindGraphics(spriteDropdown.options[spriteDropdown.value].text);
         if (objectiveGraphics != null)
         {
@@ -302,6 +342,7 @@ public class CreateObjectiveForm : MonoBehaviour
     }
     public void OnDestroyData()
     {
+        //TODO
         if (componentHeap.Count >0)
         {
             if (changingComponent[changingComponent.Count - 1])
@@ -322,17 +363,62 @@ public class CreateObjectiveForm : MonoBehaviour
             DisplayedComponent = baseComp;
         }
     }
+    public void ClearCreationValues()
+    {
+        objectiveName.text = "";
+        maxHP.text = "5000";
+        faction.value = 0;
+        hp.value = 1;
+        spriteDropdown.value = 0;
+        partialLoseCondition.isOn = false;
+        loseCondition.isOn = false;
+    }
+    public void FillCreationData()
+    {
+        objectiveName.text = createdData.FindParam("name").value;
+        maxHP.text = createdData.FindParam("maxHP").value;
+        faction.value = FindFaction(createdData.FindParam("faction").value);
+        hp.value = int.Parse(createdData.FindParam("hp").value)/float.Parse(maxHP.text);
+        spriteDropdown.value = 0;
+        partialLoseCondition.isOn = bool.Parse(createdData.FindParam("partialLoseCondition").value);
+        loseCondition.isOn = bool.Parse(createdData.FindParam("loseCondition").value);
+    }
+    int FindFaction(string factionName)
+    {
+        for (int i = 0; i < faction.options.Count; i++)
+        {
+            if (faction.options[i].text== factionName)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
     public void OnCreate()
     {
-        createdData.RegisterNewParam("name",objectiveName.text);
-        createdData.RegisterNewParam("maxHP", maxHP.text);
-        createdData.RegisterNewParam("faction", faction.options[faction.value].text);
-        createdData.RegisterNewParam("hp", Mathf.FloorToInt(hp.value * int.Parse(maxHP.text)).ToString());
-        createdData.RegisterNewParam("gatherSpotX", "-1");
-        createdData.RegisterNewParam("gatherSpotY", "-1");
-        createdData.RegisterNewParam("graphicsPackage", spriteDropdown.options[spriteDropdown.value].text);
-        SaveManager.SaveObjectiveData(ref createdData, objectiveName.text);
-        objectiveFactory.controller.LoadObjectives();
+        createdData.EditParam("name",objectiveName.text);
+        createdData.EditParam("maxHP", maxHP.text);
+        createdData.EditParam("faction", faction.options[faction.value].text);
+        createdData.EditParam("hp", Mathf.FloorToInt(hp.value * int.Parse(maxHP.text)).ToString());
+        createdData.EditParam("gatherSpotX", "-1");
+        createdData.EditParam("gatherSpotY", "-1");
+        createdData.EditParam("graphicsPackage", spriteDropdown.options[spriteDropdown.value].text);
+        createdData.EditParam("partialLoseCondition", partialLoseCondition.isOn.ToString());
+        createdData.EditParam("loseCondition", loseCondition.isOn.ToString());
+        if (!isEdited)
+        {
+            SaveManager.SaveObjectiveData(ref createdData, objectiveName.text);
+            objectiveFactory.controller.LoadObjectives();
+        }
+        else
+        {
+            int x = int.Parse(createdData.FindParam("x").value);
+            int y = int.Parse(createdData.FindParam("y").value);
+            Placeable objective = objectiveFactory.ReconstructObjectiveFromData(createdData);
+            Vector3 tilePosition = new Vector3(x + 0.5f, y + 0.5f);
+            editedObjective.PerformCommand("destroy");
+            objective.Place(tilePosition);
+        }
         gameObject.SetActive(false);
     }
     class Counter

@@ -254,8 +254,11 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
             dataStorage.RegisterNewParam("pathfindTargetX", pathfindTarget.Item1.ToString());
             dataStorage.RegisterNewParam("pathfindTargetY", pathfindTarget.Item2.ToString());
             dataStorage.RegisterNewParam("tileReserved", tileReserved.ToString());
-            dataStorage.RegisterNewParam("reservedTileX", pathfindPath[pathEnumerator].Item1.ToString());
-            dataStorage.RegisterNewParam("reservedTileY", pathfindPath[pathEnumerator].Item2.ToString());
+            if (tileReserved)
+            {
+                dataStorage.RegisterNewParam("reservedTileX", pathfindPath[pathEnumerator].Item1.ToString());
+                dataStorage.RegisterNewParam("reservedTileY", pathfindPath[pathEnumerator].Item2.ToString());
+            }
         }
         return dataStorage;
     }

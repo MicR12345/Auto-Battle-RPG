@@ -8,33 +8,6 @@ public class UnitFactory : MonoBehaviour
 
     public GameObject UnitPrefab;
     public List<UnitType> unitTypes = new List<UnitType>();
-    public Unit DebugCreateUnit(string type, Vector3 position, string faction,(int,int) gatheringSpot,bool exactPosition = true)
-    {
-        GameObject unitObject = GameObject.Instantiate(UnitPrefab);
-        unitObject.transform.position = position;
-        unitObject.name = type;
-        Unit unit = unitObject.GetComponent<Unit>();
-        unit.unitMovement.currentTile = (Mathf.FloorToInt(position.x), Mathf.FloorToInt(position.y));
-        UnitType unitType = FindUnitData(type);
-        unit.unitType = unitType;
-        if (unitType == null)
-        {
-            GameObject.Destroy(unitObject);
-            Debug.LogError("Objective type not found");
-            return null;
-        }
-        unit.MaxHP = unitType.maxHP;
-        unit.speed = unitType.speed;
-        unit.Faction = faction;
-        foreach (ComponentWithParams comp in unitType.components)
-        {
-            unitObject.transform.Find(comp.name).gameObject.SetActive(true);
-        }
-        unit.controller = controller;
-        unit.unitMovement.BeginPathfind(gatheringSpot);
-        //controller.map.Occupy(controller.GetMapTileFromWorldPosition(position));
-        return unit;
-    }
     public UnitType FindUnitData(string type)
     {
         for (int i = 0; i < unitTypes.Count; i++)
@@ -64,11 +37,11 @@ public class UnitFactory : MonoBehaviour
         unit.speed = unitType.speed;
         unit.Faction = faction;
         unit.range = unitType.range;
-        unit.damage = unitType.damage;
         unit.capturePower = unitType.capturePower;
-        foreach (ComponentWithParams comp in unitType.components)
+        unit.bulletPhases = unitType.bulletPhases;
+        foreach (string comp in unitType.components)
         {
-            unitObject.transform.Find(comp.name).gameObject.SetActive(true);
+            unitObject.transform.Find(comp).gameObject.SetActive(true);
         }
         unit.controller = controller;
         unit.unitMovement.gameObject.SetActive(true);
@@ -93,17 +66,17 @@ public class UnitFactory : MonoBehaviour
         unit.MaxHP = unitType.maxHP;
         unit.speed = unitType.speed;
         unit.range = unitType.range;
-        unit.damage = unitType.damage;
         unit.capturePower = unitType.capturePower;
+        unit.bulletPhases = unitType.bulletPhases;
         unit.Faction = unitData.FindParam("faction").value;
         unit.HP = int.Parse(unitData.FindParam("hp").value);
         foreach (DataStorage comp in unitData.subcomponents)
         {
             unitObject.transform.Find(comp.name).gameObject.SetActive(true);
         }
-        foreach (ComponentWithParams comp in unitType.components)
+        foreach (string comp in unitType.components)
         {
-            unitObject.transform.Find(comp.name).gameObject.SetActive(true);
+            unitObject.transform.Find(comp).gameObject.SetActive(true);
         }
         unit.reconstructionData = unitData;
         unit.isReconstructed = true;
@@ -121,8 +94,8 @@ public class UnitType
     public int speed;
     public int capturePower;
     public int range;
-    public int damage;
-    public List<ComponentWithParams> components = new List<ComponentWithParams>();
+    public List<string> components = new List<string>();
+    public List<BulletPhase> bulletPhases = new List<BulletPhase>();
     public List<UnitSprites> sprites = new List<UnitSprites>();
 }
 [System.Serializable]

@@ -73,6 +73,8 @@ public class ObjectiveFactory : MonoBehaviour
         objective.freezeLogic = true;
         objective.faction = objectiveData.FindParam("faction").value;
         objective.graphics = FindGraphics(objectiveData.FindParam("graphicsPackage").value);
+        objective.partialLoseCondition = bool.Parse(objectiveData.FindParam("partialLoseCondition").value);
+        objective.loseCondition = bool.Parse(objectiveData.FindParam("loseCondition").value);
         //ObjectiveType objectiveType = FindObjectiveData(objectiveName);
         //if (objectiveType == null)
         //{

@@ -19,7 +19,7 @@ public class CameraMovement : MonoBehaviour
         float newY = 0;
         Vector3 upperRight = new Vector3(Camera.main.pixelWidth, Camera.main.pixelHeight);
         float oldSize = Camera.main.orthographicSize;
-        Camera.main.orthographicSize = Camera.main.orthographicSize + scroll.y;
+        Camera.main.orthographicSize = Camera.main.orthographicSize - scroll.y;
         if (Camera.main.orthographicSize<5)
         {
             Camera.main.orthographicSize = oldSize;

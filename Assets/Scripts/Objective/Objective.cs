@@ -20,6 +20,12 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
     public bool freezeLogic = false;
 
     public bool destructible = false;
+
+    public bool loseCondition = false;
+    public bool partialLoseCondition = false;
+
+    public bool isDestroyed = false;
+
     IEnumerator captureCoorutine;
     [SerializeField]
     List<CaptureProgress> captureProgresses = new List<CaptureProgress>();
@@ -33,7 +39,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         set 
         {
             maxHP = value;
-            HP = value; 
+            HP = value;
         }
     }
     [SerializeField]
@@ -178,9 +184,18 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         healthBar.gameObject.SetActive(false);
         StartCoroutine(captureCoorutine);
     }
-    void DestroyThis()
+    public void DestroyThis()
     {
-        //TODO
+        if (faction == controller.aiController.controlledFaction)
+        {
+            controller.aiController.UnregisterObjective(this);
+        }
+        faction = "None";
+        freezeLogic = true;
+        healthBar.gameObject.SetActive(false);
+        isDestroyed = true;
+        controller.UnregisterObjective(this);
+        GameObject.Destroy(this.gameObject);
     }
     public string faction;
 
@@ -227,7 +242,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         GameObject.Destroy(gameObject);
     }
 
-    DataStorage StoresData.GetData()
+    public DataStorage GetData()
     {
         return GenerateData();
     }
@@ -244,6 +259,8 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         dataStorage.RegisterNewParam("hp", HP.ToString());
         dataStorage.RegisterNewParam("faction", faction);
         dataStorage.RegisterNewParam("graphicsPackage", graphics.objectiveName);
+        dataStorage.RegisterNewParam("partialLoseCondition", partialLoseCondition.ToString());
+        dataStorage.RegisterNewParam("loseCondition", loseCondition.ToString());
         foreach (StoresData item in componentSerializableData)
         {
             dataStorage.AddSubcomponent(item.GetData());
@@ -273,7 +290,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
 
     bool Targetable.IsTargedDeadInside()
     {
-        return false;
+        return isDestroyed;
     }
     public void ResolveGraphics()
     {
@@ -321,6 +338,27 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
     {
         TryIncrementingCaptureProgress(value, faction);
     }
+
+    int Targetable.GetTargetPriority()
+    {
+        return 10;
+    }
+    void Selectable.PerformCommand(string command)
+    {
+        switch (command)
+        {
+            case "destroy":
+                DestroyThis();
+                break;
+            case "freeze":
+                freezeLogic = true;
+                break;
+            case "unfreeze":
+                freezeLogic = false;
+                break;
+        }
+    }
+
     [System.Serializable]
     public class CaptureProgress
     {

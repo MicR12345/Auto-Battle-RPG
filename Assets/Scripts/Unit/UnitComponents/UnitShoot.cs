@@ -12,6 +12,9 @@ public class UnitShoot : MonoBehaviour,StoresData
 
     public float shootingTime = 5f;
     public float shootingCooldown = 0f;
+
+    public BulletPhase currentPhase;
+    public int bulletPhaseIter = 0;
     private void Start()
     {
         if (unit.isReconstructed)
@@ -19,6 +22,7 @@ public class UnitShoot : MonoBehaviour,StoresData
             DataStorage data = unit.reconstructionData.FindSubcomp("UnitShoot");
             shootingCooldown = float.Parse(data.FindParam("cooldown").value, CultureInfo.InvariantCulture.NumberFormat);
             shootingTime = float.Parse(data.FindParam("time").value, CultureInfo.InvariantCulture.NumberFormat);
+            bulletPhaseIter = int.Parse(data.FindParam("bulletPhaseIter").value, CultureInfo.InvariantCulture.NumberFormat);
         }
         unit.componentSerializableData.Add(this);
         StartCoroutine(CheckForShooting());
@@ -30,15 +34,44 @@ public class UnitShoot : MonoBehaviour,StoresData
         if (shootingCooldown<=0f)
         {
             if (currentTarget != null && (currentTarget.IsTargedDeadInside() || currentTarget.GetFaction() == unit.Faction))currentTarget = null;
-            if (currentTarget!=null)
+            if (currentTarget!=null || currentPhase.phaseName != "shoot")
             {
-                CreateBullet();
-                shootingCooldown += shootingTime;
+                //CreateBullet();
+                ProgressBulletPhase();
+                shootingCooldown += currentPhase.phaseCD;
             }
         }
         else
         {
             shootingCooldown -= Time.deltaTime;
+        }
+    }
+    void ProgressBulletPhase()
+    {
+        switch (currentPhase.phaseName)
+        {
+            case "shoot":
+                CreateBullet(currentPhase);
+                break;
+            case "wait":
+                break;
+            case "shootExtra":
+                Targetable target = CheckForEnemiesOpportunity(currentPhase);
+                if (target != null)
+                {
+                    CreateBulletAltTarget(currentPhase, target);
+                }
+                break;
+        }
+        if (bulletPhaseIter>= unit.bulletPhases.Count -1)
+        {
+            bulletPhaseIter = 0;
+            currentPhase = unit.bulletPhases[bulletPhaseIter];
+        }
+        else
+        {
+            bulletPhaseIter++;
+            currentPhase = unit.bulletPhases[bulletPhaseIter];
         }
     }
     void CheckForEnemies()
@@ -70,7 +103,16 @@ public class UnitShoot : MonoBehaviour,StoresData
                         }
                         else
                         {
-                            if (Vector3.Distance(currentTarget.GetShootPosition(),transform.position)>Vector3.Distance(targetable.GetShootPosition(),transform.position))
+                            if (currentTarget.GetTargetPriority() < targetable.GetTargetPriority())
+                            {
+                                currentTarget = targetable;
+                                targetChanged = true;
+                                continue;
+                            }
+                            if (
+                                Vector3.Distance(currentTarget.GetShootPosition(),transform.position)>Vector3.Distance(targetable.GetShootPosition(),transform.position)
+                                && currentTarget.GetTargetPriority() <= targetable.GetTargetPriority()
+                                )
                             {
                                 currentTarget = targetable;
                                 targetChanged = true;
@@ -83,6 +125,48 @@ public class UnitShoot : MonoBehaviour,StoresData
             }
         }
     }
+    Targetable CheckForEnemiesOpportunity(BulletPhase bulletPhase)
+    {
+        Targetable localTarget = null;
+        if (!ceaseFire)
+        {
+
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, bulletPhase.range);
+            if (colliders != null && colliders.Length > 0)
+            {
+                foreach (Collider2D collider in colliders)
+                {
+                    Targetable targetable;
+                    if (collider.TryGetComponent<Targetable>(out targetable))
+                    {
+                        if (targetable.GetFaction() == unit.Faction) continue;
+                        if (localTarget == null)
+                        {
+                            localTarget = targetable;
+                        }
+                        else
+                        {
+                            if (currentTarget.GetTargetPriority() < targetable.GetTargetPriority())
+                            {
+                                localTarget = targetable;
+                                continue;
+                            }
+                            if (
+                                Vector3.Distance(currentTarget.GetShootPosition(), transform.position) > Vector3.Distance(targetable.GetShootPosition(), transform.position)
+                                && currentTarget.GetTargetPriority() <= targetable.GetTargetPriority()
+                                )
+                            {
+                                localTarget = targetable;
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        }
+        return localTarget;
+    }
     IEnumerator CheckForShooting()
     {
         for(; ; )
@@ -91,7 +175,7 @@ public class UnitShoot : MonoBehaviour,StoresData
             yield return new WaitForSeconds(.5f);
         }
     }
-    void CreateBullet()
+    void CreateBullet(BulletPhase bulletPhase)
     {
         GameObject bulletObject = GameObject.Instantiate(unit.controller.bulletPrefab);
         Bullet bullet = bulletObject.GetComponent<Bullet>();
@@ -99,9 +183,24 @@ public class UnitShoot : MonoBehaviour,StoresData
         bullet.transform.position = transform.position;
         bullet.origin = transform.position;
         bullet.target = currentTarget.GetShootPosition();
-        bullet.amplitude = 5;
-        bullet.speed = 16f;
-        bullet.damage = unit.damage;
+        bullet.amplitude = bulletPhase.amplitude;
+        bullet.speed = bulletPhase.speed;
+        bullet.damage = bulletPhase.damage;
+        bullet.faction = unit.Faction;
+        bullet.controller = unit.controller;
+        bullet.bulletMovement.enabled = true;
+    }
+    void CreateBulletAltTarget(BulletPhase bulletPhase,Targetable targetable)
+    {
+        GameObject bulletObject = GameObject.Instantiate(unit.controller.bulletPrefab);
+        Bullet bullet = bulletObject.GetComponent<Bullet>();
+        bullet.transform.parent = unit.controller.bulletStorage.transform;
+        bullet.transform.position = transform.position;
+        bullet.origin = transform.position;
+        bullet.target = targetable.GetShootPosition();
+        bullet.amplitude = bulletPhase.amplitude;
+        bullet.speed = bulletPhase.speed;
+        bullet.damage = bulletPhase.damage;
         bullet.faction = unit.Faction;
         bullet.controller = unit.controller;
         bullet.bulletMovement.enabled = true;
@@ -112,6 +211,17 @@ public class UnitShoot : MonoBehaviour,StoresData
         DataStorage dataStorage = new DataStorage("UnitShoot");
         dataStorage.RegisterNewParam("cooldown", shootingCooldown.ToString(CultureInfo.InvariantCulture.NumberFormat));
         dataStorage.RegisterNewParam("time", shootingTime.ToString(CultureInfo.InvariantCulture.NumberFormat));
+        dataStorage.RegisterNewParam("bulletPhaseIter", bulletPhaseIter.ToString(CultureInfo.InvariantCulture.NumberFormat));
         return dataStorage;
     }
+}
+[System.Serializable]
+public class BulletPhase
+{
+    public string phaseName;
+    public float phaseCD;
+    public float amplitude;
+    public float speed;
+    public int damage;
+    public float range;
 }

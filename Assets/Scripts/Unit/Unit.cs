@@ -51,11 +51,11 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
     [SerializeField]
     public int speed;
     [SerializeField]
-    public int damage;
-    [SerializeField]
     public int range = 20;
     [SerializeField]
     public int capturePower = 20;
+    [SerializeField]
+    public List<BulletPhase> bulletPhases = new List<BulletPhase>();
     public UnitType unitType;
 
     public bool freezeLogic = false;
@@ -95,7 +95,7 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
         GameObject.Destroy(gameObject);
     }
 
-    DataStorage StoresData.GetData()
+    public DataStorage GetData()
     {
         return GenerateData();
     }
@@ -192,6 +192,20 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
                 break;
             case "stop":
                 unitMovement.BeginPathfind(unitMovement.currentTile);
+                break;
+        }
+    }
+
+    int Targetable.GetTargetPriority()
+    {
+        return 20;
+    }
+
+    void Selectable.PerformCommand(string command)
+    {
+        switch (command)
+        {
+            default:
                 break;
         }
     }
