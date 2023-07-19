@@ -1,320 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GameState xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <mapData>
-    <mapSizeX>100</mapSizeX>
-    <mapSizeY>100</mapSizeY>
-    <Map>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>4</x>
-        <y>23</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>5</x>
-        <y>22</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>5</x>
-        <y>23</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>7</x>
-        <y>22</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>8</x>
-        <y>22</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>10</x>
-        <y>22</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>11</x>
-        <y>21</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>12</x>
-        <y>21</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>12</x>
-        <y>22</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>13</x>
-        <y>21</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>14</x>
-        <y>20</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>14</x>
-        <y>22</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>16</x>
-        <y>20</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>16</x>
-        <y>22</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>17</x>
-        <y>20</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>18</x>
-        <y>20</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>18</x>
-        <y>22</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>19</x>
-        <y>20</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>20</x>
-        <y>22</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>21</x>
-        <y>20</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>22</x>
-        <y>20</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>22</x>
-        <y>21</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>24</x>
-        <y>19</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>24</x>
-        <y>21</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>25</x>
-        <y>19</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>25</x>
-        <y>20</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>27</x>
-        <y>18</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>27</x>
-        <y>20</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>28</x>
-        <y>20</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>29</x>
-        <y>17</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>29</x>
-        <y>19</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>30</x>
-        <y>15</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>30</x>
-        <y>19</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>31</x>
-        <y>19</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>32</x>
-        <y>14</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>32</x>
-        <y>18</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>33</x>
-        <y>13</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>33</x>
-        <y>18</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>34</x>
-        <y>12</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>34</x>
-        <y>17</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>35</x>
-        <y>11</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>35</x>
-        <y>15</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>35</x>
-        <y>16</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>36</x>
-        <y>10</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>36</x>
-        <y>13</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>36</x>
-        <y>14</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>36</x>
-        <y>15</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>37</x>
-        <y>9</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>37</x>
-        <y>11</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>37</x>
-        <y>12</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>37</x>
-        <y>13</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>38</x>
-        <y>7</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>38</x>
-        <y>8</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>38</x>
-        <y>9</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>38</x>
-        <y>10</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>39</x>
-        <y>4</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>39</x>
-        <y>5</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>39</x>
-        <y>6</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>39</x>
-        <y>7</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>40</x>
-        <y>2</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>40</x>
-        <y>3</y>
-      </Tile>
-      <Tile>
-        <tileName>impass</tileName>
-        <x>40</x>
-        <y>4</y>
-      </Tile>
-    </Map>
+    <mapSizeX>200</mapSizeX>
+    <mapSizeY>200</mapSizeY>
+    <Map />
   </mapData>
   <objectivesData>
     <objectives>
@@ -323,23 +12,23 @@
         <parameters>
           <Parameter>
             <name>name</name>
-            <value>Test</value>
+            <value>GoldMineTest</value>
           </Parameter>
           <Parameter>
             <name>x</name>
-            <value>38</value>
+            <value>16</value>
           </Parameter>
           <Parameter>
             <name>y</name>
-            <value>24</value>
+            <value>11</value>
           </Parameter>
           <Parameter>
             <name>gatherSpotX</name>
-            <value>18</value>
+            <value>-1</value>
           </Parameter>
           <Parameter>
             <name>gatherSpotY</name>
-            <value>12</value>
+            <value>-1</value>
           </Parameter>
           <Parameter>
             <name>maxHP</name>
@@ -363,45 +52,35 @@
           </Parameter>
           <Parameter>
             <name>loseCondition</name>
-            <value>True</value>
+            <value>False</value>
           </Parameter>
         </parameters>
         <subcomponents>
           <DataStorage>
-            <name>ProduceUnits</name>
-            <parameters />
+            <name>ProduceGold</name>
+            <parameters>
+              <Parameter>
+                <name>stage</name>
+                <value>0</value>
+              </Parameter>
+              <Parameter>
+                <name>timer</name>
+                <value>2,440012</value>
+              </Parameter>
+            </parameters>
             <subcomponents>
               <DataStorage>
-                <name>ProductionSlots</name>
+                <name>goldProductionStage</name>
                 <parameters>
                   <Parameter>
-                    <name>type</name>
-                    <value>Unit1</value>
-                  </Parameter>
-                  <Parameter>
-                    <name>stage</name>
-                    <value>1</value>
+                    <name>value</name>
+                    <value>2</value>
                   </Parameter>
                   <Parameter>
                     <name>time</name>
-                    <value>5</value>
-                  </Parameter>
-                  <Parameter>
-                    <name>timer</name>
-                    <value>1.840007</value>
+                    <value>4</value>
                   </Parameter>
                 </parameters>
-                <subcomponents>
-                  <DataStorage>
-                    <name>Upgrades</name>
-                    <parameters>
-                      <Parameter>
-                        <name>upgradeName</name>
-                        <value>Unit1</value>
-                      </Parameter>
-                    </parameters>
-                  </DataStorage>
-                </subcomponents>
               </DataStorage>
             </subcomponents>
           </DataStorage>
@@ -410,91 +89,22 @@
     </objectives>
   </objectivesData>
   <unitsData>
-    <units>
-      <DataStorage>
-        <name>Unit</name>
-        <parameters>
-          <Parameter>
-            <name>type</name>
-            <value>Unit1</value>
-          </Parameter>
-          <Parameter>
-            <name>faction</name>
-            <value>Player</value>
-          </Parameter>
-          <Parameter>
-            <name>x</name>
-            <value>33.60903</value>
-          </Parameter>
-          <Parameter>
-            <name>y</name>
-            <value>24.60903</value>
-          </Parameter>
-          <Parameter>
-            <name>hp</name>
-            <value>200</value>
-          </Parameter>
-        </parameters>
-        <subcomponents>
-          <DataStorage>
-            <name>UnitShoot</name>
-            <parameters>
-              <Parameter>
-                <name>cooldown</name>
-                <value>2.120003</value>
-              </Parameter>
-              <Parameter>
-                <name>time</name>
-                <value>5</value>
-              </Parameter>
-              <Parameter>
-                <name>bulletPhaseIter</name>
-                <value>3</value>
-              </Parameter>
-            </parameters>
-          </DataStorage>
-          <DataStorage>
-            <name>UnitMovement</name>
-            <parameters>
-              <Parameter>
-                <name>currentTileX</name>
-                <value>34</value>
-              </Parameter>
-              <Parameter>
-                <name>currentTileY</name>
-                <value>25</value>
-              </Parameter>
-              <Parameter>
-                <name>pathfindTargetReached</name>
-                <value>False</value>
-              </Parameter>
-              <Parameter>
-                <name>pathfindTargetX</name>
-                <value>18</value>
-              </Parameter>
-              <Parameter>
-                <name>pathfindTargetY</name>
-                <value>12</value>
-              </Parameter>
-              <Parameter>
-                <name>tileReserved</name>
-                <value>True</value>
-              </Parameter>
-              <Parameter>
-                <name>reservedTileX</name>
-                <value>33</value>
-              </Parameter>
-              <Parameter>
-                <name>reservedTileY</name>
-                <value>24</value>
-              </Parameter>
-            </parameters>
-          </DataStorage>
-        </subcomponents>
-      </DataStorage>
-    </units>
+    <units />
   </unitsData>
   <bulletData>
     <bullets />
   </bulletData>
+  <factionResource>
+    <factions>
+      <Faction>
+        <name>Player</name>
+        <resources>
+          <Resource>
+            <name>gold</name>
+            <value>8</value>
+          </Resource>
+        </resources>
+      </Faction>
+    </factions>
+  </factionResource>
 </GameState>

@@ -55,8 +55,9 @@ namespace TileMap
         public GameObject bulletStorage;
 
         List<DataStorage> objectivePrefabs;
-        [Header("GameStatusManager")]
+        [Header("Game Status")]
         public GameStatusManager gameStatusManager;
+        public FactionResourceManager factionResourceManager;
         private void Start()
         {
             mapEditorMode = true;
@@ -599,6 +600,7 @@ namespace TileMap
             ReconstructObjectives(gameState.objectivesData);
             ReconstructUnits(gameState.unitsData);
             ReconstructBullets(gameState.bulletData);
+            RestoreFactionData(gameState);
         }
         public void ReconstructTiles(SaveManager.MapData mapData)
         {
@@ -650,6 +652,16 @@ namespace TileMap
                 bullet.RestoreFromData(bulletDat,this);
             }
         }
+        public void RestoreFactionData(SaveManager.GameState gameState)
+        {
+            foreach (FactionResourceManager.FactionResourcesWrapper.Faction faction in gameState.factionResource.factions)
+            {
+                foreach (FactionResourceManager.Resource resource in faction.resources)
+                {
+                    factionResourceManager.resourcesWrapper.AddFactionResource(faction.name, resource.name, resource.value);
+                }
+            }
+        }
         public void SaveGame()
         {
             SaveManager.MapData mapData = new SaveManager.MapData(mapSizeX, mapSizeY, this,defaultTileName);
@@ -675,7 +687,7 @@ namespace TileMap
                 }
             }
             SaveManager.BulletData bulletsData = new SaveManager.BulletData(bulletData);
-            SaveManager.GameState gameState = new SaveManager.GameState(mapData,objectivesData, unitsData,bulletsData);
+            SaveManager.GameState gameState = new SaveManager.GameState(mapData,objectivesData, unitsData,bulletsData,factionResourceManager.resourcesWrapper);
             SaveManager.SaveGame(ref gameState);
         }
     }

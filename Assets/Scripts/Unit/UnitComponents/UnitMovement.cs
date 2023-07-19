@@ -148,7 +148,14 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
                     {
                         if (pathfindPath.Count <= pathEnumerator)
                         {
-                            Pathfind(pathfindTarget);
+                            if (Mathf.Sqrt(Mathf.Pow(pathfindTarget.Item1 - currentTile.Item1,2)+ Mathf.Pow(pathfindTarget.Item2 - currentTile.Item2, 2))<=unit.range)
+                            {
+                                pathfindTargetReached = true;
+                            }
+                            else
+                            {
+                                Pathfind(pathfindTarget);
+                            }
                         }
                     }
                     if (pathfindTargetChanged)

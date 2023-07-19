@@ -15,6 +15,7 @@ public class CreateObjectiveForm : MonoBehaviour
     public Image objectiveImagePreview;
 
     public GameObject componentTemplate;
+    public Image componentTemplateImage;
     public TextMeshProUGUI componentTemplateText;
     public CreateObjectiveFormButton componentTemplateFormButton;
     public Transform componentList;
@@ -63,6 +64,7 @@ public class CreateObjectiveForm : MonoBehaviour
                 currentEditedDataReference = createdData;
                 dataHeap.Clear();
                 ClearSimpleComponents();
+                RecolorComponentButtons();
             }
             foreach (Component comp in components)
             {
@@ -159,6 +161,7 @@ public class CreateObjectiveForm : MonoBehaviour
                 componentPanel.SetActive(true);
             }
         }
+        RecolorComponentButtons();
     }
     public void EditForm(DataStorage dataStorage,Selectable selectable)
     {
@@ -189,6 +192,7 @@ public class CreateObjectiveForm : MonoBehaviour
                 componentPanel.SetActive(true);
             }
         }
+        RecolorComponentButtons();
     }
     public void SetObjectivePreview()
     {
@@ -247,6 +251,34 @@ public class CreateObjectiveForm : MonoBehaviour
                 CreateObjectiveSubcomponent button = addSubcompButton.GetComponent<CreateObjectiveSubcomponent>();
                 button.component = subSC;
                 addSubcompButton.SetActive(true);
+            }
+        }
+    }
+    public void RecolorComponentButtons()
+    {
+        foreach (Transform t in componentList)
+        {
+            Image image;
+            bool found = t.TryGetComponent<Image>(out image);
+            if (found)
+            {
+                image.color = Color.white;
+            }
+        }
+        if (createdData.subcomponents is not null)
+        {
+            foreach (DataStorage subcomp in createdData.subcomponents)
+            {
+                Transform transform = componentList.Find(subcomp.name);
+                if (transform is not null)
+                {
+                    Image image;
+                    bool found = transform.TryGetComponent<Image>(out image);
+                    if (found)
+                    {
+                        image.color = Color.green;
+                    }
+                }
             }
         }
     }
@@ -339,7 +371,7 @@ public class CreateObjectiveForm : MonoBehaviour
             }
             currentEditedDataReference = createdData;
             dataHeap.RemoveAt(dataHeap.Count-1);
-            DisplayedComponent = baseComp;
+            DisplayedComponent = null;
             //gameObject.SetActive(false);
         }
     }
@@ -363,7 +395,7 @@ public class CreateObjectiveForm : MonoBehaviour
             Component baseComp = displayedComponent;
             currentEditedDataReference = createdData;
             dataHeap.RemoveAt(dataHeap.Count - 1);
-            DisplayedComponent = baseComp;
+            DisplayedComponent = null;
         }
     }
     public void ClearCreationValues()

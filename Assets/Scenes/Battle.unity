@@ -10462,6 +10462,7 @@ MonoBehaviour:
   mapEditorMode: 1
   bulletStorage: {fileID: 1213009247}
   gameStatusManager: {fileID: 1387110649}
+  factionResourceManager: {fileID: 2134782825}
 --- !u!1 &1175768297
 GameObject:
   m_ObjectHideFlags: 0
@@ -15163,6 +15164,7 @@ MonoBehaviour:
   objectiveFactory: {fileID: 2036764154}
   objectiveImagePreview: {fileID: 607007598}
   componentTemplate: {fileID: 1990525839}
+  componentTemplateImage: {fileID: 1990525842}
   componentTemplateText: {fileID: 1724167109}
   componentTemplateFormButton: {fileID: 1990525846}
   componentList: {fileID: 1579494272}
@@ -15803,7 +15805,7 @@ MonoBehaviour:
   unitTypes:
   - type: Unit1
     maxHP: 200
-    speed: 3
+    speed: 1
     capturePower: 20
     range: 10
     components:
@@ -15812,7 +15814,7 @@ MonoBehaviour:
     - phaseName: shoot
       phaseCD: 5
       amplitude: 3
-      speed: 5
+      speed: 10
       damage: 50
       range: 0
     sprites: []
@@ -18024,6 +18026,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2129356940}
   m_CullTransparentMesh: 1
+--- !u!1 &2134782823
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2134782824}
+  - component: {fileID: 2134782825}
+  m_Layer: 0
+  m_Name: FactionResources
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2134782824
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134782823}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2134782825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134782823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62449a64be81e2f44abc49dc440e44a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourcesWrapper:
+    factions: []
 --- !u!1 &2144171261
 GameObject:
   m_ObjectHideFlags: 0

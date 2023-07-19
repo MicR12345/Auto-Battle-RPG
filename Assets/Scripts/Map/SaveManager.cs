@@ -45,19 +45,22 @@ public static class SaveManager
         public ObjectivesData objectivesData;
         public UnitsData unitsData;
         public BulletData bulletData;
+        public FactionResourceManager.FactionResourcesWrapper factionResource;
         public GameState()
         {
             this.mapData = new MapData();
             this.objectivesData = new ObjectivesData();
             this.unitsData = new UnitsData();
             this.bulletData = new BulletData();
+            this.factionResource = new FactionResourceManager.FactionResourcesWrapper();
         }
-        public GameState(MapData mapData,ObjectivesData objectivesData,UnitsData unitsData,BulletData bulletData)
+        public GameState(MapData mapData,ObjectivesData objectivesData,UnitsData unitsData,BulletData bulletData, FactionResourceManager.FactionResourcesWrapper factionResource)
         {
             this.mapData = mapData;
             this.objectivesData = objectivesData;
             this.unitsData = unitsData;
             this.bulletData = bulletData;
+            this.factionResource = factionResource;
         }
     }
     public class MapData

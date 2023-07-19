@@ -140,15 +140,19 @@ namespace PathfindMap
         {
             if (mapTiles[position.Item1, position.Item2].occupied is not null)
             {
-                if (mapTiles[position.Item1, position.Item2].occupied.isDead())
-                {
-                    return mapTiles[position.Item1, position.Item2].occupiedStatic;
-                }
                 return !mapTiles[position.Item1, position.Item2].occupied.IsMoving() || mapTiles[position.Item1, position.Item2].occupiedStatic;
             }
             else
             {
-                return mapTiles[position.Item1, position.Item2].occupiedStatic;
+                try
+                {
+                    return mapTiles[position.Item1, position.Item2].occupiedStatic;
+                }
+                catch (Exception)
+                {
+                    Debug.Log("WTF");
+                    return false;
+                }
             }
         }
         public void UpdateOccupation((int,int) tile,(int,int) previousTile,OccupiesTile o)
