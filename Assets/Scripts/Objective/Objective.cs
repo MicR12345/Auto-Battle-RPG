@@ -182,9 +182,14 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         captureCoorutine = CaputureCoorutine();
         ResolveGraphics();
         healthBar.gameObject.SetActive(false);
+        if (loseCondition || partialLoseCondition)
+        {
+            controller.gameStatusManager.UpdateLoseCondition(this);
+            partialLoseCondition = false;
+        }
         StartCoroutine(captureCoorutine);
     }
-    public void DestroyThis()
+    public void DestroyThis(bool ignoreConditions = false)
     {
         if (faction == controller.aiController.controlledFaction)
         {
@@ -195,6 +200,14 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         healthBar.gameObject.SetActive(false);
         isDestroyed = true;
         controller.UnregisterObjective(this);
+        if ((loseCondition || partialLoseCondition) && !ignoreConditions)
+        {
+            controller.gameStatusManager.UpdateLoseCondition(this);
+        }
+        if ((loseCondition || partialLoseCondition) && ignoreConditions)
+        {
+            controller.gameStatusManager.RemoveCondition(this);
+        }
         GameObject.Destroy(this.gameObject);
     }
     public string faction;
@@ -233,6 +246,10 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
             healthBar.gameObject.SetActive(false);
             captureCoorutine = CaputureCoorutine();
             StartCoroutine(CaputureCoorutine());
+        }
+        if (loseCondition || partialLoseCondition)
+        {
+            controller.gameStatusManager.RegisterLoseCondition(this);
         }
         
     }
@@ -349,6 +366,9 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
         {
             case "destroy":
                 DestroyThis();
+                break;
+            case "destroyIgnoreConditions":
+                DestroyThis(true);
                 break;
             case "freeze":
                 freezeLogic = true;

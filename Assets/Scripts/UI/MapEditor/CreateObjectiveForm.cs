@@ -361,8 +361,8 @@ public class CreateObjectiveForm : MonoBehaviour
         else
         {
             Component baseComp = displayedComponent;
-            //changingComponent = true;
-            PrevComponent();
+            currentEditedDataReference = createdData;
+            dataHeap.RemoveAt(dataHeap.Count - 1);
             DisplayedComponent = baseComp;
         }
     }
@@ -419,7 +419,7 @@ public class CreateObjectiveForm : MonoBehaviour
             int y = int.Parse(createdData.FindParam("y").value);
             Placeable objective = objectiveFactory.ReconstructObjectiveFromData(createdData);
             Vector3 tilePosition = new Vector3(x + 0.5f, y + 0.5f);
-            editedObjective.PerformCommand("destroy");
+            editedObjective.PerformCommand("destroyIgnoreConditions");
             objective.Place(tilePosition);
         }
         gameObject.SetActive(false);

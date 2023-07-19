@@ -18,7 +18,7 @@ public static class SaveManager
     public static GameState LoadGame(string filename)
     {
         XmlSerializer xmlSerializer = new XmlSerializer(typeof(GameState));
-        TextReader reader = new StreamReader(Application.dataPath + "/save.MAP");
+        TextReader reader = new StreamReader(Application.dataPath + "/"+filename);
         GameState gameState = (GameState)xmlSerializer.Deserialize(reader);
         reader.Close();
         return gameState;

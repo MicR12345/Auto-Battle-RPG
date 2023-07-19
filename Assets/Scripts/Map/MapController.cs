@@ -12,49 +12,64 @@ namespace TileMap
 {
     public class MapController : MonoBehaviour
     {
+        [Header("Map stuff")]
         public const string defaultTileName = "grass";
+        
 
         public PathfindMap.Map map;
         public Tilemap tilemap;
         public Tilemap borderTilemap;
         public Tilemap maskTilemap;
 
+        [Header("Factories")]
         public ObjectiveFactory objectiveFactory;
         public UnitFactory unitFactory;
         public GameObject bulletPrefab;
+        [Header("AI")]
         public AIController aiController;
+        [Header("Tiles")]
         public List<BorderTile> borderTiles = new List<BorderTile>();
         public List<MapTile> placeableTiles = new List<MapTile>();
         [HideInInspector]
         public List<Objective> objectives = new List<Objective>();
         [HideInInspector]
         public List<Unit> units = new List<Unit>();
-
+        [Header("Boundries")]
         public GameObject MapBound;
         public GameObject MapBound2;
-
+        [Header("Map editor stuff")]
         public TMP_Dropdown tileDropdown;
         public TMP_Dropdown objectiveDropdown;
         public TMP_Dropdown unitDropdown;
         public TMP_Dropdown factionSelectionDropdown;
-        
+        [Header("Map properties")]
         public bool freezeMap = false;
 
         public int mapSizeX = 100;
         public int mapSizeY = 100;
 
-        public GameObject bulletStorage;
-
+        public bool loadMap = true;
+        public string mapPath = "";
         public bool mapEditorMode = true;
 
+        public GameObject bulletStorage;
+
         List<DataStorage> objectivePrefabs;
+        [Header("GameStatusManager")]
+        public GameStatusManager gameStatusManager;
         private void Start()
         {
             mapEditorMode = true;
             CreateAllTiles();
             LoadObjectives();
-            //LoadGame();
-            CreateEmptyMapWithSize(mapSizeX, mapSizeY);
+            if (loadMap)
+            {
+                LoadGame();
+            }
+            else
+            {
+                CreateEmptyMapWithSize(mapSizeX, mapSizeY);
+            }
             FillMapEditorOptions();
         }
         void CreateEmptyMapWithSize(int x,int y)
@@ -118,6 +133,7 @@ namespace TileMap
                 optionData.text = objectiveData.FindParam("name").value;
                 options.Add(optionData );
             }
+            objectiveDropdown.ClearOptions();
             objectiveDropdown.AddOptions(options);
         }
         void FillMapEditorUnitOptions()
@@ -578,7 +594,7 @@ namespace TileMap
         }
         public void LoadGame()
         {
-            SaveManager.GameState gameState = SaveManager.LoadGame("");
+            SaveManager.GameState gameState = SaveManager.LoadGame(mapPath);
             ReconstructTiles(gameState.mapData);
             ReconstructObjectives(gameState.objectivesData);
             ReconstructUnits(gameState.unitsData);

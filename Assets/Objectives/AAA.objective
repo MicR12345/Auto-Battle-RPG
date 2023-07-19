@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DataStorage xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <name>Objective</name>
+  <parameters>
+    <Parameter>
+      <name>name</name>
+      <value>AAA</value>
+    </Parameter>
+    <Parameter>
+      <name>maxHP</name>
+      <value>5000</value>
+    </Parameter>
+    <Parameter>
+      <name>faction</name>
+      <value>Player</value>
+    </Parameter>
+    <Parameter>
+      <name>hp</name>
+      <value>5000</value>
+    </Parameter>
+    <Parameter>
+      <name>gatherSpotX</name>
+      <value>-1</value>
+    </Parameter>
+    <Parameter>
+      <name>gatherSpotY</name>
+      <value>-1</value>
+    </Parameter>
+    <Parameter>
+      <name>graphicsPackage</name>
+      <value>Base</value>
+    </Parameter>
+    <Parameter>
+      <name>partialLoseCondition</name>
+      <value>False</value>
+    </Parameter>
+    <Parameter>
+      <name>loseCondition</name>
+      <value>False</value>
+    </Parameter>
+  </parameters>
+</DataStorage>
