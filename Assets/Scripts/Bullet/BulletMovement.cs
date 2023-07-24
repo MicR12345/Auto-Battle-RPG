@@ -29,8 +29,9 @@ public class BulletMovement : MonoBehaviour
             return;
         }
         if (bullet.controller.freezeMap) return;
-        if (Vector3.Distance(transform.position,target)<.3f)
+        if (Vector3.Distance(origin,transform.position)>=Vector3.Distance(origin,target))
         {
+            transform.position = target;
             bullet.Explode();
         }
         transform.position = transform.position + Vector3.Normalize(target-transform.position) * speed * Time.deltaTime;

@@ -65,7 +65,7 @@
               </Parameter>
               <Parameter>
                 <name>timer</name>
-                <value>2,440012</value>
+                <value>0,6200013</value>
               </Parameter>
             </parameters>
             <subcomponents>
@@ -78,7 +78,7 @@
                   </Parameter>
                   <Parameter>
                     <name>time</name>
-                    <value>4</value>
+                    <value>2</value>
                   </Parameter>
                 </parameters>
               </DataStorage>
@@ -91,6 +91,54 @@
   <unitsData>
     <units />
   </unitsData>
+  <turretsData>
+    <turrets>
+      <DataStorage>
+        <name>Turret</name>
+        <parameters>
+          <Parameter>
+            <name>type</name>
+            <value>Type1</value>
+          </Parameter>
+          <Parameter>
+            <name>faction</name>
+            <value>Player</value>
+          </Parameter>
+          <Parameter>
+            <name>x</name>
+            <value>28.5</value>
+          </Parameter>
+          <Parameter>
+            <name>y</name>
+            <value>17.5</value>
+          </Parameter>
+          <Parameter>
+            <name>hp</name>
+            <value>500</value>
+          </Parameter>
+        </parameters>
+        <subcomponents>
+          <DataStorage>
+            <name>TurretShoot</name>
+            <parameters>
+              <Parameter>
+                <name>cooldown</name>
+                <value>4.240001</value>
+              </Parameter>
+              <Parameter>
+                <name>time</name>
+                <value>5</value>
+              </Parameter>
+              <Parameter>
+                <name>bulletPhaseIter</name>
+                <value>0</value>
+              </Parameter>
+            </parameters>
+          </DataStorage>
+        </subcomponents>
+      </DataStorage>
+    </turrets>
+  </turretsData>
   <bulletData>
     <bullets />
   </bulletData>
@@ -101,7 +149,7 @@
         <resources>
           <Resource>
             <name>gold</name>
-            <value>8</value>
+            <value>24</value>
           </Resource>
         </resources>
       </Faction>

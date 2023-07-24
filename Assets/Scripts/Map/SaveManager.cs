@@ -44,6 +44,7 @@ public static class SaveManager
         public MapData mapData;
         public ObjectivesData objectivesData;
         public UnitsData unitsData;
+        public TurretsData turretsData;
         public BulletData bulletData;
         public FactionResourceManager.FactionResourcesWrapper factionResource;
         public GameState()
@@ -51,14 +52,16 @@ public static class SaveManager
             this.mapData = new MapData();
             this.objectivesData = new ObjectivesData();
             this.unitsData = new UnitsData();
+            this.turretsData = new TurretsData();
             this.bulletData = new BulletData();
             this.factionResource = new FactionResourceManager.FactionResourcesWrapper();
         }
-        public GameState(MapData mapData,ObjectivesData objectivesData,UnitsData unitsData,BulletData bulletData, FactionResourceManager.FactionResourcesWrapper factionResource)
+        public GameState(MapData mapData,ObjectivesData objectivesData,UnitsData unitsData,TurretsData turretsData,BulletData bulletData, FactionResourceManager.FactionResourcesWrapper factionResource)
         {
             this.mapData = mapData;
             this.objectivesData = objectivesData;
             this.unitsData = unitsData;
+            this.turretsData = turretsData;
             this.bulletData = bulletData;
             this.factionResource = factionResource;
         }
@@ -119,6 +122,18 @@ public static class SaveManager
         public UnitsData(List<DataStorage> data)
         {
             units = data;
+        }
+    }
+    public class TurretsData
+    {
+        public List<DataStorage> turrets;
+        public TurretsData()
+        {
+            turrets = null;
+        }
+        public TurretsData(List<DataStorage> data)
+        {
+            turrets = data;
         }
     }
     public class BulletData

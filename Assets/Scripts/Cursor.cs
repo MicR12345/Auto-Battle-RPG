@@ -173,6 +173,11 @@ public class Cursor : MonoBehaviour
         placeable = controller.unitFactory.CreatePlaceableUnit(controller.unitDropdown.options[controller.unitDropdown.value].text, controller.factionSelectionDropdown.options[controller.factionSelectionDropdown.value].text);
         BeginPlaceableObjectMode();
     }
+    public void BeginTurretPlacement()
+    {
+        placeable = controller.turretFactory.CreatePlaceableTurret(controller.turretDropdown.options[controller.turretDropdown.value].text, controller.factionSelectionDropdown.options[controller.factionSelectionDropdown.value].text);
+        BeginPlaceableObjectMode();
+    }
     void BeginPlaceableObjectMode()
     {
         mode = CursorMode.PlacementMode;

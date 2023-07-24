@@ -24,6 +24,7 @@ namespace TileMap
         [Header("Factories")]
         public ObjectiveFactory objectiveFactory;
         public UnitFactory unitFactory;
+        public TurretFactory turretFactory;
         public GameObject bulletPrefab;
         [Header("AI")]
         public AIController aiController;
@@ -34,6 +35,8 @@ namespace TileMap
         public List<Objective> objectives = new List<Objective>();
         [HideInInspector]
         public List<Unit> units = new List<Unit>();
+        [HideInInspector]
+        public List<Turret> turrets = new List<Turret>();
         [Header("Boundries")]
         public GameObject MapBound;
         public GameObject MapBound2;
@@ -41,6 +44,7 @@ namespace TileMap
         public TMP_Dropdown tileDropdown;
         public TMP_Dropdown objectiveDropdown;
         public TMP_Dropdown unitDropdown;
+        public TMP_Dropdown turretDropdown;
         public TMP_Dropdown factionSelectionDropdown;
         [Header("Map properties")]
         public bool freezeMap = false;
@@ -112,6 +116,7 @@ namespace TileMap
             FillMapEditorTileOptions();
             
             FillMapEditorUnitOptions();
+            FillMapEditorTurretOptions();
         }
         void FillMapEditorTileOptions()
         {
@@ -147,6 +152,17 @@ namespace TileMap
                 options.Add(optionData);
             }
             unitDropdown.AddOptions(options);
+        }
+        void FillMapEditorTurretOptions()
+        {
+            List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
+            foreach (TurretType turretType in turretFactory.turretTypes)
+            {
+                TMP_Dropdown.OptionData optionData = new TMP_Dropdown.OptionData();
+                optionData.text = turretType.type;
+                options.Add(optionData);
+            }
+            turretDropdown.AddOptions(options);
         }
         void CreateAllTiles()
         {
@@ -566,6 +582,14 @@ namespace TileMap
         {
             units.Remove(unit);
         }
+        public void RegisterTurret(Turret turret)
+        {
+            turrets.Add(turret);
+        }
+        public void UnregisterTurret(Turret turret)
+        {
+            turrets.Remove(turret);
+        }
         public List<Unit> GetUnitsInAreaOfFaction(Vector3 start,Vector3 endPoint,string faction)
         {
             List<Unit> areaUnits = new List<Unit>();
@@ -599,6 +623,7 @@ namespace TileMap
             ReconstructTiles(gameState.mapData);
             ReconstructObjectives(gameState.objectivesData);
             ReconstructUnits(gameState.unitsData);
+            ReconstructTurrets(gameState.turretsData);
             ReconstructBullets(gameState.bulletData);
             RestoreFactionData(gameState);
         }
@@ -643,6 +668,17 @@ namespace TileMap
                     ));
             }
         }
+        public void ReconstructTurrets(SaveManager.TurretsData turretsData)
+        {
+            foreach (DataStorage turret in turretsData.turrets)
+            {
+                Placeable turretss = turretFactory.ReconstructTurretFromData(turret);
+                turretss.Place(new Vector3(
+                    float.Parse(turret.FindParam("x").value, CultureInfo.InvariantCulture.NumberFormat),
+                    float.Parse(turret.FindParam("y").value, CultureInfo.InvariantCulture.NumberFormat)
+                    ));
+            }
+        }
         public void ReconstructBullets(SaveManager.BulletData bulletData)
         {
             foreach (DataStorage bulletDat in bulletData.bullets)
@@ -677,6 +713,12 @@ namespace TileMap
                 unitData.Add(unit.GetData());
             }
             SaveManager.UnitsData unitsData = new SaveManager.UnitsData(unitData);
+            List<DataStorage> turretData = new List<DataStorage>();
+            foreach (StoresData turret in turrets)
+            {
+                turretData.Add(turret.GetData());
+            }
+            SaveManager.TurretsData turretsData = new SaveManager.TurretsData(turretData);
             List<DataStorage> bulletData = new List<DataStorage>();
             foreach (Transform transform in bulletStorage.transform)
             {
@@ -687,7 +729,7 @@ namespace TileMap
                 }
             }
             SaveManager.BulletData bulletsData = new SaveManager.BulletData(bulletData);
-            SaveManager.GameState gameState = new SaveManager.GameState(mapData,objectivesData, unitsData,bulletsData,factionResourceManager.resourcesWrapper);
+            SaveManager.GameState gameState = new SaveManager.GameState(mapData,objectivesData, unitsData,turretsData,bulletsData,factionResourceManager.resourcesWrapper);
             SaveManager.SaveGame(ref gameState);
         }
     }
