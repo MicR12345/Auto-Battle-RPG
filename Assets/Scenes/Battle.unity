@@ -20253,8 +20253,8 @@ MonoBehaviour:
     objectiveSprites:
     - name: Player
       stateSprite:
-      - {fileID: 21300000, guid: fc464a374702f3b49adcc618d277a074, type: 3}
-      - {fileID: 21300000, guid: 78e0b74a1f4bc234691f5c341f68ba18, type: 3}
+      - {fileID: 21300000, guid: 1529f61f4caf16e4698d6fd5e4ad11db, type: 3}
+      - {fileID: 21300000, guid: dd2d1c42f229fa8459c818a201340c85, type: 3}
       animSpeed: 1
     - name: Enemy
       stateSprite:

@@ -124,10 +124,10 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 20
+        height: 20
+      alignment: 9
+      pivot: {x: 0.65, y: 0.6}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -143,12 +143,12 @@ TextureImporter:
       name: Orb_1
       rect:
         serializedVersion: 2
-        x: 16
+        x: 20
         y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 20
+        height: 20
+      alignment: 9
+      pivot: {x: 0.65, y: 0.6}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
