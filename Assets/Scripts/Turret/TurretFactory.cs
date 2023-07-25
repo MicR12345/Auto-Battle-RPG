@@ -42,6 +42,8 @@ public class TurretFactory : MonoBehaviour
             turretObject.transform.Find(comp).gameObject.SetActive(true);
         }
         turret.controller = controller;
+        TurretSprites turretSprites = turretType.FindSpriteWithName("Base");
+        turret.animator.SetSpriteList(turretSprites.stateSprite, turretSprites.animSpeed);
         turret.freezeLogic = true;
         return turret;
     }
@@ -76,6 +78,8 @@ public class TurretFactory : MonoBehaviour
         turret.reconstructionData = turretData;
         turret.isReconstructed = true;
         turret.controller = controller;
+        TurretSprites turretSprites = turretType.FindSpriteWithName("Base");
+        turret.animator.SetSpriteList(turretSprites.stateSprite, turretSprites.animSpeed);
         turret.freezeLogic = true;
         return turret;
     }
@@ -89,6 +93,17 @@ public class TurretType
     public List<string> components = new List<string>();
     public List<BulletPhase> bulletPhases = new List<BulletPhase>();
     public List<TurretSprites> sprites = new List<TurretSprites>();
+    public TurretSprites FindSpriteWithName(string name)
+    {
+        foreach (TurretSprites sprite in sprites)
+        {
+            if (sprite.name==name)
+            {
+                return sprite;
+            }
+        }
+        return null;
+    }
 }
 [System.Serializable]
 public class TurretSprites

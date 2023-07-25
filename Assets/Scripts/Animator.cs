@@ -28,7 +28,7 @@ public class Animator : MonoBehaviour
             {
                 nextSprite = 0;
             }
-            yield return new WaitForSeconds(playSpeed);
+            yield return new WaitForSeconds(1/playSpeed);
         }
     }
 }

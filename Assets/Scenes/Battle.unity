@@ -18158,7 +18158,12 @@ MonoBehaviour:
       speed: 30
       damage: 5
       range: 0
-    sprites: []
+    sprites:
+    - name: Base
+      stateSprite:
+      - {fileID: 442872484, guid: b8220d6302400004abb556e2b03d72d9, type: 3}
+      - {fileID: -1456906250, guid: b8220d6302400004abb556e2b03d72d9, type: 3}
+      animSpeed: 3
 --- !u!4 &1848254983
 Transform:
   m_ObjectHideFlags: 0

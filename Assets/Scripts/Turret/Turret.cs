@@ -8,6 +8,8 @@ public class Turret : MonoBehaviour,Targetable,Placeable,Damageable,StoresData
 {
     public TileMap.MapController controller;
 
+    public Animator animator;
+
     public List<StoresData> componentSerializableData = new List<StoresData>();
     public DataStorage reconstructionData = null;
     public bool isReconstructed = false;
