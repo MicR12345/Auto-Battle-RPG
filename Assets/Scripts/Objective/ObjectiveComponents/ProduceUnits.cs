@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ProduceUnits : MonoBehaviour,StoresData,Component
+public class ProduceUnits : MonoBehaviour,StoresData,Component,ProducesStuff
 {
     Objective objective;
     [SerializeField]
     List<ProductionSlot> slots = new List<ProductionSlot>();
-
+    List<ProductionState> productionStates = new List<ProductionState>();
     Vector3 productionOffset = new Vector3(3,3);
     void Start()
     {
         objective = transform.parent.gameObject.GetComponent<Objective>();
         objective.componentSerializableData.Add(this);
+        objective.productionComponents.Add(this);
         if (objective.isReconstructed)
         {
             DataStorage productionData = objective.reconstructionData.FindSubcomp(transform.name);
@@ -23,6 +24,7 @@ public class ProduceUnits : MonoBehaviour,StoresData,Component
             {
                 ProductionSlot productionSlot = new ProductionSlot(slot);
                 slots.Add(productionSlot);
+                productionStates.Add(productionSlot.state);
             }
         }
     }
@@ -54,6 +56,7 @@ public class ProduceUnits : MonoBehaviour,StoresData,Component
             {
                 slots[i].timer -= Time.deltaTime;
             }
+            slots[i].UpdateProductionProgress();
         }
     }
     void Produce(int i)
@@ -136,14 +139,20 @@ public class ProduceUnits : MonoBehaviour,StoresData,Component
         return produceUnits;
     }
 
+    List<ProductionState> ProducesStuff.GetProductionStates()
+    {
+        return productionStates;
+    }
+
     [System.Serializable]
-    class ProductionSlot
+    class ProductionSlot:Upgradeable
     {
         public string currentType;
         public int currentStage = 0;
         public float time;
         public List<string> upgrades = new List<string>();
         public float timer;
+        public ProductionState state;
         public DataStorage convertToDataStorage()
         {
             DataStorage dataStorage = new DataStorage("ProductionSlots");
@@ -170,7 +179,32 @@ public class ProduceUnits : MonoBehaviour,StoresData,Component
             {
                 upgrades.Add(upgradesData[i].FindParam("upgradeName").value);
             }
+            state = new ProductionState(currentType,null,
+                Mathf.CeilToInt((timer * 100) / time),100,isUpgradeable(),this);
         }
+        public bool isUpgradeable()
+        {
+            return upgrades.Count > currentStage + 1;
+        }
+
+        public void Upgrade()
+        {
+            currentStage++;
+            currentType = upgrades[currentStage];
+            timer = time;
+            UpdateProductionState();
+        }
+        public void UpdateProductionState()
+        {
+            state.name = currentType;
+            state.progress = 0;
+            state.Upgradeable = isUpgradeable();
+        }
+        public void UpdateProductionProgress()
+        {
+            state.Progress = Mathf.CeilToInt((timer * 100) / time);
+        }
+
         public ProductionSlot()
         {
 

@@ -65,7 +65,7 @@
               </Parameter>
               <Parameter>
                 <name>timer</name>
-                <value>0,6200013</value>
+                <value>1,880011</value>
               </Parameter>
             </parameters>
             <subcomponents>
@@ -79,6 +79,34 @@
                   <Parameter>
                     <name>time</name>
                     <value>2</value>
+                  </Parameter>
+                </parameters>
+              </DataStorage>
+            </subcomponents>
+          </DataStorage>
+          <DataStorage>
+            <name>ProduceResearch</name>
+            <parameters>
+              <Parameter>
+                <name>stage</name>
+                <value>0</value>
+              </Parameter>
+              <Parameter>
+                <name>timer</name>
+                <value>0,02000575</value>
+              </Parameter>
+            </parameters>
+            <subcomponents>
+              <DataStorage>
+                <name>researchProductionStage</name>
+                <parameters>
+                  <Parameter>
+                    <name>value</name>
+                    <value>4</value>
+                  </Parameter>
+                  <Parameter>
+                    <name>time</name>
+                    <value>1</value>
                   </Parameter>
                 </parameters>
               </DataStorage>
@@ -123,7 +151,7 @@
             <parameters>
               <Parameter>
                 <name>cooldown</name>
-                <value>4.240001</value>
+                <value>-0.01999529</value>
               </Parameter>
               <Parameter>
                 <name>time</name>
@@ -149,7 +177,11 @@
         <resources>
           <Resource>
             <name>gold</name>
-            <value>24</value>
+            <value>44</value>
+          </Resource>
+          <Resource>
+            <name>research</name>
+            <value>64</value>
           </Resource>
         </resources>
       </Faction>

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ProduceGold : MonoBehaviour,StoresData,Component
+public class ProduceGold : MonoBehaviour,StoresData,Component,ProducesStuff,Upgradeable
 {
-    const string resourceName = "gold";
+    public string resourceName = "gold";
 
     Objective objective;
 
@@ -14,6 +14,7 @@ public class ProduceGold : MonoBehaviour,StoresData,Component
 
     [SerializeField]
     List<GoldProductionStage> goldProductionStages = new List<GoldProductionStage>();
+    ProductionState productionState;
     [System.Serializable]
     public class GoldProductionStage
     {
@@ -25,9 +26,9 @@ public class ProduceGold : MonoBehaviour,StoresData,Component
             this.time = float.Parse(dataStorage.FindParam("time").value);
 
         }
-        public DataStorage convertToDataStorage()
+        public DataStorage convertToDataStorage(string resourceName)
         {
-            DataStorage dataStorage = new DataStorage("goldProductionStage");
+            DataStorage dataStorage = new DataStorage(resourceName + "ProductionStage");
             dataStorage.EditParam("value", this.value.ToString());
             dataStorage.EditParam("time", this.time.ToString());
             return dataStorage;
@@ -37,16 +38,18 @@ public class ProduceGold : MonoBehaviour,StoresData,Component
     {
         objective = transform.parent.GetComponent<Objective>();
         objective.componentSerializableData.Add(this);
+        objective.productionComponents.Add(this);
         if (objective.isReconstructed)
         {
             DataStorage goldData = objective.reconstructionData.FindSubcomp(transform.name);
             stage = int.Parse(goldData.FindParam("stage").value);
             timer = float.Parse(goldData.FindParam("stage").value);
-            List<DataStorage> productionStages = goldData.FindAllSubcomps("goldProductionStage");
+            List<DataStorage> productionStages = goldData.FindAllSubcomps(resourceName + "ProductionStage");
             foreach (DataStorage stage in productionStages)
             {
                 goldProductionStages.Add(new GoldProductionStage(stage));
             }
+            GenerateProductionStates();
         }
     }
     private void FixedUpdate()
@@ -61,6 +64,38 @@ public class ProduceGold : MonoBehaviour,StoresData,Component
         {
             timer -= Time.deltaTime;
         }
+        productionState.Progress = Mathf.CeilToInt((timer * 100) / (goldProductionStages[stage].time));
+    }
+    void GenerateProductionStates()
+    {
+        bool isUpgradeable = CheckIfUpgradeable();
+        Upgradeable upgradeable = null;
+        if (isUpgradeable)
+        {
+            upgradeable = this;
+        }
+        this.productionState = new ProductionState(resourceName, null,
+            Mathf.CeilToInt((timer * 100) / (goldProductionStages[stage].time)), 100, isUpgradeable, upgradeable);
+    }
+    void UpdateProductionState()
+    {
+        productionState.progress = Mathf.CeilToInt((timer * 100) / (goldProductionStages[stage].time));
+        bool isUpgradeable = CheckIfUpgradeable();
+        Upgradeable upgradeable = null;
+        if (isUpgradeable)
+        {
+            upgradeable = this;
+        }
+        productionState.Upgradeable = isUpgradeable;
+        productionState.upgradeableRef = upgradeable;
+    }
+    bool CheckIfUpgradeable()
+    {
+        if (goldProductionStages.Count>stage+1)
+        {
+            return true;
+        }
+        return false;
     }
 
     public DataStorage GetData()
@@ -70,7 +105,7 @@ public class ProduceGold : MonoBehaviour,StoresData,Component
         data.EditParam("timer",timer.ToString());
         foreach (GoldProductionStage stage in goldProductionStages)
         {
-            data.AddSubcomponent(stage.convertToDataStorage());
+            data.AddSubcomponent(stage.convertToDataStorage(resourceName));
         }
         return data;
     }
@@ -96,12 +131,26 @@ public class ProduceGold : MonoBehaviour,StoresData,Component
         goldProduction.subComponents = new List<SimpleComponent>();
 
         SimpleComponent productionStage = new SimpleComponent();
-        productionStage.name = "goldProductionStage";
+        productionStage.name = resourceName + "ProductionStage";
         List<(string, TMP_InputField.ContentType)> stageFields = new List<(string, TMP_InputField.ContentType)>();
         stageFields.Add(("value", TMP_InputField.ContentType.IntegerNumber));
         stageFields.Add(("time", TMP_InputField.ContentType.DecimalNumber));
         productionStage.fields = stageFields;
         goldProduction.subComponents.Add(productionStage);
         return goldProduction;
+    }
+
+    List<ProductionState> ProducesStuff.GetProductionStates()
+    {
+        List<ProductionState> states = new List<ProductionState>();
+        states.Add(productionState);
+        return states;
+    }
+
+    public void Upgrade()
+    {
+        stage++;
+        timer = goldProductionStages[stage].time;
+        UpdateProductionState();
     }
 }

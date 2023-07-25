@@ -90,6 +90,7 @@ public class UnitFactory : MonoBehaviour
 public class UnitType
 {
     public string type;
+    public string description;
     public int maxHP;
     public int speed;
     public int capturePower;

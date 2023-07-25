@@ -95,8 +95,11 @@ public class FactionResourceManager : MonoBehaviour
                 Resource resource = FindResource(name);
                 if (resource != null)
                 {
-                    resource.value = resource.value - value;
-                    return true;
+                    if (resource.value - value >=0)
+                    {
+                        resource.value = resource.value - value;
+                        return true;
+                    }
                 }
                 return false;
             }

@@ -29,6 +29,11 @@ public class Cursor : MonoBehaviour
     SpriteRenderer spriteRenderer;
 
     public CreateObjectiveForm objectiveForm;
+
+    public TMPro.TextMeshProUGUI selectedNameText;
+    public TMPro.TextMeshProUGUI selectedDescriptionText;
+
+    public ProductionList productionList;
     void Update()
     {
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + new Vector3(0, 0, 20);
@@ -87,7 +92,6 @@ public class Cursor : MonoBehaviour
                     if (units.Count>0)
                     {
                         ClearSelected();
-                        selected.AddRange(units);
                         foreach (Selectable item in units)
                         {
                             selected.Add(item);
@@ -95,6 +99,7 @@ public class Cursor : MonoBehaviour
                         }
                     }
                     mode = CursorMode.None;
+                    UpdateUI();
                 }
                 else
                 {
@@ -142,6 +147,24 @@ public class Cursor : MonoBehaviour
                     placeable.Discard();
                 }
                 break;
+        }
+    }
+    void UpdateUI()
+    {
+        if (selected.Count==0)
+        {
+            return;
+        }
+        if (selected.Count<=1)
+        {
+            selectedNameText.text = selected[0].GetName();
+            selectedDescriptionText.text = selected[0].GetDescription();
+            productionList.Selectable = selected[0];
+        }
+        else
+        {
+            selectedNameText.text = "Multiple";
+            selectedDescriptionText.text = "Selected multiple objects x" + selected.Count;
         }
     }
     void ClearSelected()
@@ -201,6 +224,9 @@ public interface Selectable
     string GetFaction();
     DataStorage GetData();
     void PerformCommand(string command);
+    List<ProducesStuff> GetProductionData();
+    string GetName();
+    string GetDescription();
 }
 public interface Placeable
 {

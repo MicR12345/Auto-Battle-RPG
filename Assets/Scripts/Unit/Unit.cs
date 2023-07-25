@@ -209,4 +209,19 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
                 break;
         }
     }
+
+    List<ProducesStuff> Selectable.GetProductionData()
+    {
+        return null;
+    }
+
+    public string GetName()
+    {
+        return unitType.type;
+    }
+
+    public string GetDescription()
+    {
+        return unitType.description;
+    }
 }

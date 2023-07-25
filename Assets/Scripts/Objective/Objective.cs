@@ -15,6 +15,7 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
     private int maxHP;
 
     public List<StoresData> componentSerializableData = new List<StoresData>();
+    public List<ProducesStuff> productionComponents = new List<ProducesStuff>();
     public DataStorage reconstructionData = null;
     public bool isReconstructed= false;
     public bool freezeLogic = false;
@@ -377,6 +378,21 @@ public class Objective : MonoBehaviour,Selectable,Placeable,StoresData,Damageabl
                 freezeLogic = false;
                 break;
         }
+    }
+
+    List<ProducesStuff> Selectable.GetProductionData()
+    {
+        return productionComponents;
+    }
+
+    public string GetName()
+    {
+        return transform.name;
+    }
+
+    public string GetDescription()
+    {
+        return "IDK";
     }
 
     [System.Serializable]
