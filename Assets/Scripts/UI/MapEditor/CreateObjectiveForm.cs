@@ -393,6 +393,7 @@ public class CreateObjectiveForm : MonoBehaviour
         else
         {
             Component baseComp = displayedComponent;
+            createdData.subcomponents.Remove(currentEditedDataReference);
             currentEditedDataReference = createdData;
             dataHeap.RemoveAt(dataHeap.Count - 1);
             DisplayedComponent = null;
