@@ -15,10 +15,7 @@ public class Bullet : MonoBehaviour,StoresData
     public BulletMovement bulletMovement;
 
     public TileMap.MapController controller;
-    private void Start()
-    {
-        
-    }
+    public Animator animator;
     public void Explode()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosionRange);
@@ -83,4 +80,35 @@ public class Bullet : MonoBehaviour,StoresData
         this.controller = controller;
         bulletMovement.enabled = true;
     }
+    public static void CreateBullet(BulletPhase bulletPhase ,Targetable currentTarget,TileMap.MapController controller, Vector3 origin, string faction)
+    {
+        GameObject bulletObject = GameObject.Instantiate(controller.bulletPrefab);
+        Bullet bullet = bulletObject.GetComponent<Bullet>();
+        bullet.transform.parent = controller.bulletStorage.transform;
+        bullet.transform.position = origin;
+        bullet.origin = origin;
+        bullet.target = currentTarget.GetShootPosition();
+        bullet.amplitude = bulletPhase.amplitude;
+        bullet.speed = bulletPhase.speed;
+        bullet.damage = bulletPhase.damage;
+        bullet.faction = faction;
+        bullet.controller = controller;
+        bullet.animator.SetSpriteList(bulletPhase.bulletSprites, bulletPhase.animSpeed);
+        bullet.bulletMovement.enabled = true;
+    }
+}
+[System.Serializable]
+public class BulletPhase
+{
+    public string phaseName;
+    public float phaseCD;
+    public float amplitude;
+    public float speed;
+    public int damage;
+    public float range;
+    public List<Sprite> bulletSprites;
+    public float animSpeed;
+
+    public List<Sprite> explosionSprites;
+    public float explostionAnimSpeed;
 }

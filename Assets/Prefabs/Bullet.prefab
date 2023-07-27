@@ -124,6 +124,7 @@ MonoBehaviour:
   faction: 
   bulletMovement: {fileID: 309177410362212277}
   controller: {fileID: 0}
+  animator: {fileID: 2461469109507815259}
 --- !u!1 &7259502184318845521
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,6 +135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5937653181427582938}
   - component: {fileID: 7080460629739095343}
+  - component: {fileID: 2461469109507815259}
   m_Layer: 0
   m_Name: BulletVisualComponent
   m_TagString: Untagged
@@ -198,7 +200,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 50
   m_Sprite: {fileID: 21300000, guid: 78e0b74a1f4bc234691f5c341f68ba18, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -208,3 +210,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2461469109507815259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7259502184318845521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb6f35fba8fa0444cafce1469c6b0357, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 7080460629739095343}
+  currentAnimation: []
+  playSpeed: 1
+  nextSprite: 0
+  loop: 1

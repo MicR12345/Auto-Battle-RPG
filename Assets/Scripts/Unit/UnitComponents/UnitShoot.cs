@@ -51,7 +51,7 @@ public class UnitShoot : MonoBehaviour,StoresData
         switch (currentPhase.phaseName)
         {
             case "shoot":
-                CreateBullet(currentPhase);
+                Bullet.CreateBullet(currentPhase, currentTarget, unit.controller, transform.position, unit.Faction);
                 break;
             case "wait":
                 break;
@@ -59,7 +59,7 @@ public class UnitShoot : MonoBehaviour,StoresData
                 Targetable target = CheckForEnemiesOpportunity(currentPhase);
                 if (target != null && !target.IsTargedDeadInside())
                 {
-                    CreateBulletAltTarget(currentPhase, target);
+                    Bullet.CreateBullet(currentPhase, target, unit.controller, transform.position, unit.Faction);
                 }
                 break;
         }
@@ -175,36 +175,7 @@ public class UnitShoot : MonoBehaviour,StoresData
             yield return new WaitForSeconds(.5f);
         }
     }
-    void CreateBullet(BulletPhase bulletPhase)
-    {
-        GameObject bulletObject = GameObject.Instantiate(unit.controller.bulletPrefab);
-        Bullet bullet = bulletObject.GetComponent<Bullet>();
-        bullet.transform.parent = unit.controller.bulletStorage.transform;
-        bullet.transform.position = transform.position;
-        bullet.origin = transform.position;
-        bullet.target = currentTarget.GetShootPosition();
-        bullet.amplitude = bulletPhase.amplitude;
-        bullet.speed = bulletPhase.speed;
-        bullet.damage = bulletPhase.damage;
-        bullet.faction = unit.Faction;
-        bullet.controller = unit.controller;
-        bullet.bulletMovement.enabled = true;
-    }
-    void CreateBulletAltTarget(BulletPhase bulletPhase,Targetable targetable)
-    {
-        GameObject bulletObject = GameObject.Instantiate(unit.controller.bulletPrefab);
-        Bullet bullet = bulletObject.GetComponent<Bullet>();
-        bullet.transform.parent = unit.controller.bulletStorage.transform;
-        bullet.transform.position = transform.position;
-        bullet.origin = transform.position;
-        bullet.target = targetable.GetShootPosition();
-        bullet.amplitude = bulletPhase.amplitude;
-        bullet.speed = bulletPhase.speed;
-        bullet.damage = bulletPhase.damage;
-        bullet.faction = unit.Faction;
-        bullet.controller = unit.controller;
-        bullet.bulletMovement.enabled = true;
-    }
+
 
     DataStorage StoresData.GetData()
     {
@@ -215,13 +186,4 @@ public class UnitShoot : MonoBehaviour,StoresData
         return dataStorage;
     }
 }
-[System.Serializable]
-public class BulletPhase
-{
-    public string phaseName;
-    public float phaseCD;
-    public float amplitude;
-    public float speed;
-    public int damage;
-    public float range;
-}
+

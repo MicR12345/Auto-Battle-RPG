@@ -51,7 +51,7 @@ public class TurretShoot : MonoBehaviour, StoresData
         switch (currentPhase.phaseName)
         {
             case "shoot":
-                CreateBullet(currentPhase);
+                Bullet.CreateBullet(currentPhase,currentTarget,turret.controller,transform.position,turret.Faction);
                 break;
             case "wait":
                 break;
@@ -59,7 +59,7 @@ public class TurretShoot : MonoBehaviour, StoresData
                 Targetable target = CheckForEnemiesOpportunity(currentPhase);
                 if (target != null && !target.IsTargedDeadInside())
                 {
-                    CreateBulletAltTarget(currentPhase, target);
+                    Bullet.CreateBullet(currentPhase, target, turret.controller, transform.position, turret.Faction);
                 }
                 break;
         }
@@ -175,36 +175,7 @@ public class TurretShoot : MonoBehaviour, StoresData
             yield return new WaitForSeconds(.5f);
         }
     }
-    void CreateBullet(BulletPhase bulletPhase)
-    {
-        GameObject bulletObject = GameObject.Instantiate(turret.controller.bulletPrefab);
-        Bullet bullet = bulletObject.GetComponent<Bullet>();
-        bullet.transform.parent = turret.controller.bulletStorage.transform;
-        bullet.transform.position = transform.position;
-        bullet.origin = transform.position;
-        bullet.target = currentTarget.GetShootPosition();
-        bullet.amplitude = bulletPhase.amplitude;
-        bullet.speed = bulletPhase.speed;
-        bullet.damage = bulletPhase.damage;
-        bullet.faction = turret.Faction;
-        bullet.controller = turret.controller;
-        bullet.bulletMovement.enabled = true;
-    }
-    void CreateBulletAltTarget(BulletPhase bulletPhase, Targetable targetable)
-    {
-        GameObject bulletObject = GameObject.Instantiate(turret.controller.bulletPrefab);
-        Bullet bullet = bulletObject.GetComponent<Bullet>();
-        bullet.transform.parent = turret.controller.bulletStorage.transform;
-        bullet.transform.position = transform.position;
-        bullet.origin = transform.position;
-        bullet.target = targetable.GetShootPosition();
-        bullet.amplitude = bulletPhase.amplitude;
-        bullet.speed = bulletPhase.speed;
-        bullet.damage = bulletPhase.damage;
-        bullet.faction = turret.Faction;
-        bullet.controller = turret.controller;
-        bullet.bulletMovement.enabled = true;
-    }
+
 
     DataStorage StoresData.GetData()
     {

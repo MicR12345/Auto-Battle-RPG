@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b8220d6302400004abb556e2b03d72d9
+guid: b005e777e590fa24fad26cee9ccc02d6
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 8
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -119,43 +119,43 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Orb_0
+      name: BulletOrb_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 20
-        height: 20
-      alignment: 9
-      pivot: {x: 0.65, y: 0.6}
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0ebfc96e57bcfa244800ab8e53b84220
-      internalID: 442872484
+      spriteID: a1f5c8018962fbe41b1e995cb0a65a2e
+      internalID: -1126693412
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Orb_1
+      name: BulletOrb_1
       rect:
         serializedVersion: 2
-        x: 20
+        x: 8
         y: 0
-        width: 20
-        height: 20
-      alignment: 9
-      pivot: {x: 0.65, y: 0.6}
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8e8d764d3ee430b4f84b4fef65fb96a0
-      internalID: -1456906250
+      spriteID: dd0c73d04fdafb648b06b038c490ffdb
+      internalID: 1722837841
       vertices: []
       indices: 
       edges: []
@@ -171,8 +171,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Orb_0: 442872484
-      Orb_1: -1456906250
+      BulletOrb_0: -1126693412
+      BulletOrb_1: 1722837841
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

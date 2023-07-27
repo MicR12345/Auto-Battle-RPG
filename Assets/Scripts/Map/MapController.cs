@@ -31,6 +31,7 @@ namespace TileMap
         [Header("Tiles")]
         public List<BorderTile> borderTiles = new List<BorderTile>();
         public List<MapTile> placeableTiles = new List<MapTile>();
+        public List<AutoBorder> autoBorderTiles = new List<AutoBorder>();
         [HideInInspector]
         public List<Objective> objectives = new List<Objective>();
         [HideInInspector]
@@ -182,6 +183,10 @@ namespace TileMap
             {
                 border.GenerateTileData();
             }
+            foreach (AutoBorder border in autoBorderTiles)
+            {
+                border.CreateTiles();
+            }
         }
         public void PlaceTile(MapTile tile,int x,int y)
         {
@@ -213,37 +218,18 @@ namespace TileMap
         void CheckNeighboursForBorders(MapTile tile, int x, int y)
         {
             bool[,] placeBorders = new bool[3,3];
-            foreach (Border border in tile.applicableBorders)
+            for (int i = -1; i <= 1; i++)
             {
-                for (int i = -1; i <= 1; i++)
+                for (int j = -1; j <= 1; j++)
                 {
-                    for (int j = -1; j <= 1; j++)
+                    if (i == 0 && j == 0) continue;
+                    if (x + i >= 0 && x + i < mapSizeX && y + j >= 0 && y + j < mapSizeY)
                     {
-                        if (i == 0 && j == 0) continue;
-                        if (x+i>=0 && x+i <mapSizeX && y+j>=0 && y+j<mapSizeY)
-                        {
-                            TileBase[] tiles = GetTile(x + i, y + j);
-                            if (tiles[tiles.Length-1].name==border.neighbourName)
-                            {
-                                string borderVariant = GetBorderVariantFromPosition(x, y, i, j, border.neighbourName);
-                                BorderTile borderTile = FindBorder(border.borderName);
-                                borderTilemap.SetTile(new Vector3Int(2 * x + 1 + i, 2 * y + 1 + j), borderTile.GetTileVariant(borderVariant));
-                                placeBorders[i + 1, j + 1] = true;
-                            }
-                            if(tiles[tiles.Length - 1].name == tile.tileName)
-                            {
-                                string borderVariant = GetBorderVariantSameTile(x, y, i, j, border.neighbourName);
-                                if (borderVariant!="None")
-                                {
-                                    BorderTile borderTile = FindBorder(border.borderName);
-                                    borderTilemap.SetTile(new Vector3Int(2 * x + 1 + i, 2 * y + 1 + j), borderTile.GetTileVariant(borderVariant));
-                                    placeBorders[i + 1, j + 1] = true;
-                                }
-                            }
-                        }
+                        placeBorders[i + 1, j + 1] = CheckForBorderBetweenTiles(x, y, x + i, y + j);
                     }
                 }
             }
+            placeBorders[1, 1] = true;
             for (int i = -1; i <= 1; i++)
             {
                 for (int j = -1; j <= 1; j++)
@@ -254,6 +240,102 @@ namespace TileMap
                     }
                 }
             }
+        }
+        bool CheckForBorderBetweenTiles(int x1,int y1, int x2,int y2)
+        {
+            TileBase[] tiles1 = GetTile(x1, y1);
+            TileBase[] tiles2 = GetTile(x2, y2);
+            MapTile mapTile1 = FindTile(tiles1[tiles1.Length - 1].name);
+            MapTile mapTile2 = FindTile(tiles2[tiles2.Length - 1].name);
+            int i = x2 - x1;
+            int j = y2 - y1;
+            if (mapTile1 != null && mapTile2 != null)
+            {
+
+                if (mapTile1.tileName==mapTile2.tileName)
+                {
+                    foreach (Border border in mapTile1.applicableBorders)
+                    {
+                        string borderVariant = GetBorderVariantSameTile(x1, y1, i, j, border.neighbourName);
+                        if (borderVariant != "None")
+                        {
+                            BorderTile borderTile = FindBorder(border.borderName);
+                            AutoBorder autoBorder = FindBorderAuto(border.borderName);
+                            if (borderTile != null)
+                            {
+                                borderTilemap.SetTile(new Vector3Int(2 * x1 + 1 + i, 2 * y1 + 1 + j), borderTile.GetTileVariant(borderVariant));
+                                return true;
+                            }
+                            if (autoBorder != null)
+                            {
+                                borderTilemap.SetTile(new Vector3Int(2 * x1 + 1 + i, 2 * y1 + 1 + j), autoBorder.GetBorderVariant(borderVariant,border.isInverted));
+                                return true;
+                            }
+                        }
+                    }
+                    foreach (Border border in mapTile2.applicableBorders)
+                    {
+                        string borderVariant = GetBorderVariantSameTile(x2, y2, -i, -j, border.neighbourName);
+                        if (borderVariant != "None")
+                        {
+                            BorderTile borderTile = FindBorder(border.borderName);
+                            AutoBorder autoBorder = FindBorderAuto(border.borderName);
+                            if (borderTile != null)
+                            {
+                                borderTilemap.SetTile(new Vector3Int(2 * x1 + 1 + i, 2 * y1 + 1 + j), borderTile.GetTileVariant(borderVariant));
+                                return true;
+                            }
+                            if (autoBorder != null)
+                            {
+                                borderTilemap.SetTile(new Vector3Int(2 * x1 + 1 + i, 2 * y1 + 1 + j), autoBorder.GetBorderVariant(borderVariant, border.isInverted));
+                                return true;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Border border in mapTile1.applicableBorders)
+                    {
+                        if (border.neighbourName==mapTile2.tileName)
+                        {
+                            string borderVariant = GetBorderVariantFromPosition(x1, y1, i, j, border.neighbourName);
+                            BorderTile borderTile = FindBorder(border.borderName);
+                            AutoBorder autoBorder = FindBorderAuto(border.borderName);
+                            if (borderTile != null)
+                            {
+                                borderTilemap.SetTile(new Vector3Int(2 * x1 + 1 + i, 2 * y1 + 1 + j), borderTile.GetTileVariant(borderVariant));
+                                return true;
+                            }
+                            if (autoBorder != null)
+                            {
+                                borderTilemap.SetTile(new Vector3Int(2 * x1 + 1 + i, 2 * y1 + 1 + j), autoBorder.GetBorderVariant(borderVariant, border.isInverted));
+                                return true;
+                            }
+                        }
+                    }
+                    foreach (Border border in mapTile2.applicableBorders)
+                    {
+                        if (border.neighbourName == mapTile1.tileName)
+                        {
+                            string borderVariant = GetBorderVariantFromPosition(x2, y2, -i, -j, border.neighbourName);
+                            BorderTile borderTile = FindBorder(border.borderName);
+                            AutoBorder autoBorder = FindBorderAuto(border.borderName);
+                            if (borderTile != null)
+                            {
+                                borderTilemap.SetTile(new Vector3Int(2 * x1 + 1 + i, 2 * y1 + 1 + j), borderTile.GetTileVariant(borderVariant));
+                                return true;
+                            }
+                            if (autoBorder != null)
+                            {
+                                borderTilemap.SetTile(new Vector3Int(2 * x1 + 1 + i, 2 * y1 + 1 + j), autoBorder.GetBorderVariant(borderVariant, border.isInverted));
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
         }
         string GetBorderVariantSameTile(int x, int y, int i, int j, string neighbourName)
         {
@@ -286,7 +368,10 @@ namespace TileMap
                     }
                     else
                     {
-                        return "PL";
+                        if (tileRight == neighbourName && tileAbove == neighbourName)
+                        {
+                            return "PL";
+                        }
                     }
                 }
                 else if (j > 0)
@@ -313,7 +398,7 @@ namespace TileMap
                         }
                         else return "None";
                     }
-                    else
+                    if (tileRight == neighbourName && tileBelow == neighbourName)
                     {
                         return "PR";
                     }
@@ -347,7 +432,10 @@ namespace TileMap
                     }
                     else
                     {
-                        return "PR";
+                        if (tileLeft == neighbourName && tileAbove == neighbourName)
+                        {
+                            return "PR";
+                        }
                     }
                 }
                 else if (j > 0)
@@ -376,7 +464,10 @@ namespace TileMap
                     }
                     else
                     {
-                        return "PL";
+                        if (tileLeft == neighbourName && tileBelow == neighbourName)
+                        {
+                            return "PL";
+                        }
                     }
                 }
             }
@@ -532,11 +623,22 @@ namespace TileMap
         }
         public BorderTile FindBorder(string name)
         {
-            for (int i = 0; i < placeableTiles.Count; i++)
+            for (int i = 0; i < borderTiles.Count; i++)
             {
                 if (borderTiles[i].borderName == name)
                 {
                     return borderTiles[i];
+                }
+            }
+            return null;
+        }
+        public AutoBorder FindBorderAuto(string name)
+        {
+            for (int i = 0; i < autoBorderTiles.Count; i++)
+            {
+                if (autoBorderTiles[i].borderName == name)
+                {
+                    return autoBorderTiles[i];
                 }
             }
             return null;
@@ -798,10 +900,75 @@ namespace TileMap
         }
     }
     [System.Serializable]
+    public class AutoBorder
+    {
+        public string neighbourName;
+        public string borderName;
+        public List<Sprite> textures;
+        public List<TileBase> tileBases;
+        public BorderSetup borderSetup;
+        public void CreateTiles()
+        {
+            for (int i = 0; i < textures.Count; i++)
+            {
+                Tile tile = ScriptableObject.CreateInstance<Tile>();
+                tile.name = borderName + "_" + i;
+                tile.sprite = textures[i];
+                tileBases.Add(tile);
+            }
+        }
+        public static string[] regular = { "TL", "T", "TR", "CBR", "CBL", "ML", "MR", "CTR", "CTL", "BL", "B", "BR", "PR", "PL" };
+        public static string[] inverted = { "CBR", "B", "CBL", "TL", "TR", "MR", "ML", "BL", "BR", "CTR", "T", "CTL", "PL", "PR" };
+        public enum BorderSetup
+        {
+            regular,
+            inverted
+        }
+        public TileBase GetBorderVariant(string variant, bool isInverted = false)
+        {
+            BorderSetup border = borderSetup;
+            if (isInverted)
+            {
+                if (border==BorderSetup.regular)
+                {
+                    border = BorderSetup.inverted;
+                }
+                if (border == BorderSetup.inverted)
+                {
+                    border = BorderSetup.regular;
+                }
+            }
+            switch (border)
+            {
+                case BorderSetup.regular:
+                    for (int i = 0; i < regular.Length; i++)
+                    {
+                        if (regular[i]==variant)
+                        {
+                            return tileBases[i];
+                        }
+                    }
+                    break;
+                case BorderSetup.inverted:
+                    for (int i = 0; i < inverted.Length; i++)
+                    {
+                        if (inverted[i] == variant)
+                        {
+                            return tileBases[i];
+                        }
+                    }
+                    break;
+            }
+            return tileBases[0];
+        }
+    }
+    [System.Serializable]
     public class Border
     {
         public string neighbourName;
         public string borderName;
+        [SerializeField]
+        public bool isInverted;
     }
     [System.Serializable]
     public class MapSaveTileData

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b8220d6302400004abb556e2b03d72d9
+guid: fd97d8ceb2883d240a4bc3ce699829f7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,43 +119,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Orb_0
+      name: Water_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 20
-        height: 20
-      alignment: 9
-      pivot: {x: 0.65, y: 0.6}
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0ebfc96e57bcfa244800ab8e53b84220
-      internalID: 442872484
+      spriteID: b8f57885d44bb9843bed1c15ae6be75e
+      internalID: 506669119
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Orb_1
+      name: Water_1
       rect:
         serializedVersion: 2
-        x: 20
+        x: 16
         y: 0
-        width: 20
-        height: 20
-      alignment: 9
-      pivot: {x: 0.65, y: 0.6}
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8e8d764d3ee430b4f84b4fef65fb96a0
-      internalID: -1456906250
+      spriteID: 2f66869fef7095746ace5b089fea8142
+      internalID: 1825066083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15862d3803bc90f4d9b1ae3253c5753b
+      internalID: 611619313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 999aee68006105446839048e7b9cb062
+      internalID: 950293740
       vertices: []
       indices: 
       edges: []
@@ -171,8 +213,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Orb_0: 442872484
-      Orb_1: -1456906250
+      Water_0: 506669119
+      Water_1: 1825066083
+      Water_2: 611619313
+      Water_3: 950293740
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
