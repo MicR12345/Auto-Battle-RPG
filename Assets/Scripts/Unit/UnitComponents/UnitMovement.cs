@@ -19,6 +19,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
     public bool pathfindTargetReached = true;
 
     Vector3 V3PathfindStep;
+    Vector3 currentTileV3;
 
     bool tileReserved = false;
     bool pathfindTargetChanged = false;
@@ -77,6 +78,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
                 }
             }
         }
+        unit.SetGraphics("NONE");
     }
     private void FixedUpdate()
     {
@@ -94,10 +96,13 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
             {
                 moving = true;
                 V3PathfindStep = PathfindMap.Map.ConvertPathNodeToV3(pathfindPath[pathEnumerator]);
+                (int, int) tile = pathfindPath[pathEnumerator];
+                currentTileV3 = PathfindMap.Map.ConvertPathNodeToV3(currentTile);
+                ResolveMovementGraphics(tile.Item1 - currentTile.Item1, tile.Item2 - currentTile.Item2);
             }
             if (moving)
             {
-                if (Vector3.Distance(V3PathfindStep, transform.parent.position) < 0.1f)
+                if (Vector3.Distance(currentTileV3, transform.parent.position) >= Vector3.Distance(currentTileV3,V3PathfindStep))
                 {
                     pathEnumerator++;
                     (int, int) prevTile = currentTile;
@@ -115,6 +120,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
         }
         else
         {
+            //ResolveMovementGraphics(0, 0);
             if (pathfindHandle!=null)
             {
                 if (!pathfindHandle.IsCompleted)
@@ -151,6 +157,7 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
                             if (Mathf.Sqrt(Mathf.Pow(pathfindTarget.Item1 - currentTile.Item1,2)+ Mathf.Pow(pathfindTarget.Item2 - currentTile.Item2, 2))<=unit.range)
                             {
                                 pathfindTargetReached = true;
+                                ResolveMovementGraphics(0, 0);
                             }
                             else
                             {
@@ -167,10 +174,25 @@ public class UnitMovement : MonoBehaviour,StoresData,PathfindMap.OccupiesTile
             }
         }
     }
+    string[,] graphicsReference =
+    {
+        { "mSW","mW", "mNW"},
+        { "mS","NONE","mN" },
+        { "mSE","mE","mNE" }
+    };
+    string lastMovementGraphics = "NONE";
+    void ResolveMovementGraphics(int xOffset,int yOffset)
+    {
+        if (lastMovementGraphics!= graphicsReference[xOffset + 1, yOffset + 1])
+        {
+            unit.SetGraphics(graphicsReference[xOffset + 1, yOffset + 1]);
+            lastMovementGraphics = graphicsReference[xOffset + 1, yOffset + 1];
+        }
+    }
     public void Pathfind((int,int) destination)
     {
         //(List<(int,int)>, bool) path = unit.controller.map.Astar(currentTile, destination,unit.range);
-        pathfindHandle = unit.controller.map.CreatePathfindThread(currentTile, destination, unit.range);
+        pathfindHandle = unit.controller.map.CreatePathfindThread(currentTile, destination, unit.range/2);
         pathEnumerator = 0;
     }
     public void PartialPathfind()

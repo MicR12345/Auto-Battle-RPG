@@ -60,6 +60,8 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
 
     public bool freezeLogic = false;
 
+    public Animator animator;
+
     void Selectable.OnSelect()
     {
         selectorObject.SetActive(true);
@@ -223,5 +225,13 @@ public class Unit : MonoBehaviour,Selectable,Placeable,StoresData,Damageable,Tar
     public string GetDescription()
     {
         return unitType.description;
+    }
+    public void SetGraphics(string name)
+    {
+        UnitSprites unitSprites = unitType.FindUnitSprites(name);
+        if (unitSprites is not null)
+        {
+            animator.SetSpriteList(unitSprites.stateSprite, unitSprites.animSpeed);
+        }
     }
 }

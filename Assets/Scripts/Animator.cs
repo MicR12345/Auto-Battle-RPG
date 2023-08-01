@@ -14,6 +14,7 @@ public class Animator : MonoBehaviour
         currentAnimation = sprites;
         playSpeed = speed;
         this.loop = loop;
+        nextSprite = 0;
         StopAllCoroutines();
         StartCoroutine(PlayAnimation());
     }

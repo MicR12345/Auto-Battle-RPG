@@ -3815,9 +3815,9 @@ RectTransform:
   m_Father: {fileID: 1759886525}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -20}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 36, y: -20}
   m_SizeDelta: {x: 340, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &389471599
@@ -3837,7 +3837,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 6
+  m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
@@ -4947,7 +4947,7 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 300
+  m_PreferredWidth: 340
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
@@ -11390,7 +11390,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -436}
+  m_AnchoredPosition: {x: 150, y: -593}
   m_SizeDelta: {x: 300, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1109437026
@@ -11997,7 +11997,7 @@ MonoBehaviour:
       borderName: desertwater
       isInverted: 1
   - tileName: desert
-    passable: 0
+    passable: 1
     isMaskLayer: 0
     tileObject: {fileID: 0}
     sprite:
@@ -17498,7 +17498,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 20, y: -250}
+  m_AnchoredPosition: {x: 40, y: -250}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1759886526
@@ -18897,10 +18897,10 @@ RectTransform:
   m_Father: {fileID: 1759886525}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -40, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1954165117
 GameObject:
@@ -18937,7 +18937,7 @@ MonoBehaviour:
   - type: Unit1
     description: 
     maxHP: 200
-    speed: 5
+    speed: 3
     capturePower: 20
     range: 10
     components:
@@ -18955,7 +18955,51 @@ MonoBehaviour:
       animSpeed: 5
       explosionSprites: []
       explostionAnimSpeed: 0
-    sprites: []
+    sprites:
+    - name: mNW
+      stateSprite:
+      - {fileID: 1372678845, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      - {fileID: -1710032257, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      animSpeed: 3
+    - name: mN
+      stateSprite:
+      - {fileID: -684780129, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      - {fileID: 145127379, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      animSpeed: 3
+    - name: mNE
+      stateSprite:
+      - {fileID: 920903188, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      - {fileID: -558044782, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      animSpeed: 3
+    - name: mW
+      stateSprite:
+      - {fileID: 1607853212, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      - {fileID: 839514972, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      animSpeed: 3
+    - name: NONE
+      stateSprite:
+      - {fileID: 1253851201, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      animSpeed: 3
+    - name: mE
+      stateSprite:
+      - {fileID: -343635845, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      - {fileID: -1500097247, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      animSpeed: 3
+    - name: mSW
+      stateSprite:
+      - {fileID: 1072899927, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      - {fileID: 1433058629, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      animSpeed: 3
+    - name: mS
+      stateSprite:
+      - {fileID: -1111098173, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      - {fileID: -635786591, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      animSpeed: 3
+    - name: mSE
+      stateSprite:
+      - {fileID: 1038138873, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      - {fileID: 517872821, guid: 9abeefd35f3b2d34181c0cda3941fa6b, type: 3}
+      animSpeed: 3
 --- !u!4 &1954165119
 Transform:
   m_ObjectHideFlags: 0

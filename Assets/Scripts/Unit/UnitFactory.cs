@@ -98,6 +98,17 @@ public class UnitType
     public List<string> components = new List<string>();
     public List<BulletPhase> bulletPhases = new List<BulletPhase>();
     public List<UnitSprites> sprites = new List<UnitSprites>();
+    public UnitSprites FindUnitSprites(string name)
+    {
+        foreach (UnitSprites sprite in sprites)
+        {
+            if (sprite.name==name)
+            {
+                return sprite;
+            }
+        }
+        return null;
+    }
 }
 [System.Serializable]
 public class UnitSprites

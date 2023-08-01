@@ -618,8 +618,8 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Auto Battle RPG
-  metroPackageVersion: 
+  metroPackageName: AutoBattleRPG
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -627,7 +627,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: Auto Battle RPG
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: Auto Battle RPG
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
