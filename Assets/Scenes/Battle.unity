@@ -470,7 +470,6 @@ MonoBehaviour:
     isMaskLayer: 0
     tileObject: {fileID: 0}
     sprite: []
-    applicableBorders: []
   controller: {fileID: 1174861704}
   selectorTransform: {fileID: 581531734}
   spriteRenderer: {fileID: 58175197}
@@ -11971,80 +11970,139 @@ MonoBehaviour:
   turretFactory: {fileID: 1848254982}
   bulletPrefab: {fileID: 1912011600503024805, guid: d7b53cb94a9391e408da016efca60521, type: 3}
   aiController: {fileID: 1636886360}
-  borderTiles: []
   placeableTiles:
-  - tileName: grass
-    passable: 1
-    isMaskLayer: 0
-    tileObject: {fileID: 0}
-    sprite:
-    - {fileID: 21300000, guid: d9dfdf2e493106f49b9deba08c891a1b, type: 3}
-    applicableBorders:
-    - neighbourName: water
-      borderName: water
-      isInverted: 0
   - tileName: water
     passable: 0
     isMaskLayer: 0
     tileObject: {fileID: 0}
     sprite:
-    - {fileID: 506669119, guid: fd97d8ceb2883d240a4bc3ce699829f7, type: 3}
-    applicableBorders:
-    - neighbourName: grass
-      borderName: water
-      isInverted: 1
-    - neighbourName: desert
-      borderName: desertwater
-      isInverted: 1
-  - tileName: desert
+    - {fileID: 222840931, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: GrassTL
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: -1931764852, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: GrassT
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: -1118863368, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: GrassTR
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: -141427750, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: GrassML
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: 984923578, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: Grass
     passable: 1
     isMaskLayer: 0
     tileObject: {fileID: 0}
     sprite:
-    - {fileID: 21300000, guid: 2ce242067c6647148be5917337f60553, type: 3}
-    applicableBorders:
-    - neighbourName: water
-      borderName: desertwater
-      isInverted: 0
-  autoBorderTiles:
-  - neighbourName: water
-    borderName: desertwater
-    textures:
-    - {fileID: 696390946, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    - {fileID: 2086823481, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    - {fileID: 1555126212, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    - {fileID: -1397003185, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    - {fileID: -1955222617, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    - {fileID: 606377684, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    - {fileID: -32550493, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    - {fileID: 1587240596, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    - {fileID: 1186109087, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    - {fileID: 1959220671, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    - {fileID: 1304351245, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    - {fileID: 359688610, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    - {fileID: -1414636293, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    - {fileID: 268153222, guid: df664df04ab479542a7d90c2eb571835, type: 3}
-    tileBases: []
-    borderSetup: 1
-  - neighbourName: grass
-    borderName: water
-    textures:
-    - {fileID: -1578369288, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    - {fileID: -639952786, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    - {fileID: -2016333294, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    - {fileID: -1157801903, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    - {fileID: 1947708038, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    - {fileID: -1328544961, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    - {fileID: 2013135295, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    - {fileID: -1636611344, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    - {fileID: 64241619, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    - {fileID: 288142292, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    - {fileID: 1750083092, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    - {fileID: 835252151, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    - {fileID: -836189904, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    - {fileID: -1158454085, guid: fc2497b162479a74aa14aca5cc841592, type: 3}
-    tileBases: []
-    borderSetup: 1
+    - {fileID: -140720439, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: GrassMR
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: 1513191324, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: GrassBL
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: -707395022, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: GrassB
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: 1934517074, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: GrassBR
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: 556787508, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: GrassIBL
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: 1085463263, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: GrassIBR
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: 2144981467, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: GrassITL
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: 218139705, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: GrassITR
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: 1184589017, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: GrassSingle
+    passable: 1
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: 429946882, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: BeachTL
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: 1368023053, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: BeachT
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: -676690730, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: BeachTR
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: 1699254756, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: BeachML
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: -2033457900, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: BeachBR
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: -1697967052, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: BeachB
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: -1692632034, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  - tileName: BeachBL
+    passable: 0
+    isMaskLayer: 0
+    tileObject: {fileID: 0}
+    sprite:
+    - {fileID: 534503410, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
   objectives: []
   units: []
   turrets: []
