@@ -12103,6 +12103,15 @@ MonoBehaviour:
     tileObject: {fileID: 0}
     sprite:
     - {fileID: 534503410, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+  tileSpriteSheets:
+  - sheetData:
+      name: Grass
+      pixelWidth: 16
+      pixelHeight: 16
+    spriteSheet: {fileID: 2800000, guid: 1c35fe02e6ecc92448491589f450ad7b, type: 3}
+    areTilesPassable: 1
+    areTilesMask: 0
+    mapTiles: []
   objectives: []
   units: []
   turrets: []

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TMPro;
+using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Globalization;
@@ -30,6 +31,7 @@ namespace TileMap
         public AIController aiController;
         [Header("Tiles")]
         public List<MapTile> placeableTiles = new List<MapTile>();
+        public List<TileSpriteSheet> tileSpriteSheets = new List<TileSpriteSheet>();
         [HideInInspector]
         public List<Objective> objectives = new List<Objective>();
         [HideInInspector]
@@ -65,6 +67,7 @@ namespace TileMap
         {
             mapEditorMode = true;
             CreateAllTiles();
+            CreateSheetTiles();
             LoadObjectives();
             if (loadMap)
             {
@@ -163,6 +166,13 @@ namespace TileMap
             }
             turretDropdown.AddOptions(options);
         }
+        void CreateSheetTiles()
+        {
+            foreach (TileSpriteSheet sheet in tileSpriteSheets)
+            {
+                sheet.CreateMapTiles();
+            }
+        }
         void CreateAllTiles()
         {
             CreateTilesPrefabs();
@@ -171,7 +181,7 @@ namespace TileMap
         {
             foreach (MapTile item in placeableTiles)
             {
-                item.tileObject = CreateTile(item);
+                item.CreateTile();
             }
         }
         public void PlaceTile(MapTile tile,int x,int y)
@@ -233,25 +243,6 @@ namespace TileMap
                 }
             }
             return null;
-        }
-        public TileBase CreateTile(MapTile mapTile)
-        {
-            if (mapTile.sprite.Count>1)
-            {
-                AnimatedTile tile = ScriptableObject.CreateInstance<AnimatedTile>();
-                tile.name = mapTile.tileName;
-                tile.m_AnimatedSprites = mapTile.sprite.ToArray();
-                tile.m_MinSpeed = 1f;
-                tile.m_MaxSpeed = 1f;
-                return tile;
-            }
-            else
-            {
-                Tile tile = ScriptableObject.CreateInstance<Tile>();
-                tile.name = mapTile.tileName;
-                tile.sprite = mapTile.sprite[0];
-                return tile;
-            }
         }
         public (int,int) GetMapTileFromWorldPosition(Vector3 vector3)
         {
@@ -437,6 +428,25 @@ namespace TileMap
         [HideInInspector]
         public TileBase tileObject;
         public List<Sprite> sprite;
+        public void CreateTile()
+        {
+            if (sprite.Count > 1)
+            {
+                AnimatedTile tile = ScriptableObject.CreateInstance<AnimatedTile>();
+                tile.name = tileName;
+                tile.m_AnimatedSprites = sprite.ToArray();
+                tile.m_MinSpeed = 1f;
+                tile.m_MaxSpeed = 1f;
+                tileObject = tile;
+            }
+            else
+            {
+                Tile tile = ScriptableObject.CreateInstance<Tile>();
+                tile.name = tileName;
+                tile.sprite = sprite[0];
+                tileObject = tile;
+            }
+        }
     }
     [System.Serializable]
     public class MapSaveTileData
@@ -455,6 +465,59 @@ namespace TileMap
             tileName = MapController.defaultTileName;
             x = 0;
             y = 0;
+        }
+    }
+    [System.Serializable]
+    public class TileSpriteSheet
+    {
+        public SheetData sheetData;
+        public Texture2D spriteSheet;
+        public bool areTilesPassable = true;
+        public bool areTilesMask = false;
+        //[HideInInspector]
+        public List<MapTile> mapTiles = new List<MapTile>();
+        [System.Serializable]
+        public class SheetData
+        {
+            public string name;
+            public int pixelWidth;
+            public int pixelHeight;
+            bool rowsAreFrames = false;
+            public SheetData()
+            {
+                name = "";
+                pixelWidth = 16;
+                pixelHeight = 16;
+                rowsAreFrames = false;
+            }
+            public SheetData(string name,int width = 16,int height = 16,bool rowsAsFrames = false)
+            {
+                this.name = name;
+                pixelWidth = width;
+                pixelHeight = height;
+                rowsAreFrames = rowsAsFrames;
+            }
+
+        }
+        public void CreateMapTiles()
+        {
+            for (int i = 0; i < spriteSheet.width; i=i+sheetData.pixelWidth)
+            {
+                for (int j = 0; j < spriteSheet.height; j = j + sheetData.pixelHeight)
+                {
+                    Sprite tileSprite = Sprite.Create(spriteSheet, new Rect(new Vector2(i, j), 
+                        new Vector2(sheetData.pixelWidth, sheetData.pixelHeight)),
+                        new Vector2(sheetData.pixelWidth/2, sheetData.pixelHeight/2));
+                    MapTile mapTile = new MapTile();
+                    mapTile.passable = areTilesPassable;
+                    mapTile.sprite = new List<Sprite>();
+                    mapTile.sprite.Add(tileSprite);
+                    mapTile.isMaskLayer = areTilesMask;
+                    mapTile.tileName = sheetData.name + mapTiles.Count;
+                    mapTile.CreateTile();
+                    mapTiles.Add(mapTile);
+                }
+            }
         }
     }
 }

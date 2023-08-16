@@ -1830,7 +1830,7 @@
         <y>13</y>
       </Tile>
       <Tile>
-        <tileName>GrassBL</tileName>
+        <tileName>BeachBR</tileName>
         <x>13</x>
         <y>14</y>
       </Tile>
@@ -1940,7 +1940,7 @@
         <y>13</y>
       </Tile>
       <Tile>
-        <tileName>GrassB</tileName>
+        <tileName>BeachB</tileName>
         <x>14</x>
         <y>14</y>
       </Tile>
@@ -2040,7 +2040,7 @@
         <y>13</y>
       </Tile>
       <Tile>
-        <tileName>GrassB</tileName>
+        <tileName>BeachB</tileName>
         <x>15</x>
         <y>14</y>
       </Tile>
@@ -2165,12 +2165,12 @@
         <y>13</y>
       </Tile>
       <Tile>
-        <tileName>GrassB</tileName>
+        <tileName>BeachB</tileName>
         <x>16</x>
         <y>14</y>
       </Tile>
       <Tile>
-        <tileName>GrassT</tileName>
+        <tileName>BeachT</tileName>
         <x>16</x>
         <y>16</y>
       </Tile>
@@ -2190,7 +2190,7 @@
         <y>19</y>
       </Tile>
       <Tile>
-        <tileName>GrassB</tileName>
+        <tileName>BeachB</tileName>
         <x>16</x>
         <y>20</y>
       </Tile>
@@ -2300,12 +2300,12 @@
         <y>13</y>
       </Tile>
       <Tile>
-        <tileName>GrassB</tileName>
+        <tileName>BeachB</tileName>
         <x>17</x>
         <y>14</y>
       </Tile>
       <Tile>
-        <tileName>GrassT</tileName>
+        <tileName>BeachT</tileName>
         <x>17</x>
         <y>16</y>
       </Tile>
@@ -2325,7 +2325,7 @@
         <y>19</y>
       </Tile>
       <Tile>
-        <tileName>GrassB</tileName>
+        <tileName>BeachB</tileName>
         <x>17</x>
         <y>20</y>
       </Tile>
@@ -2460,7 +2460,7 @@
         <y>13</y>
       </Tile>
       <Tile>
-        <tileName>GrassBR</tileName>
+        <tileName>BeachBL</tileName>
         <x>18</x>
         <y>14</y>
       </Tile>
@@ -2470,7 +2470,7 @@
         <y>15</y>
       </Tile>
       <Tile>
-        <tileName>GrassTR</tileName>
+        <tileName>BeachTR</tileName>
         <x>18</x>
         <y>16</y>
       </Tile>
@@ -2490,7 +2490,7 @@
         <y>19</y>
       </Tile>
       <Tile>
-        <tileName>GrassB</tileName>
+        <tileName>BeachB</tileName>
         <x>18</x>
         <y>20</y>
       </Tile>
@@ -2715,7 +2715,7 @@
         <y>19</y>
       </Tile>
       <Tile>
-        <tileName>GrassB</tileName>
+        <tileName>BeachB</tileName>
         <x>19</x>
         <y>20</y>
       </Tile>
@@ -2930,7 +2930,7 @@
         <y>19</y>
       </Tile>
       <Tile>
-        <tileName>GrassB</tileName>
+        <tileName>BeachB</tileName>
         <x>20</x>
         <y>20</y>
       </Tile>
@@ -8596,7 +8596,7 @@
               </Parameter>
               <Parameter>
                 <name>timer</name>
-                <value>1,500333</value>
+                <value>0,62006</value>
               </Parameter>
             </parameters>
             <subcomponents>
@@ -8675,7 +8675,7 @@
               </Parameter>
               <Parameter>
                 <name>timer</name>
-                <value>1,500333</value>
+                <value>0,62006</value>
               </Parameter>
             </parameters>
             <subcomponents>
@@ -8754,7 +8754,7 @@
               </Parameter>
               <Parameter>
                 <name>timer</name>
-                <value>1,500333</value>
+                <value>0,62006</value>
               </Parameter>
             </parameters>
             <subcomponents>
@@ -8845,7 +8845,7 @@
                   </Parameter>
                   <Parameter>
                     <name>timer</name>
-                    <value>11.15367</value>
+                    <value>19.49279</value>
                   </Parameter>
                 </parameters>
                 <subcomponents>
@@ -8922,7 +8922,7 @@
               </Parameter>
               <Parameter>
                 <name>timer</name>
-                <value>1,500333</value>
+                <value>0,62006</value>
               </Parameter>
             </parameters>
             <subcomponents>
@@ -8960,15 +8960,15 @@
           </Parameter>
           <Parameter>
             <name>x</name>
-            <value>38.52418</value>
+            <value>57.25999</value>
           </Parameter>
           <Parameter>
             <name>y</name>
-            <value>49.52418</value>
+            <value>58.5</value>
           </Parameter>
           <Parameter>
             <name>hp</name>
-            <value>195</value>
+            <value>200</value>
           </Parameter>
         </parameters>
         <subcomponents>
@@ -8977,7 +8977,7 @@
             <parameters>
               <Parameter>
                 <name>cooldown</name>
-                <value>4.680005</value>
+                <value>4.52</value>
               </Parameter>
               <Parameter>
                 <name>time</name>
@@ -8994,11 +8994,11 @@
             <parameters>
               <Parameter>
                 <name>currentTileX</name>
-                <value>39</value>
+                <value>57</value>
               </Parameter>
               <Parameter>
                 <name>currentTileY</name>
-                <value>50</value>
+                <value>58</value>
               </Parameter>
               <Parameter>
                 <name>pathfindTargetReached</name>
@@ -9018,11 +9018,11 @@
               </Parameter>
               <Parameter>
                 <name>reservedTileX</name>
-                <value>38</value>
+                <value>56</value>
               </Parameter>
               <Parameter>
                 <name>reservedTileY</name>
-                <value>49</value>
+                <value>58</value>
               </Parameter>
             </parameters>
           </DataStorage>
@@ -9062,7 +9062,7 @@
             <parameters>
               <Parameter>
                 <name>cooldown</name>
-                <value>-0.01999565</value>
+                <value>-0.01999478</value>
               </Parameter>
               <Parameter>
                 <name>time</name>
@@ -9106,7 +9106,7 @@
             <parameters>
               <Parameter>
                 <name>cooldown</name>
-                <value>-0.01999618</value>
+                <value>-0.0199955</value>
               </Parameter>
               <Parameter>
                 <name>time</name>
@@ -9150,7 +9150,7 @@
             <parameters>
               <Parameter>
                 <name>cooldown</name>
-                <value>-0.01999914</value>
+                <value>-0.01999911</value>
               </Parameter>
               <Parameter>
                 <name>time</name>
@@ -9194,7 +9194,7 @@
             <parameters>
               <Parameter>
                 <name>cooldown</name>
-                <value>-0.01999922</value>
+                <value>-0.01999917</value>
               </Parameter>
               <Parameter>
                 <name>time</name>
@@ -9229,7 +9229,7 @@
           </Parameter>
           <Parameter>
             <name>hp</name>
-            <value>150</value>
+            <value>100</value>
           </Parameter>
         </parameters>
         <subcomponents>
@@ -9238,7 +9238,7 @@
             <parameters>
               <Parameter>
                 <name>cooldown</name>
-                <value>-0.01998742</value>
+                <value>-0.01998605</value>
               </Parameter>
               <Parameter>
                 <name>time</name>
@@ -9273,7 +9273,7 @@
           </Parameter>
           <Parameter>
             <name>hp</name>
-            <value>350</value>
+            <value>150</value>
           </Parameter>
         </parameters>
         <subcomponents>
@@ -9282,7 +9282,7 @@
             <parameters>
               <Parameter>
                 <name>cooldown</name>
-                <value>0.2400089</value>
+                <value>-0.01998945</value>
               </Parameter>
               <Parameter>
                 <name>time</name>
@@ -9326,7 +9326,7 @@
             <parameters>
               <Parameter>
                 <name>cooldown</name>
-                <value>-0.01999601</value>
+                <value>-0.01999535</value>
               </Parameter>
               <Parameter>
                 <name>time</name>
@@ -9370,7 +9370,7 @@
             <parameters>
               <Parameter>
                 <name>cooldown</name>
-                <value>-0.01999878</value>
+                <value>-0.01999875</value>
               </Parameter>
               <Parameter>
                 <name>time</name>
@@ -9414,7 +9414,7 @@
             <parameters>
               <Parameter>
                 <name>cooldown</name>
-                <value>-0.01999824</value>
+                <value>-0.01999794</value>
               </Parameter>
               <Parameter>
                 <name>time</name>
@@ -9458,7 +9458,7 @@
             <parameters>
               <Parameter>
                 <name>cooldown</name>
-                <value>-0.01999997</value>
+                <value>-0.01999994</value>
               </Parameter>
               <Parameter>
                 <name>time</name>
@@ -9502,7 +9502,7 @@
             <parameters>
               <Parameter>
                 <name>cooldown</name>
-                <value>-0.01999997</value>
+                <value>-0.01999994</value>
               </Parameter>
               <Parameter>
                 <name>time</name>
@@ -9519,106 +9519,7 @@
     </turrets>
   </turretsData>
   <bulletData>
-    <bullets>
-      <DataStorage>
-        <name>Bullet</name>
-        <parameters>
-          <Parameter>
-            <name>damage</name>
-            <value>50</value>
-          </Parameter>
-          <Parameter>
-            <name>speed</name>
-            <value>20</value>
-          </Parameter>
-          <Parameter>
-            <name>amplitude</name>
-            <value>3</value>
-          </Parameter>
-          <Parameter>
-            <name>explosionRange</name>
-            <value>1</value>
-          </Parameter>
-          <Parameter>
-            <name>faction</name>
-            <value>Enemy</value>
-          </Parameter>
-          <Parameter>
-            <name>x</name>
-            <value>34.92108</value>
-          </Parameter>
-          <Parameter>
-            <name>y</name>
-            <value>45.92108</value>
-          </Parameter>
-          <Parameter>
-            <name>targetX</name>
-            <value>32.5</value>
-          </Parameter>
-          <Parameter>
-            <name>targetY</name>
-            <value>43.5</value>
-          </Parameter>
-          <Parameter>
-            <name>originX</name>
-            <value>39.20301</value>
-          </Parameter>
-          <Parameter>
-            <name>originY</name>
-            <value>50.20301</value>
-          </Parameter>
-        </parameters>
-      </DataStorage>
-      <DataStorage>
-        <name>Bullet</name>
-        <parameters>
-          <Parameter>
-            <name>damage</name>
-            <value>5</value>
-          </Parameter>
-          <Parameter>
-            <name>speed</name>
-            <value>30</value>
-          </Parameter>
-          <Parameter>
-            <name>amplitude</name>
-            <value>0</value>
-          </Parameter>
-          <Parameter>
-            <name>explosionRange</name>
-            <value>1</value>
-          </Parameter>
-          <Parameter>
-            <name>faction</name>
-            <value>Player</value>
-          </Parameter>
-          <Parameter>
-            <name>x</name>
-            <value>33.27743</value>
-          </Parameter>
-          <Parameter>
-            <name>y</name>
-            <value>44.27743</value>
-          </Parameter>
-          <Parameter>
-            <name>targetX</name>
-            <value>38.65146</value>
-          </Parameter>
-          <Parameter>
-            <name>targetY</name>
-            <value>49.65146</value>
-          </Parameter>
-          <Parameter>
-            <name>originX</name>
-            <value>32.5</value>
-          </Parameter>
-          <Parameter>
-            <name>originY</name>
-            <value>43.5</value>
-          </Parameter>
-        </parameters>
-      </DataStorage>
-    </bullets>
+    <bullets />
   </bulletData>
   <factionResource>
     <factions>
@@ -9627,7 +9528,7 @@
         <resources>
           <Resource>
             <name>gold</name>
-            <value>974</value>
+            <value>1118</value>
           </Resource>
           <Resource>
             <name>research</name>
