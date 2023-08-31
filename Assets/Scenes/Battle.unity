@@ -12122,7 +12122,7 @@ MonoBehaviour:
   unitDropdown: {fileID: 1959660838}
   turretDropdown: {fileID: 868514379}
   factionSelectionDropdown: {fileID: 133521199}
-  freezeMap: 0
+  freezeMap: 1
   mapSizeX: 200
   mapSizeY: 200
   loadMap: 1
