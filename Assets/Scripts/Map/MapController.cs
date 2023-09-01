@@ -115,12 +115,12 @@ namespace TileMap
         }
         void FillMapEditorOptions()
         {
-            FillMapEditorTileOptions();
+            FillMapEditorSheetOptions();
             
             FillMapEditorUnitOptions();
             FillMapEditorTurretOptions();
         }
-        void FillMapEditorTileOptions()
+        void FillMapEditorSheetOptions()
         {
             List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
             /*foreach (MapTile tile in placeableTiles)
@@ -138,6 +138,10 @@ namespace TileMap
                 options.Add(optionData);
             }
             tileDropdown.AddOptions(options);
+        }
+        void FillMapEditorTileOptions()
+        {
+
         }
         void FillMapEditorObjectiveOptions()
         {
