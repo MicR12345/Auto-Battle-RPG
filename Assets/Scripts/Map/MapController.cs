@@ -123,11 +123,18 @@ namespace TileMap
         void FillMapEditorTileOptions()
         {
             List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
-            foreach (MapTile tile in placeableTiles)
+            /*foreach (MapTile tile in placeableTiles)
             {
                 TMP_Dropdown.OptionData optionData = new TMP_Dropdown.OptionData();
                 optionData.text = tile.tileName;
                 optionData.image = tile.sprite[0];
+                options.Add(optionData);
+            }*/
+            foreach (TileSpriteSheet tileSpriteSheet in tileSpriteSheets)
+            {
+                TMP_Dropdown.OptionData optionData = new TMP_Dropdown.OptionData();
+                optionData.text = tileSpriteSheet.sheetData.name;
+                optionData.image = tileSpriteSheet.mapTiles[0].sprite[0];
                 options.Add(optionData);
             }
             tileDropdown.AddOptions(options);
